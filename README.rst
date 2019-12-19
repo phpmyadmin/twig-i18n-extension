@@ -7,7 +7,15 @@ Configuration
 The ``i18n`` extension adds `gettext`_ support to Twig. It defines one tag,
 ``trans``.
 
-To use it, first, :ref:`install the Extensions library<extensions-install>`.
+Installation
+------------
+
+This library can be installed via Composer running the following from the
+command line:
+
+.. code-block:: bash
+
+    composer require phpmyadmin/twig-i18n-extension
 
 You need to register this extension before using the ``trans`` block::
 
