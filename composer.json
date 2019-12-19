@@ -1,7 +1,7 @@
 {
-    "name": "twig/extensions",
-    "description": "Common additional features for Twig that do not directly belong in core",
-    "keywords": ["i18n","text"],
+    "name": "phpmyadmin/twig-i18n-extension",
+    "description": "Internationalization support for Twig via the gettext library",
+    "keywords": ["i18n","gettext"],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -18,14 +18,14 @@
         "symfony/phpunit-bridge": "^3.4"
     },
     "autoload": {
-        "psr-4": { "Twig\\Extensions\\": "src/" }
+        "psr-4": { "PhpMyAdmin\\Twig\\Extensions\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Twig\\Extensions\\Tests\\": "test/" }
+        "psr-4": { "PhpMyAdmin\\Tests\\Twig\\Extensions\\": "test/" }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.5-dev"
+            "dev-master": "2.0-dev"
         }
     }
 }

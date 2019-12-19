@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Extensions\Node;
+namespace PhpMyAdmin\Twig\Extensions\Node;
 
 use Twig\Compiler;
 use Twig\Node\Expression\AbstractExpression;

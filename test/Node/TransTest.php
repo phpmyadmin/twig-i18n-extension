@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Extensions\Tests\Node;
+namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
-use Twig\Extensions\Node\TransNode;
+use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\NameExpression;

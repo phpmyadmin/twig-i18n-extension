@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Extensions;
+namespace PhpMyAdmin\Twig\Extensions;
 
+use PhpMyAdmin\Twig\Extensions\TokenParser\TransTokenParser;
 use Twig\Extension\AbstractExtension;
-use Twig\Extensions\TokenParser\TransTokenParser;
 use Twig\TwigFilter;
 
 class I18nExtension extends AbstractExtension

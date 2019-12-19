@@ -1,5 +1,5 @@
-The i18n Extension
-==================
+Twig i18n Extension
+===================
 
 Configuration
 -------------
@@ -11,7 +11,7 @@ To use it, first, :ref:`install the Extensions library<extensions-install>`.
 
 You need to register this extension before using the ``trans`` block::
 
-    use Twig\Extensions\I18nExtension;
+    use PhpMyAdmin\Twig\Extensions\I18nExtension;
 
     $twig->addExtension(new I18nExtension());
 
@@ -165,7 +165,7 @@ templates. Here is a simple example to get you started::
         'cache' => $tmpDir,
         'auto_reload' => true
     ));
-    $twig->addExtension(new \Twig\Extensions\I18nExtension());
+    $twig->addExtension(new \PhpMyAdmin\Twig\Extensions\I18nExtension());
     // configure Twig the way you want
 
     // iterate over all your templates

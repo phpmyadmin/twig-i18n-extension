@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Extensions\TokenParser;
+namespace PhpMyAdmin\Twig\Extensions\TokenParser;
 
+use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Error\SyntaxError;
-use Twig\Extensions\Node\TransNode;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
