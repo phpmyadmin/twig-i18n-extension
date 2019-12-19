@@ -9,7 +9,10 @@
  * file that was distributed with this source code.
  */
 
-class Twig_Extensions_Extension_I18n extends Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
+class Twig_Extensions_Extension_I18n extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -25,7 +28,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function getFilters()
     {
         return array(
-             new Twig_SimpleFilter('trans', 'gettext'),
+             new TwigFilter('trans', 'gettext'),
         );
     }
 

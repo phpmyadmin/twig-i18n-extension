@@ -9,14 +9,24 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\Expression\FilterExpression;
+use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\TempNameExpression;
+use Twig\Node\Node;
+use Twig\Node\PrintNode;
+use Twig\Node\SetTempNode;
+
 /**
  * Represents a trans node.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  */
-class Twig_Extensions_Node_Trans extends Twig_Node
+class Twig_Extensions_Node_Trans extends Node
 {
-    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
+    public function __construct(Node $body, Node $plural = null, AbstractExpression $count = null, Node $notes = null, $lineno, $tag = null)
     {
         $nodes = array('body' => $body);
         if (null !== $count) {
@@ -35,7 +45,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     /**
      * {@inheritdoc}
      */
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
 
@@ -115,13 +125,13 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     }
 
     /**
-     * @param Twig_Node $body A Twig_Node instance
+     * @param Node $body A Node instance
      *
      * @return array
      */
-    protected function compileString(Twig_Node $body)
+    protected function compileString(Node $body)
     {
-        if ($body instanceof Twig_Node_Expression_Name || $body instanceof Twig_Node_Expression_Constant || $body instanceof Twig_Node_Expression_TempName) {
+        if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
             return array($body, array());
         }
 
@@ -130,17 +140,17 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $msg = '';
 
             foreach ($body as $node) {
-                if (get_class($node) === 'Twig_Node' && $node->getNode(0) instanceof Twig_Node_SetTemp) {
+                if (get_class($node) === Node::class && $node->getNode(0) instanceof SetTempNode) {
                     $node = $node->getNode(1);
                 }
 
-                if ($node instanceof Twig_Node_Print) {
+                if ($node instanceof PrintNode) {
                     $n = $node->getNode('expr');
-                    while ($n instanceof Twig_Node_Expression_Filter) {
+                    while ($n instanceof FilterExpression) {
                         $n = $n->getNode('node');
                     }
                     $msg .= sprintf('%%%s%%', $n->getAttribute('name'));
-                    $vars[] = new Twig_Node_Expression_Name($n->getAttribute('name'), $n->getTemplateLine());
+                    $vars[] = new NameExpression($n->getAttribute('name'), $n->getTemplateLine());
                 } else {
                     $msg .= $node->getAttribute('data');
                 }
@@ -149,7 +159,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $msg = $body->getAttribute('data');
         }
 
-        return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $body->getTemplateLine()))), $vars);
+        return array(new Node(array(new ConstantExpression(trim($msg), $body->getTemplateLine()))), $vars);
     }
 
     /**
