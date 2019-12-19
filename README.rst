@@ -11,7 +11,9 @@ To use it, first, :ref:`install the Extensions library<extensions-install>`.
 
 You need to register this extension before using the ``trans`` block::
 
-    $twig->addExtension(new Twig_Extensions_Extension_I18n());
+    use Twig\Extensions\I18nExtension;
+
+    $twig->addExtension(new I18nExtension());
 
 Note that you must configure the ``gettext`` extension before rendering any
 internationalized template. Here is a simple configuration example from the
@@ -163,7 +165,7 @@ templates. Here is a simple example to get you started::
         'cache' => $tmpDir,
         'auto_reload' => true
     ));
-    $twig->addExtension(new Twig_Extensions_Extension_I18n());
+    $twig->addExtension(new \Twig\Extensions\I18nExtension());
     // configure Twig the way you want
 
     // iterate over all your templates

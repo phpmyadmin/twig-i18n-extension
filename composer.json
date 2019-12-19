@@ -18,8 +18,10 @@
         "symfony/phpunit-bridge": "^3.4"
     },
     "autoload": {
-        "psr-0": { "Twig_Extensions_": "lib/" },
         "psr-4": { "Twig\\Extensions\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Twig\\Extensions\\Tests\\": "test/" }
     },
     "extra": {
         "branch-alias": {
