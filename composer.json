@@ -8,6 +8,11 @@
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com"
+        },
+        {
+            "name": "The phpMyAdmin Team",
+            "email": "developers@phpmyadmin.net",
+            "homepage": "https://www.phpmyadmin.net/team/"
         }
     ],
     "require": {
