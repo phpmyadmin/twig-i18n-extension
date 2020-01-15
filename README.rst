@@ -199,3 +199,16 @@ strings right from `Poedit`_.
 .. _`documentation`:          http://fr.php.net/manual/en/function.gettext.php
 .. _`Twig Gettext Extractor`: https://github.com/umpirsky/Twig-Gettext-Extractor
 .. _`Poedit`:                 http://www.poedit.net/
+
+History
+-------
+
+This project was forked in 2019 by the phpMyAdmin team, since it was abandoned by the
+`Twig project`_ but was still in use for phpMyAdmin.
+
+.. _`Twig project`: https://github.com/twigphp/Twig-extensions
+
+If you find this work useful, or have a pull request to contribute, please find us on
+`Github`_.
+
+.. _`Github`: https://github.com/phpmyadmin/twig-i18n-extension/
