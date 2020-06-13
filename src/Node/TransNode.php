@@ -12,6 +12,7 @@
 namespace PhpMyAdmin\Twig\Extensions\Node;
 
 use Twig\Compiler;
+use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
@@ -19,10 +20,8 @@ use Twig\Node\Expression\NameExpression;
 use Twig\Node\Expression\TempNameExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
-use Twig\Node\SetTempNode;
 use function array_merge;
 use function count;
-use function get_class;
 use function sprintf;
 use function str_replace;
 use function trim;
@@ -126,12 +125,7 @@ class TransNode extends Node
         }
     }
 
-    /**
-     * @param Node $body A Node instance
-     *
-     * @return array
-     */
-    protected function compileString(Node $body)
+    private function compileString(Node $body): array
     {
         if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
             return [$body, []];
@@ -142,14 +136,13 @@ class TransNode extends Node
             $msg = '';
 
             foreach ($body as $node) {
-                if (get_class($node) === Node::class && $node->getNode(0) instanceof SetTempNode) {
-                    $node = $node->getNode(1);
-                }
-
                 if ($node instanceof PrintNode) {
                     $n = $node->getNode('expr');
                     while ($n instanceof FilterExpression) {
                         $n = $n->getNode('node');
+                    }
+                    while ($n instanceof CheckToStringNode) {
+                        $n = $n->getNode('expr');
                     }
                     $msg .= sprintf('%%%s%%', $n->getAttribute('name'));
                     $vars[] = new NameExpression($n->getAttribute('name'), $n->getTemplateLine());
@@ -164,12 +157,7 @@ class TransNode extends Node
         return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
     }
 
-    /**
-     * @param bool $plural Return plural or singular function to use
-     *
-     * @return string
-     */
-    protected function getTransFunction($plural)
+    private function getTransFunction(bool $plural): string
     {
         return $plural ? 'ngettext' : 'gettext';
     }
