@@ -162,7 +162,7 @@ But there is a simple workaround: as Twig converts templates to
 PHP files, you can use ``xgettext`` on the template cache instead.
 
 Create a script that forces the generation of the cache for all your
-templates. Here is a simple example to get you started::
+templates. Here is a simple example to get you started
 
 .. code-block:: php
 
