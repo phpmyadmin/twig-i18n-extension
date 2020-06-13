@@ -9,7 +9,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PhpMyAdmin\Twig\Extensions\TokenParser;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
@@ -20,6 +19,7 @@ use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 use Twig\Token;
 use Twig\TokenParser\AbstractTokenParser;
+use function sprintf;
 
 class TransTokenParser extends AbstractTokenParser
 {
@@ -34,25 +34,25 @@ class TransTokenParser extends AbstractTokenParser
         $plural = null;
         $notes = null;
 
-        if (!$stream->test(Token::BLOCK_END_TYPE)) {
+        if (! $stream->test(Token::BLOCK_END_TYPE)) {
             $body = $this->parser->getExpressionParser()->parseExpression();
         } else {
             $stream->expect(Token::BLOCK_END_TYPE);
-            $body = $this->parser->subparse(array($this, 'decideForFork'));
+            $body = $this->parser->subparse([$this, 'decideForFork']);
             $next = $stream->next()->getValue();
 
-            if ('plural' === $next) {
+            if ($next === 'plural') {
                 $count = $this->parser->getExpressionParser()->parseExpression();
                 $stream->expect(Token::BLOCK_END_TYPE);
-                $plural = $this->parser->subparse(array($this, 'decideForFork'));
+                $plural = $this->parser->subparse([$this, 'decideForFork']);
 
-                if ('notes' === $stream->next()->getValue()) {
+                if ($stream->next()->getValue() === 'notes') {
                     $stream->expect(Token::BLOCK_END_TYPE);
-                    $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
+                    $notes = $this->parser->subparse([$this, 'decideForEnd'], true);
                 }
-            } elseif ('notes' === $next) {
+            } elseif ($next === 'notes') {
                 $stream->expect(Token::BLOCK_END_TYPE);
-                $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
+                $notes = $this->parser->subparse([$this, 'decideForEnd'], true);
             }
         }
 
@@ -65,7 +65,7 @@ class TransTokenParser extends AbstractTokenParser
 
     public function decideForFork(Token $token)
     {
-        return $token->test(array('plural', 'notes', 'endtrans'));
+        return $token->test(['plural', 'notes', 'endtrans']);
     }
 
     public function decideForEnd(Token $token)
@@ -84,8 +84,7 @@ class TransTokenParser extends AbstractTokenParser
     protected function checkTransString(Node $body, $lineno)
     {
         foreach ($body as $i => $node) {
-            if (
-                $node instanceof TextNode
+            if ($node instanceof TextNode
                 ||
                 ($node instanceof PrintNode && $node->getNode('expr') instanceof NameExpression)
             ) {
