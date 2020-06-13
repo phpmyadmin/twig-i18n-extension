@@ -17,7 +17,9 @@ command line:
 Configuration
 -------------
 
-You need to register this extension before using the ``trans`` block::
+You need to register this extension before using the ``trans`` block
+
+.. code-block:: php
 
     use PhpMyAdmin\Twig\Extensions\I18nExtension;
 
@@ -50,7 +52,7 @@ Usage
 
 Use the ``trans`` block to mark parts in the template as translatable:
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {% trans "Hello World!" %}
 
@@ -62,7 +64,7 @@ Use the ``trans`` block to mark parts in the template as translatable:
 
 In a translatable string, you can embed variables:
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {% trans %}
         Hello {{ name }}!
@@ -77,7 +79,7 @@ During the gettext lookup these placeholders are converted. ``{{ name }}`` becom
 If you need to apply filters to the variables, you first need to assign the
 result to a variable:
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {% set name = name|capitalize %}
 
@@ -87,7 +89,7 @@ result to a variable:
 
 To pluralize a translatable string, use the ``plural`` block:
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {% trans %}
         Hey {{ name }}, I have one apple.
@@ -101,7 +103,7 @@ contain the count value (here the value of ``apple_count``).
 
 To add notes for translators, use the ``notes`` block:
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {% trans %}
         Hey {{ name }}, I have one apple.
@@ -117,7 +119,7 @@ configure the ``gettext`` parser to get something like this: ``xgettext --add-co
 Within an expression or in a tag, you can use the ``trans`` filter to translate
 simple strings or variables:
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {{ var|default(default_value|trans) }}
 
@@ -129,7 +131,7 @@ The filter is less powerful as it only works for simple variables or strings.
 For more complex scenario, like pluralization, you can use a two-step
 strategy:
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {# assign the translation to a temporary variable #}
     {% set default_value %}
