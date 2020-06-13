@@ -63,11 +63,17 @@ class TransTokenParser extends AbstractTokenParser
         return new TransNode($body, $plural, $count, $notes, $lineno, $this->getTag());
     }
 
+    /**
+     * @return bool
+     */
     public function decideForFork(Token $token)
     {
         return $token->test(['plural', 'notes', 'endtrans']);
     }
 
+    /**
+     * @return bool
+     */
     public function decideForEnd(Token $token)
     {
         return $token->test('endtrans');
@@ -81,6 +87,11 @@ class TransTokenParser extends AbstractTokenParser
         return 'trans';
     }
 
+    /**
+     * @return void
+     *
+     * @throws SyntaxError
+     */
     protected function checkTransString(Node $body, $lineno)
     {
         foreach ($body as $i => $node) {
