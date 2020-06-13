@@ -34,7 +34,7 @@ use function trim;
  */
 class TransNode extends Node
 {
-    public function __construct(Node $body, Node $plural = null, AbstractExpression $count = null, Node $notes = null, $lineno, $tag = null)
+    public function __construct(Node $body, ?Node $plural, ?AbstractExpression $count, ?Node $notes, int $lineno = 0, ?string $tag = null)
     {
         $nodes = ['body' => $body];
         if ($count !== null) {
