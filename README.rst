@@ -25,7 +25,9 @@ You need to register this extension before using the ``trans`` block::
 
 Note that you must configure the ``gettext`` extension before rendering any
 internationalized template. Here is a simple configuration example from the
-PHP `documentation`_::
+PHP `documentation`_
+
+.. code-block:: php
 
     // Set language to French
     putenv('LC_ALL=fr_FR');
