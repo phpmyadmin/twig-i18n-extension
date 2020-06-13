@@ -22,6 +22,9 @@
     "require-dev": {
         "phpunit/phpunit": "^8 || ^9"
     },
+    "scripts": {
+        "phpunit": "phpunit"
+    },
     "autoload": {
         "psr-4": { "PhpMyAdmin\\Twig\\Extensions\\": "src/" }
     },

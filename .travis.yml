@@ -11,8 +11,8 @@ before_install:
 before_script:
     - composer install
 
-script: |
-    ./vendor/bin/simple-phpunit
+script:
+    - composer run phpunit
 
 matrix:
     include:
