@@ -20,7 +20,8 @@
         "twig/twig": "^1.42.3|^2.0|^3.0"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^4.2|^5.0"
+        "symfony/phpunit-bridge": "^4.2|^5.0",
+        "phpunit/phpunit": "^8 || ^9"
     },
     "autoload": {
         "psr-4": { "PhpMyAdmin\\Twig\\Extensions\\": "src/" }
