@@ -125,7 +125,11 @@ class TransNode extends Node
         }
     }
 
-    private function compileString(Node $body): array
+    /**
+     * Keep this method protected instead of private
+     * Twig/I18n/NodeTrans from phpmyadmin/phpmyadmin uses it
+     */
+    protected function compileString(Node $body): array
     {
         if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
             return [$body, []];
