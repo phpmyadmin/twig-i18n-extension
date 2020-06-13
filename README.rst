@@ -164,16 +164,22 @@ PHP files, you can use ``xgettext`` on the template cache instead.
 Create a script that forces the generation of the cache for all your
 templates. Here is a simple example to get you started::
 
-    $tplDir = dirname(__FILE__).'/templates';
+.. code-block:: php
+
+    use Twig\Environment;
+    use Twig\Loader\FilesystemLoader;
+    use PhpMyAdmin\Twig\Extensions\I18nExtension;
+
+    $tplDir = __DIR__ . '/templates';
     $tmpDir = '/tmp/cache/';
-    $loader = new Twig_Loader_Filesystem($tplDir);
+    $loader = new FilesystemLoader($tplDir);
 
     // force auto-reload to always have the latest version of the template
-    $twig = new Twig_Environment($loader, array(
+    $twig = new Environment($loader, [
+        'auto_reload' => true,
         'cache' => $tmpDir,
-        'auto_reload' => true
-    ));
-    $twig->addExtension(new \PhpMyAdmin\Twig\Extensions\I18nExtension());
+    ]);
+    $twig->addExtension(new I18nExtension());
     // configure Twig the way you want
 
     // iterate over all your templates
@@ -181,7 +187,7 @@ templates. Here is a simple example to get you started::
     {
         // force compilation
         if ($file->isFile()) {
-            $twig->loadTemplate(str_replace($tplDir.'/', '', $file));
+            $twig->loadTemplate(str_replace($tplDir . '/', '', $file));
         }
     }
 
@@ -195,7 +201,7 @@ code:
 Another workaround is to use `Twig Gettext Extractor`_ and extract the template
 strings right from `Poedit`_.
 
-.. _`gettext`:                http://www.php.net/gettext
-.. _`documentation`:          http://fr.php.net/manual/en/function.gettext.php
-.. _`Twig Gettext Extractor`: https://github.com/umpirsky/Twig-Gettext-Extractor
-.. _`Poedit`:                 http://www.poedit.net/
+.. _`gettext`:                https://www.php.net/gettext
+.. _`documentation`:          https://www.php.net/manual/en/function.gettext.php
+.. _`Twig Gettext Extractor`: https://github.com/umpirsky/Twig-Gettext-Extractor#readme
+.. _`Poedit`:                 https://poedit.net/
