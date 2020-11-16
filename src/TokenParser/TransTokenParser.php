@@ -9,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PhpMyAdmin\Twig\Extensions\TokenParser;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
@@ -92,7 +93,7 @@ class TransTokenParser extends AbstractTokenParser
      *
      * @throws SyntaxError
      */
-    protected function checkTransString(Node $body, $lineno)
+    protected function checkTransString(Node $body, int $lineno)
     {
         foreach ($body as $i => $node) {
             if ($node instanceof TextNode

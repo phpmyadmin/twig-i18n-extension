@@ -9,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
@@ -26,7 +27,7 @@ class TransTest extends NodeTestCase
     /**
      * @covers TransNode::__construct
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $count = new ConstantExpression(12, 0);
         $body = new Node([
@@ -46,7 +47,7 @@ class TransTest extends NodeTestCase
         $this->assertEquals($plural, $node->getNode('plural'));
     }
 
-    public function getTests()
+    public function getTests(): array
     {
         $tests = [];
 
