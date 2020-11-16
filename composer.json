@@ -24,7 +24,7 @@
         "twig/twig": "^1.42.3|^2.0|^3.0"
     },
     "require-dev": {
-        "phpmyadmin/coding-standard": "^2.0",
+        "phpmyadmin/coding-standard": "^2.1.1",
         "phpunit/phpunit": "^7 || ^8 || ^9"
     },
     "scripts": {
