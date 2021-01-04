@@ -31,9 +31,16 @@ class TransTokenParser extends AbstractTokenParser
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
+        $domain = null;
         $count = null;
         $plural = null;
         $notes = null;
+
+        /* If we aren't closing the block, do we have a domain? */
+        if ($stream->test(Token::NAME_TYPE)) {
+            $stream->expect(Token::NAME_TYPE, 'from');
+            $domain = $this->parser->getExpressionParser()->parseExpression();
+        }
 
         if (! $stream->test(Token::BLOCK_END_TYPE)) {
             $body = $this->parser->getExpressionParser()->parseExpression();
@@ -61,7 +68,7 @@ class TransTokenParser extends AbstractTokenParser
 
         $this->checkTransString($body, $lineno);
 
-        return new TransNode($body, $plural, $count, $notes, $lineno, $this->getTag());
+        return new TransNode($body, $plural, $count, $notes, $domain, $lineno, $this->getTag());
     }
 
     /**
