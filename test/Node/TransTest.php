@@ -24,9 +24,6 @@ use function sprintf;
 
 class TransTest extends NodeTestCase
 {
-    /**
-     * @covers TransNode::__construct
-     */
     public function testConstructor(): void
     {
         $count = new ConstantExpression(12, 0);
