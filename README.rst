@@ -4,6 +4,17 @@ Twig i18n Extension
 The ``i18n`` extension adds `gettext`_ support to Twig. It defines one tag,
 ``trans``.
 
+Code status
+-----------
+
+.. image:: https://github.com/phpmyadmin/twig-i18n-extension/workflows/Run%20tests/badge.svg?branch=master
+    :alt: Tests
+    :target: https://github.com/phpmyadmin/twig-i18n-extension/actions
+
+.. image:: https://codecov.io/gh/phpmyadmin/twig-i18n-extension/branch/master/graph/badge.svg
+    :alt: Code coverage
+    :target: https://codecov.io/gh/phpmyadmin/twig-i18n-extension
+
 Installation
 ------------
 
