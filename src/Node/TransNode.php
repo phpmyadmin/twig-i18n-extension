@@ -87,7 +87,7 @@ class TransNode extends Node
                     ->raw(', ')
                     ->subcompile($msg1)
                     ->raw(', abs(')
-                    ->subcompile($this->hasNode('count') ? $this->getNode('count') : null)
+                    ->subcompile($this->getNode('count'))
                     ->raw(')');
             }
 
@@ -98,7 +98,7 @@ class TransNode extends Node
                     $compiler
                         ->string('%count%')
                         ->raw(' => abs(')
-                        ->subcompile($this->hasNode('count') ? $this->getNode('count') : null)
+                        ->subcompile($this->getNode('count'))
                         ->raw('), ');
                 } else {
                     $compiler
@@ -120,7 +120,7 @@ class TransNode extends Node
                     ->raw(', ')
                     ->subcompile($msg1)
                     ->raw(', abs(')
-                    ->subcompile($this->hasNode('count') ? $this->getNode('count') : null)
+                    ->subcompile($this->getNode('count'))
                     ->raw(')');
             }
 
