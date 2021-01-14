@@ -25,9 +25,11 @@
     },
     "require-dev": {
         "phpmyadmin/coding-standard": "^2.1.1",
+        "phpstan/phpstan": "^0.12.66",
         "phpunit/phpunit": "^7 || ^8 || ^9"
     },
     "scripts": {
+        "phpstan": "./vendor/bin/phpstan analyse",
         "phpunit": "phpunit",
         "phpcs": "phpcs",
         "phpcbf": "phpcbf"
