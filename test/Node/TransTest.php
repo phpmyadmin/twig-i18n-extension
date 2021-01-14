@@ -47,6 +47,9 @@ class TransTest extends NodeTestCase
         $this->assertEquals($plural, $node->getNode('plural'));
     }
 
+    /**
+     * @return array[]
+     */
     public function getTests(): array
     {
         $tests = [];

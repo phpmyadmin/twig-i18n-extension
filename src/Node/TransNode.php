@@ -59,13 +59,15 @@ class TransNode extends Node
 
         [$msg, $vars] = $this->compileString($this->getNode('body'));
 
-        if ($this->hasNode('plural')) {
+        $hasPlural = $this->hasNode('plural');
+
+        if ($hasPlural) {
             [$msg1, $vars1] = $this->compileString($this->getNode('plural'));
 
             $vars = array_merge($vars, $vars1);
         }
 
-        $function = $this->getTransFunction($this->hasNode('plural'));
+        $function = $this->getTransFunction($hasPlural);
 
         if ($this->hasNode('notes')) {
             $message = trim($this->getNode('notes')->getAttribute('data'));
@@ -80,7 +82,7 @@ class TransNode extends Node
                 ->write('echo strtr(' . $function . '(')
                 ->subcompile($msg);
 
-            if ($this->hasNode('plural')) {
+            if ($hasPlural) {
                 $compiler
                     ->raw(', ')
                     ->subcompile($msg1)
@@ -113,7 +115,7 @@ class TransNode extends Node
                 ->write('echo ' . $function . '(')
                 ->subcompile($msg);
 
-            if ($this->hasNode('plural')) {
+            if ($hasPlural) {
                 $compiler
                     ->raw(', ')
                     ->subcompile($msg1)
