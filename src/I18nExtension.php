@@ -38,6 +38,7 @@ class I18nExtension extends AbstractExtension
 
     /**
      * {@inheritdoc}
+     *
      * @return string
      */
     public function getName()
