@@ -44,12 +44,43 @@ class TransTest extends NodeTestCase
         $this->assertEquals($plural, $node->getNode('plural'));
     }
 
+    public function testConstructorWithDomain(): void
+    {
+        $count = new ConstantExpression(12, 0);
+        $body = new Node([
+            new TextNode('Hello', 0),
+        ], [], 0);
+        $domain = new Node([
+            new TextNode('coredomain', 0),
+        ], [], 0);
+        $plural = new Node([
+            new TextNode('Hey ', 0),
+            new PrintNode(new NameExpression('name', 0), 0),
+            new TextNode(', I have ', 0),
+            new PrintNode(new NameExpression('count', 0), 0),
+            new TextNode(' apples', 0),
+        ], [], 0);
+        $node = new TransNode($body, $plural, $count, null, $domain, 0);
+
+        $this->assertEquals($body, $node->getNode('body'));
+        $this->assertEquals($count, $node->getNode('count'));
+        $this->assertEquals($plural, $node->getNode('plural'));
+        $this->assertEquals($domain, $node->getNode('domain'));
+    }
+
     /**
      * @return array[]
      */
     public function getTests(): array
     {
         $tests = [];
+
+        $body = new NameExpression('foo', 0);
+        $domain = new Node([
+            new TextNode('coredomain', 0),
+        ], [], 0);
+        $node = new TransNode($body, null, null, null, $domain, 0);
+        $tests[] = [$node, sprintf('echo dgettext("coredomain", %s);', $this->getVariableGetter('foo'))];
 
         $body = new NameExpression('foo', 0);
         $node = new TransNode($body, null, null, null, null, 0);
