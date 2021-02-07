@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of Twig.
+ * This file is part of Twig I18n extension.
  *
  * (c) 2010-2019 Fabien Potencier
  * (c) 2019-2021 phpMyAdmin contributors
@@ -34,7 +34,7 @@ class I18nExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('trans', '\PhpMyAdmin\Twig\Extensions\I18nExtension::translate'), /* Note, the filter does not handle plurals */
+            new TwigFilter('trans', [$this, 'translate']), /* Note, the filter does not handle plurals */
         ];
     }
 
@@ -54,7 +54,7 @@ class I18nExtension extends AbstractExtension
      * @param string      $message The message to translate
      * @param string|null $domain  The GetText domain
      */
-    public static function translate(string $message, ?string $domain = null): string
+    public function translate(string $message, ?string $domain = null): string
     {
         /* If we don't have a domain, assume we're just using the default */
         if ($domain === null) {

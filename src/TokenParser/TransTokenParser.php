@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of Twig.
+ * This file is part of Twig I18n extension.
  *
  * (c) 2010-2019 Fabien Potencier
  * (c) 2019-2021 phpMyAdmin contributors
@@ -27,6 +27,21 @@ class TransTokenParser extends AbstractTokenParser
      * {@inheritdoc}
      */
     public function parse(Token $token)
+    {
+        [
+            $body,
+            $plural,
+            $count,
+            $notes,
+            $domain,
+            $lineno,
+            $tag,
+        ] = $this->preParse($token);
+
+        return new TransNode($body, $plural, $count, $notes, $domain, $lineno, $tag);
+    }
+
+    protected function preParse(Token $token): array
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
@@ -67,7 +82,7 @@ class TransTokenParser extends AbstractTokenParser
 
         $this->checkTransString($body, $lineno);
 
-        return new TransNode($body, $plural, $count, $notes, $domain, $lineno, $this->getTag());
+        return [$body, $plural, $count, $notes, $domain, $lineno, $this->getTag()];
     }
 
     /**
