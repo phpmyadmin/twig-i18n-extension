@@ -34,11 +34,37 @@ use function trim;
  */
 class TransNode extends Node
 {
-    /** @var string */
+    /**
+     * The label for gettext notes to be exported
+     *
+     * @var string
+     */
     protected static $notesLabel = '// notes: ';
 
-    public function __construct(Node $body, ?Node $plural, ?AbstractExpression $count, ?Node $notes, ?Node $domain = null, int $lineno = 0, ?string $tag = null)
-    {
+    /**
+     * Enable motranslator functions
+     *
+     * @var bool
+     */
+    protected static $enableMoTranslator = false;
+
+    /**
+     * Enables context functions usage
+     *
+     * @var bool
+     */
+    protected static $hasContextFunctions = false;
+
+    public function __construct(
+        Node $body,
+        ?Node $plural,
+        ?AbstractExpression $count,
+        ?Node $context = null,
+        ?Node $notes,
+        ?Node $domain = null,
+        int $lineno = 0,
+        ?string $tag = null
+    ) {
         $nodes = ['body' => $body];
         if ($count !== null) {
             $nodes['count'] = $count;
@@ -51,6 +77,9 @@ class TransNode extends Node
         }
         if ($domain !== null) {
             $nodes['domain'] = $domain;
+        }
+        if ($context !== null) {
+            $nodes['context'] = $context;
         }
 
         parent::__construct($nodes, [], $lineno, $tag);
@@ -74,8 +103,14 @@ class TransNode extends Node
         }
 
         $hasDomain = $this->hasNode('domain');
+        $hasContext = $this->hasNode('context');
 
-        $function = $this->getTransFunction($hasPlural, $hasDomain);
+        $function = $this->getTransFunction($hasPlural, $hasContext, $hasDomain);
+
+        if (static::$enableMoTranslator) {
+            // The functions are prefixed with an underscore
+            $function = '_' . $function;
+        }
 
         if ($this->hasNode('notes')) {
             $message = trim($this->getNode('notes')->getAttribute('data'));
@@ -138,6 +173,15 @@ class TransNode extends Node
                     ->raw(', ');
             }
 
+            if ($hasContext) {
+                if (static::$hasContextFunctions || self::$enableMoTranslator) {
+                    [$context] = $this->compileString($this->getNode('context'));
+                    $compiler
+                        ->subcompile($context)
+                        ->raw(', ');
+                }
+            }
+
             $compiler
                 ->subcompile($msg);
 
@@ -190,12 +234,50 @@ class TransNode extends Node
         return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
     }
 
-    private function getTransFunction(bool $plural, bool $hasDomain): string
+    /**
+     * Keep this protected to allow people to override it with their own logic
+     */
+    protected function getTransFunction(bool $hasPlural, bool $hasContext, bool $hasDomain): string
     {
-        if ($plural) {
-            return $hasDomain ? 'dngettext' : 'ngettext';
+        // If it has not context function support or not motranslator
+        if (! static::$hasContextFunctions && ! self::$enableMoTranslator) {
+            // Not found on native PHP: dnpgettext, npgettext, dpgettext, pgettext
+            // No domain plural context support
+            // No domain context support
+            // No context support
+            // No plural context support
+
+            if ($hasDomain) {
+                // dngettext($domain, $msgid, $msgidPlural, $number);
+                // dgettext($domain, $msgid);
+                return $hasPlural ? 'dngettext' : 'dgettext';
+            }
+
+            // ngettext($msgid, $msgidPlural, $number);
+            // gettext($msgid);
+            return $hasPlural ? 'ngettext' : 'gettext';
         }
 
-        return $hasDomain ? 'dgettext' : 'gettext';
+        if ($hasDomain) {
+            if ($hasPlural) {
+                // dnpgettext($domain, $msgctxt, $msgid, $msgidPlural, $number);
+                // dngettext($domain, $msgid, $msgidPlural, $number);
+                return $hasContext ? 'dnpgettext' : 'dngettext';
+            }
+
+            // dpgettext($domain, $msgctxt, $msgid);
+            // dgettext($domain, $msgid);
+            return $hasContext ? 'dpgettext' : 'dgettext';
+        }
+
+        if ($hasPlural) {
+            // npgettext($msgctxt, $msgid, $msgidPlural, $number);
+            // ngettext($msgid, $msgidPlural, $number);
+            return $hasContext ? 'npgettext' : 'ngettext';
+        }
+
+        // pgettext($msgctxt, $msgid);
+        // gettext($msgid);
+        return $hasContext ? 'pgettext' : 'gettext';
     }
 }

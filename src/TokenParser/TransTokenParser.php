@@ -32,13 +32,14 @@ class TransTokenParser extends AbstractTokenParser
             $body,
             $plural,
             $count,
+            $context,
             $notes,
             $domain,
             $lineno,
             $tag,
         ] = $this->preParse($token);
 
-        return new TransNode($body, $plural, $count, $notes, $domain, $lineno, $tag);
+        return new TransNode($body, $plural, $count, $context, $notes, $domain, $lineno, $tag);
     }
 
     protected function preParse(Token $token): array
@@ -49,6 +50,7 @@ class TransTokenParser extends AbstractTokenParser
         $count = null;
         $plural = null;
         $notes = null;
+        $context = null;
 
         /* If we aren't closing the block, do we have a domain? */
         if ($stream->test(Token::NAME_TYPE)) {
@@ -67,11 +69,17 @@ class TransTokenParser extends AbstractTokenParser
                 $count = $this->parser->getExpressionParser()->parseExpression();
                 $stream->expect(Token::BLOCK_END_TYPE);
                 $plural = $this->parser->subparse([$this, 'decideForFork']);
-
-                if ($stream->next()->getValue() === 'notes') {
+                $next = $stream->next()->getValue();
+                if ($next === 'notes') {
                     $stream->expect(Token::BLOCK_END_TYPE);
                     $notes = $this->parser->subparse([$this, 'decideForEnd'], true);
+                } elseif ($next === 'context') {
+                    $stream->expect(Token::BLOCK_END_TYPE);
+                    $context = $this->parser->subparse([$this, 'decideForEnd'], true);
                 }
+            } elseif ($next === 'context') {
+                $stream->expect(Token::BLOCK_END_TYPE);
+                $context = $this->parser->subparse([$this, 'decideForEnd'], true);
             } elseif ($next === 'notes') {
                 $stream->expect(Token::BLOCK_END_TYPE);
                 $notes = $this->parser->subparse([$this, 'decideForEnd'], true);
@@ -82,7 +90,7 @@ class TransTokenParser extends AbstractTokenParser
 
         $this->checkTransString($body, $lineno);
 
-        return [$body, $plural, $count, $notes, $domain, $lineno, $this->getTag()];
+        return [$body, $plural, $count, $context, $notes, $domain, $lineno, $this->getTag()];
     }
 
     /**
@@ -90,7 +98,7 @@ class TransTokenParser extends AbstractTokenParser
      */
     public function decideForFork(Token $token)
     {
-        return $token->test(['plural', 'notes', 'endtrans']);
+        return $token->test(['plural', 'context', 'notes', 'endtrans']);
     }
 
     /**
