@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace PhpMyAdmin\Tests\Twig\Extensions\motranslator;
+namespace PhpMyAdmin\Tests\Twig\Extensions\MoTranslator;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 
@@ -23,7 +23,7 @@ class NodeTrans extends TransNode
     protected static $notesLabel = '// l10n: ';
 
     /**
-     * Enable motranslator functions
+     * Enable MoTranslator functions
      *
      * @var bool
      */

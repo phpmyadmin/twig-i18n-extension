@@ -42,7 +42,7 @@ class TransNode extends Node
     protected static $notesLabel = '// notes: ';
 
     /**
-     * Enable motranslator functions
+     * Enable MoTranslator functions
      *
      * @var bool
      */
@@ -106,11 +106,6 @@ class TransNode extends Node
         $hasContext = $this->hasNode('context');
 
         $function = $this->getTransFunction($hasPlural, $hasContext, $hasDomain);
-
-        if (static::$enableMoTranslator) {
-            // The functions are prefixed with an underscore
-            $function = '_' . $function;
-        }
 
         if ($this->hasNode('notes')) {
             $message = trim($this->getNode('notes')->getAttribute('data'));
@@ -248,7 +243,14 @@ class TransNode extends Node
      */
     protected function getTransFunction(bool $hasPlural, bool $hasContext, bool $hasDomain): string
     {
-        // If it has not context function support or not motranslator
+        $functionPrefix = '';
+
+        if (static::$enableMoTranslator) {
+            // The functions are prefixed with an underscore
+            $functionPrefix = '_';
+        }
+
+        // If it has not context function support or not MoTranslator
         if (! static::$hasContextFunctions && ! static::$enableMoTranslator) {
             // Not found on native PHP: dnpgettext, npgettext, dpgettext, pgettext
             // No domain plural context support
@@ -259,34 +261,34 @@ class TransNode extends Node
             if ($hasDomain) {
                 // dngettext($domain, $msgid, $msgidPlural, $number);
                 // dgettext($domain, $msgid);
-                return $hasPlural ? 'dngettext' : 'dgettext';
+                return $functionPrefix . ($hasPlural ? 'dngettext' : 'dgettext');
             }
 
             // ngettext($msgid, $msgidPlural, $number);
             // gettext($msgid);
-            return $hasPlural ? 'ngettext' : 'gettext';
+            return $functionPrefix . ($hasPlural ? 'ngettext' : 'gettext');
         }
 
         if ($hasDomain) {
             if ($hasPlural) {
                 // dnpgettext($domain, $msgctxt, $msgid, $msgidPlural, $number);
                 // dngettext($domain, $msgid, $msgidPlural, $number);
-                return $hasContext ? 'dnpgettext' : 'dngettext';
+                return $functionPrefix . ($hasContext ? 'dnpgettext' : 'dngettext');
             }
 
             // dpgettext($domain, $msgctxt, $msgid);
             // dgettext($domain, $msgid);
-            return $hasContext ? 'dpgettext' : 'dgettext';
+            return $functionPrefix . ($hasContext ? 'dpgettext' : 'dgettext');
         }
 
         if ($hasPlural) {
             // npgettext($msgctxt, $msgid, $msgidPlural, $number);
             // ngettext($msgid, $msgidPlural, $number);
-            return $hasContext ? 'npgettext' : 'ngettext';
+            return $functionPrefix . ($hasContext ? 'npgettext' : 'ngettext');
         }
 
         // pgettext($msgctxt, $msgid);
         // gettext($msgid);
-        return $hasContext ? 'pgettext' : 'gettext';
+        return $functionPrefix . ($hasContext ? 'pgettext' : 'gettext');
     }
 }

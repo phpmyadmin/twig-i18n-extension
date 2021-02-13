@@ -12,7 +12,7 @@
 
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
-use PhpMyAdmin\Tests\Twig\Extensions\motranslator\NodeTrans;
+use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\NodeTrans;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Node;

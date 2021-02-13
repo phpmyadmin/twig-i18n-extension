@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace PhpMyAdmin\Tests\Twig\Extensions\motranslator;
+namespace PhpMyAdmin\Tests\Twig\Extensions\MoTranslator;
 
 use PhpMyAdmin\Twig\Extensions\I18nExtension as TwigI18nExtension;
 use Twig\TokenParser\TokenParserInterface;
