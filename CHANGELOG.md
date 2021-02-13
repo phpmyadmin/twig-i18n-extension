@@ -2,6 +2,9 @@
 
 ## [Unreleased] -
 
+* Add support for domain translation (#4)
+* TransNode constructor signature changed, new $domain parameter `?Node $notes, ?Node $domain = null, int $lineno` (#4)
+
 ## [3.0.0] - 2020-06-14
 
 * Add a .gitattributes file
