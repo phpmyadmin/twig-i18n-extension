@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of Twig.
+ * This file is part of Twig I18n extension.
  *
  * (c) 2010-2019 Fabien Potencier
  * (c) 2019-2021 phpMyAdmin contributors
@@ -20,7 +20,6 @@ use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 use Twig\Token;
 use Twig\TokenParser\AbstractTokenParser;
-use function sprintf;
 
 class TransTokenParser extends AbstractTokenParser
 {
@@ -29,11 +28,33 @@ class TransTokenParser extends AbstractTokenParser
      */
     public function parse(Token $token)
     {
+        [
+            $body,
+            $plural,
+            $count,
+            $notes,
+            $domain,
+            $lineno,
+            $tag,
+        ] = $this->preParse($token);
+
+        return new TransNode($body, $plural, $count, $notes, $domain, $lineno, $tag);
+    }
+
+    protected function preParse(Token $token): array
+    {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
+        $domain = null;
         $count = null;
         $plural = null;
         $notes = null;
+
+        /* If we aren't closing the block, do we have a domain? */
+        if ($stream->test(Token::NAME_TYPE)) {
+            $stream->expect(Token::NAME_TYPE, 'from');
+            $domain = $this->parser->getExpressionParser()->parseExpression();
+        }
 
         if (! $stream->test(Token::BLOCK_END_TYPE)) {
             $body = $this->parser->getExpressionParser()->parseExpression();
@@ -61,7 +82,7 @@ class TransTokenParser extends AbstractTokenParser
 
         $this->checkTransString($body, $lineno);
 
-        return new TransNode($body, $plural, $count, $notes, $lineno, $this->getTag());
+        return [$body, $plural, $count, $notes, $domain, $lineno, $this->getTag()];
     }
 
     /**
@@ -103,7 +124,7 @@ class TransTokenParser extends AbstractTokenParser
                 continue;
             }
 
-            throw new SyntaxError(sprintf('The text to be translated with "trans" can only contain references to simple variables'), $lineno);
+            throw new SyntaxError('The text to be translated with "trans" can only contain references to simple variables.', $lineno);
         }
     }
 }

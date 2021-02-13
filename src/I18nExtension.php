@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of Twig.
+ * This file is part of Twig I18n extension.
  *
  * (c) 2010-2019 Fabien Potencier
  * (c) 2019-2021 phpMyAdmin contributors
@@ -15,6 +15,8 @@ namespace PhpMyAdmin\Twig\Extensions;
 use PhpMyAdmin\Twig\Extensions\TokenParser\TransTokenParser;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use function gettext;
+use function dgettext;
 
 class I18nExtension extends AbstractExtension
 {
@@ -32,7 +34,7 @@ class I18nExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('trans', 'gettext'),
+            new TwigFilter('trans', [$this, 'translate']), /* Note, the filter does not handle plurals */
         ];
     }
 
@@ -44,5 +46,22 @@ class I18nExtension extends AbstractExtension
     public function getName()
     {
         return 'i18n';
+    }
+
+    /**
+     * Translate a GetText string via filter
+     *
+     * @param string      $message The message to translate
+     * @param string|null $domain  The GetText domain
+     */
+    public function translate(string $message, ?string $domain = null): string
+    {
+        /* If we don't have a domain, assume we're just using the default */
+        if ($domain === null) {
+            return gettext($message);
+        }
+
+        /* Otherwise specify where the message comes from */
+        return dgettext($domain, $message);
     }
 }

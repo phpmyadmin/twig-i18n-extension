@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of Twig.
+ * This file is part of Twig I18n extension.
  *
  * (c) 2010-2019 Fabien Potencier
  * (c) 2019-2021 phpMyAdmin contributors
@@ -34,7 +34,10 @@ use function trim;
  */
 class TransNode extends Node
 {
-    public function __construct(Node $body, ?Node $plural, ?AbstractExpression $count, ?Node $notes, int $lineno = 0, ?string $tag = null)
+    /** @var string */
+    protected static $notesLabel = '// notes: ';
+
+    public function __construct(Node $body, ?Node $plural, ?AbstractExpression $count, ?Node $notes, ?Node $domain = null, int $lineno = 0, ?string $tag = null)
     {
         $nodes = ['body' => $body];
         if ($count !== null) {
@@ -45,6 +48,9 @@ class TransNode extends Node
         }
         if ($notes !== null) {
             $nodes['notes'] = $notes;
+        }
+        if ($domain !== null) {
+            $nodes['domain'] = $domain;
         }
 
         parent::__construct($nodes, [], $lineno, $tag);
@@ -67,19 +73,30 @@ class TransNode extends Node
             $vars = array_merge($vars, $vars1);
         }
 
-        $function = $this->getTransFunction($hasPlural);
+        $hasDomain = $this->hasNode('domain');
+
+        $function = $this->getTransFunction($hasPlural, $hasDomain);
 
         if ($this->hasNode('notes')) {
             $message = trim($this->getNode('notes')->getAttribute('data'));
 
             // line breaks are not allowed cause we want a single line comment
             $message = str_replace(["\n", "\r"], ' ', $message);
-            $compiler->write('// notes: ' . $message . "\n");
+            $compiler->write(static::$notesLabel . $message . "\n");
         }
 
         if ($vars) {
             $compiler
-                ->write('echo strtr(' . $function . '(')
+                ->write('echo strtr(' . $function . '(');
+
+            if ($hasDomain) {
+                [$domain] = $this->compileString($this->getNode('domain'));
+                $compiler
+                    ->subcompile($domain)
+                    ->raw(', ');
+            }
+
+            $compiler
                 ->subcompile($msg);
 
             if ($hasPlural) {
@@ -112,7 +129,16 @@ class TransNode extends Node
             $compiler->raw("));\n");
         } else {
             $compiler
-                ->write('echo ' . $function . '(')
+                ->write('echo ' . $function . '(');
+
+            if ($hasDomain) {
+                [$domain] = $this->compileString($this->getNode('domain'));
+                $compiler
+                    ->subcompile($domain)
+                    ->raw(', ');
+            }
+
+            $compiler
                 ->subcompile($msg);
 
             if ($hasPlural) {
@@ -164,8 +190,12 @@ class TransNode extends Node
         return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
     }
 
-    private function getTransFunction(bool $plural): string
+    private function getTransFunction(bool $plural, bool $hasDomain): string
     {
-        return $plural ? 'ngettext' : 'gettext';
+        if ($plural) {
+            return $hasDomain ? 'dngettext' : 'ngettext';
+        }
+
+        return $hasDomain ? 'dgettext' : 'gettext';
     }
 }

@@ -34,3 +34,6 @@ jobs:
               run: composer run phpunit
             - name: Send coverage
               uses: codecov/codecov-action@v1
+              with:
+                flags: unit-${{ matrix.php-version }}-${{ matrix.os }}
+                name: phpunit-${{ matrix.php-version }}-${{ matrix.os }}
