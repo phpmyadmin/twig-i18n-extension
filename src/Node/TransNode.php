@@ -131,6 +131,15 @@ class TransNode extends Node
                     ->raw(', ');
             }
 
+            if ($hasContext) {
+                if (static::$hasContextFunctions || static::$enableMoTranslator) {
+                    [$context] = $this->compileString($this->getNode('context'));
+                    $compiler
+                        ->subcompile($context)
+                        ->raw(', ');
+                }
+            }
+
             $compiler
                 ->subcompile($msg);
 
@@ -174,7 +183,7 @@ class TransNode extends Node
             }
 
             if ($hasContext) {
-                if (static::$hasContextFunctions || self::$enableMoTranslator) {
+                if (static::$hasContextFunctions || static::$enableMoTranslator) {
                     [$context] = $this->compileString($this->getNode('context'));
                     $compiler
                         ->subcompile($context)
@@ -240,7 +249,7 @@ class TransNode extends Node
     protected function getTransFunction(bool $hasPlural, bool $hasContext, bool $hasDomain): string
     {
         // If it has not context function support or not motranslator
-        if (! static::$hasContextFunctions && ! self::$enableMoTranslator) {
+        if (! static::$hasContextFunctions && ! static::$enableMoTranslator) {
             // Not found on native PHP: dnpgettext, npgettext, dpgettext, pgettext
             // No domain plural context support
             // No domain context support
