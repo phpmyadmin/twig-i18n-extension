@@ -39,21 +39,21 @@ class TransNode extends Node
      *
      * @var string
      */
-    protected static $notesLabel = '// notes: ';
+    public static $notesLabel = '// notes: ';
 
     /**
      * Enable MoTranslator functions
      *
      * @var bool
      */
-    protected static $enableMoTranslator = false;
+    public static $enableMoTranslator = false;
 
     /**
      * Enables context functions usage
      *
      * @var bool
      */
-    protected static $hasContextFunctions = false;
+    public static $hasContextFunctions = false;
 
     public function __construct(
         Node $body,
@@ -126,13 +126,13 @@ class TransNode extends Node
                     ->raw(', ');
             }
 
-            if ($hasContext) {
-                if (static::$hasContextFunctions || static::$enableMoTranslator) {
-                    [$context] = $this->compileString($this->getNode('context'));
-                    $compiler
-                        ->subcompile($context)
-                        ->raw(', ');
-                }
+            if ($hasContext
+                && (static::$hasContextFunctions || static::$enableMoTranslator)
+            ) {
+                [$context] = $this->compileString($this->getNode('context'));
+                $compiler
+                    ->subcompile($context)
+                    ->raw(', ');
             }
 
             $compiler

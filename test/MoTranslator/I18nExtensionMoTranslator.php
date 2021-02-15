@@ -12,17 +12,13 @@ declare(strict_types=1);
 namespace PhpMyAdmin\Tests\Twig\Extensions\MoTranslator;
 
 use PhpMyAdmin\Twig\Extensions\I18nExtension as TwigI18nExtension;
-use Twig\TokenParser\TokenParserInterface;
+use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 
 class I18nExtensionMoTranslator extends TwigI18nExtension
 {
-    /**
-     * Returns the token parser instances to add to the existing list.
-     *
-     * @return TokenParserInterface[]
-     */
-    public function getTokenParsers()
+    public function __construct()
     {
-        return [new TokenParserTrans()];
+        TransNode::$notesLabel = '// l10n: ';
+        TransNode::$enableMoTranslator = true;
     }
 }
