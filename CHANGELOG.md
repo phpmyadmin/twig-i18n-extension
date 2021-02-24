@@ -8,6 +8,7 @@
 * Add support for contexts in translations (#6)
 * Add support for enabling `phpmyadmin/motranslator` or complex non php-gettext supported functions (#6)
 * Add support for custom notes labels (#6)
+* Make debug info disabled by default, `TransNode::$enableAddDebugInfo = true;` will add it back
 
 ## [3.0.0] - 2020-06-14
 

@@ -9,6 +9,7 @@
 
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
+use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionDebug;
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
 use Twig\Test\IntegrationTestCase;
 use Twig\Extension\AbstractExtension;
@@ -22,6 +23,7 @@ class I18nExtensionTest extends IntegrationTestCase
     {
         return [
             new I18nExtension(),
+            new I18nExtensionDebug(),
         ];
     }
 

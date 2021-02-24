@@ -49,6 +49,13 @@ class TransNode extends Node
     public static $enableMoTranslator = false;
 
     /**
+     * Enable calls to addDebugInfo
+     *
+     * @var bool
+     */
+    public static $enableAddDebugInfo = false;
+
+    /**
      * Enables context functions usage
      *
      * @var bool
@@ -90,7 +97,9 @@ class TransNode extends Node
      */
     public function compile(Compiler $compiler)
     {
-        $compiler->addDebugInfo($this);
+        if (self::$enableAddDebugInfo) {
+            $compiler->addDebugInfo($this);
+        }
 
         [$msg, $vars] = $this->compileString($this->getNode('body'));
 

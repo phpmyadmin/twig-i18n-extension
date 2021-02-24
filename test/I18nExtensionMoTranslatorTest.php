@@ -13,6 +13,7 @@ use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionMoTranslator;
 use Twig\Test\IntegrationTestCase;
 use Twig\Extension\AbstractExtension;
 use PhpMyAdmin\MoTranslator\Loader;
+use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionDebug;
 
 class I18nExtensionMoTranslatorTest extends IntegrationTestCase
 {
@@ -28,6 +29,7 @@ class I18nExtensionMoTranslatorTest extends IntegrationTestCase
     {
         return [
             new I18nExtensionMoTranslator(),
+            new I18nExtensionDebug(),
         ];
     }
 
