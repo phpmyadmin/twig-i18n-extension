@@ -121,12 +121,12 @@ class TransNode extends Node
 
             // line breaks are not allowed cause we want a single line comment
             $message = str_replace(["\n", "\r"], ' ', $message);
-            $compiler->write(static::$notesLabel . $message . "\n");
+            $compiler->raw(static::$notesLabel . $message . "\n");
         }
 
         if ($vars) {
             $compiler
-                ->write('echo strtr(' . $function . '(');
+                ->raw('echo strtr(' . $function . '(');
 
             if ($hasDomain) {
                 [$domain] = $this->compileString($this->getNode('domain'));
@@ -178,7 +178,7 @@ class TransNode extends Node
             $compiler->raw("));\n");
         } else {
             $compiler
-                ->write('echo ' . $function . '(');
+                ->raw('echo ' . $function . '(');
 
             if ($hasDomain) {
                 [$domain] = $this->compileString($this->getNode('domain'));
