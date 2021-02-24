@@ -212,8 +212,7 @@ class TransNode extends Node
     }
 
     /**
-     * Keep this method protected instead of private
-     * Twig/I18n/NodeTrans from phpmyadmin/phpmyadmin uses it
+     * Keep this method protected instead of private some implementations may use it
      */
     protected function compileString(Node $body): array
     {

@@ -9,19 +9,35 @@
 
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
+use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
 use Twig\Test\IntegrationTestCase;
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\SandboxExtension;
+use Twig\Sandbox\SecurityPolicy;
 
-class I18nExtensionTest extends IntegrationTestCase
+class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        Loader::loadFunctions();
+    }
+
     /**
      * @return AbstractExtension[]
      */
     public function getExtensions()
     {
+        $tags = ['if', 'set', 'trans'];
+        $filters = ['upper', 'escape'];
+        $methods = [];
+        $properties = [];
+        $functions = [];
+        $policy = new SecurityPolicy($tags, $filters, $methods, $properties, $functions);
+
         return [
             new I18nExtension(),
+            new SandboxExtension($policy, true),
         ];
     }
 
@@ -30,7 +46,7 @@ class I18nExtensionTest extends IntegrationTestCase
      */
     public function getFixturesDir()
     {
-        return __DIR__ . '/Fixtures/';
+        return __DIR__ . '/FixturesWithSandbox/';
     }
 
     public function testGetName(): void
