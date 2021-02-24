@@ -159,7 +159,8 @@ class TransNode extends Node
             $compiler->raw('), array(');
 
             foreach ($vars as $var) {
-                if ($var->getAttribute('name') === 'count') {
+                $attributeName = $var->getAttribute('name');
+                if ($attributeName === 'count') {
                     $compiler
                         ->string('%count%')
                         ->raw(' => abs(')
@@ -167,7 +168,7 @@ class TransNode extends Node
                         ->raw('), ');
                 } else {
                     $compiler
-                        ->string('%' . $var->getAttribute('name') . '%')
+                        ->string('%' . $attributeName . '%')
                         ->raw(' => ')
                         ->subcompile($var)
                         ->raw(', ');
@@ -233,8 +234,9 @@ class TransNode extends Node
                     while ($n instanceof CheckToStringNode) {
                         $n = $n->getNode('expr');
                     }
-                    $msg .= sprintf('%%%s%%', $n->getAttribute('name'));
-                    $vars[] = new NameExpression($n->getAttribute('name'), $n->getTemplateLine());
+                    $attributeName = $n->getAttribute('name');
+                    $msg .= sprintf('%%%s%%', $attributeName);
+                    $vars[] = new NameExpression($attributeName, $n->getTemplateLine());
                 } else {
                     $msg .= $node->getAttribute('data');
                 }
