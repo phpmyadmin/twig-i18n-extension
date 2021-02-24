@@ -21,4 +21,13 @@ class I18nExtensionMoTranslator extends TwigI18nExtension
         TransNode::$notesLabel = '// l10n: ';
         TransNode::$enableMoTranslator = true;
     }
+
+    /**
+     * This is only for tests not to be affected by the change
+     */
+    public function __destruct()
+    {
+        TransNode::$notesLabel = '// notes: ';
+        TransNode::$enableMoTranslator = false;
+    }
 }

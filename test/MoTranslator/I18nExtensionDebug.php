@@ -21,4 +21,13 @@ class I18nExtensionDebug extends TwigI18nExtension
         TransNode::$enableAddDebugInfo = true;
         TransNode::$enableMoTranslator = true;
     }
+
+    /**
+     * This is only for tests not to be affected by the change
+     */
+    public function __destruct()
+    {
+        TransNode::$enableAddDebugInfo = false;
+        TransNode::$enableMoTranslator = false;
+    }
 }

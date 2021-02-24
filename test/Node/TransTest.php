@@ -68,6 +68,55 @@ class TransTest extends NodeTestCase
         $this->assertEquals($domain, $node->getNode('domain'));
     }
 
+    public function testEnableDebugNotEnabled(): void
+    {
+        $count = new ConstantExpression(5, 0);
+        $body = new TextNode('There is 1 pending task', 0);
+        $plural = new Node([
+            new TextNode('There are ', 0),
+            new PrintNode(new NameExpression('count', 0), 0),
+            new TextNode(' pending tasks', 0),
+        ], [], 0);
+        $notes = new TextNode('Notes for translators', 0);
+        TransNode::$notesLabel = '// custom: ';
+        $node = new TransNode($body, $plural, $count, null, $notes, null, 80);
+
+        $compiler = $this->getCompiler();
+        $this->assertEmpty($compiler->getDebugInfo());
+        $sourceCode = $compiler->compile($node)->getSource();
+        $this->assertSame("// custom: Notes for translators\n" . 'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n", $sourceCode);
+        $this->assertSame([], $compiler->getDebugInfo());
+        TransNode::$notesLabel = '// notes: ';
+    }
+
+    public function testEnableDebugEnabled(): void
+    {
+        $count = new ConstantExpression(5, 0);
+        $body = new TextNode('There is 1 pending task', 0);
+        $plural = new Node([
+            new TextNode('There are ', 0),
+            new PrintNode(new NameExpression('count', 0), 0),
+            new TextNode(' pending tasks', 0),
+        ], [], 0);
+        $notes = new TextNode('Notes for translators', 0);
+
+        TransNode::$enableAddDebugInfo = true;
+        TransNode::$notesLabel = '// custom: ';
+        $node = new TransNode($body, $plural, $count, null, $notes, null, 80);
+
+        $compiler = $this->getCompiler();
+        $this->assertEmpty($compiler->getDebugInfo());
+        $sourceCode = $compiler->compile($node)->getSource();
+        $this->assertSame(
+            '// line 80' . "\n" .
+            "// custom: Notes for translators\n" . 'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
+            $sourceCode
+        );
+        $this->assertSame([2 => 80], $compiler->getDebugInfo());
+        TransNode::$enableAddDebugInfo = false;
+        TransNode::$notesLabel = '// notes: ';
+    }
+
     /**
      * @return array[]
      */
