@@ -78,6 +78,7 @@ class TransTest extends NodeTestCase
             new TextNode(' pending tasks', 0),
         ], [], 0);
         $notes = new TextNode('Notes for translators', 0);
+        TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// custom: ';
         $node = new TransNode($body, $plural, $count, null, $notes, null, 80);
 
@@ -86,6 +87,7 @@ class TransTest extends NodeTestCase
         $sourceCode = $compiler->compile($node)->getSource();
         $this->assertSame("// custom: Notes for translators\n" . 'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n", $sourceCode);
         $this->assertSame([], $compiler->getDebugInfo());
+        TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// notes: ';
     }
 
