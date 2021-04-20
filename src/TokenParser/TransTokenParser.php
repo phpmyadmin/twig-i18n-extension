@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Twig I18n extension.
  *
@@ -125,14 +127,18 @@ class TransTokenParser extends AbstractTokenParser
     protected function checkTransString(Node $body, int $lineno)
     {
         foreach ($body as $i => $node) {
-            if ($node instanceof TextNode
+            if (
+                $node instanceof TextNode
                 ||
                 ($node instanceof PrintNode && $node->getNode('expr') instanceof NameExpression)
             ) {
                 continue;
             }
 
-            throw new SyntaxError('The text to be translated with "trans" can only contain references to simple variables.', $lineno);
+            throw new SyntaxError(
+                'The text to be translated with "trans" can only contain references to simple variables.',
+                $lineno
+            );
         }
     }
 }

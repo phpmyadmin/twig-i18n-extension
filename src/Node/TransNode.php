@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Twig I18n extension.
  *
@@ -21,6 +23,7 @@ use Twig\Node\Expression\NameExpression;
 use Twig\Node\Expression\TempNameExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
+
 use function array_merge;
 use function count;
 use function sprintf;
@@ -76,15 +79,19 @@ class TransNode extends Node
         if ($count !== null) {
             $nodes['count'] = $count;
         }
+
         if ($plural !== null) {
             $nodes['plural'] = $plural;
         }
+
         if ($notes !== null) {
             $nodes['notes'] = $notes;
         }
+
         if ($domain !== null) {
             $nodes['domain'] = $domain;
         }
+
         if ($context !== null) {
             $nodes['context'] = $context;
         }
@@ -135,9 +142,7 @@ class TransNode extends Node
                     ->raw(', ');
             }
 
-            if ($hasContext
-                && (static::$hasContextFunctions || static::$enableMoTranslator)
-            ) {
+            if ($hasContext && (static::$hasContextFunctions || static::$enableMoTranslator)) {
                 [$context] = $this->compileString($this->getNode('context'));
                 $compiler
                     ->subcompile($context)
@@ -217,7 +222,11 @@ class TransNode extends Node
      */
     protected function compileString(Node $body): array
     {
-        if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
+        if (
+            $body instanceof NameExpression
+            || $body instanceof ConstantExpression
+            || $body instanceof TempNameExpression
+        ) {
             return [$body, []];
         }
 
@@ -231,9 +240,11 @@ class TransNode extends Node
                     while ($n instanceof FilterExpression) {
                         $n = $n->getNode('node');
                     }
+
                     while ($n instanceof CheckToStringNode) {
                         $n = $n->getNode('expr');
                     }
+
                     $attributeName = $n->getAttribute('name');
                     $msg .= sprintf('%%%s%%', $attributeName);
                     $vars[] = new NameExpression($attributeName, $n->getTemplateLine());

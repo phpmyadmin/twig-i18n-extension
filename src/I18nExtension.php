@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Twig I18n extension.
  *
@@ -15,8 +17,9 @@ namespace PhpMyAdmin\Twig\Extensions;
 use PhpMyAdmin\Twig\Extensions\TokenParser\TransTokenParser;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use function gettext;
+
 use function dgettext;
+use function gettext;
 
 class I18nExtension extends AbstractExtension
 {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * (c) 2021 phpMyAdmin contributors
  *
@@ -10,10 +12,10 @@
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
-use Twig\Test\IntegrationTestCase;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicy;
+use Twig\Test\IntegrationTestCase;
 
 class I18nExtensionSandboxTest extends IntegrationTestCase
 {

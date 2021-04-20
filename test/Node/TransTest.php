@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Twig.
  *
@@ -20,6 +22,7 @@ use Twig\Node\Node;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 use Twig\Test\NodeTestCase;
+
 use function sprintf;
 
 class TransTest extends NodeTestCase
@@ -85,7 +88,11 @@ class TransTest extends NodeTestCase
         $compiler = $this->getCompiler();
         $this->assertEmpty($compiler->getDebugInfo());
         $sourceCode = $compiler->compile($node)->getSource();
-        $this->assertSame("// custom: Notes for translators\n" . 'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n", $sourceCode);
+        $this->assertSame(
+            '// custom: Notes for translators' . "\n" . 'echo strtr(ngettext("There is 1 pending task",'
+            . ' "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
+            $sourceCode
+        );
         $this->assertSame([], $compiler->getDebugInfo());
         TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// notes: ';
@@ -110,8 +117,8 @@ class TransTest extends NodeTestCase
         $this->assertEmpty($compiler->getDebugInfo());
         $sourceCode = $compiler->compile($node)->getSource();
         $this->assertSame(
-            '// line 80' . "\n" .
-            "// custom: Notes for translators\n" . 'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
+            '// line 80' . "\n" . '// custom: Notes for translators' . "\n" . 'echo strtr(ngettext("There'
+            . ' is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
             $sourceCode
         );
         $this->assertSame([2 => 80], $compiler->getDebugInfo());
@@ -153,7 +160,13 @@ class TransTest extends NodeTestCase
             new TextNode(' pommes', 0),
         ], [], 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
-        $tests[] = [$node, sprintf('echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));', $this->getVariableGetter('foo'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                $this->getVariableGetter('foo')
+            ),
+        ];
 
         $count = new ConstantExpression(12, 0);
         $body = new Node([
@@ -169,17 +182,35 @@ class TransTest extends NodeTestCase
             new TextNode(' apples', 0),
         ], [], 0);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
-        $tests[] = [$node, sprintf('echo strtr(ngettext("Hey %%name%%, I have one apple", "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s, "%%name%%" => %s, "%%count%%" => abs(12), ));', $this->getVariableGetter('name'), $this->getVariableGetter('name'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(ngettext("Hey %%name%%, I have one apple", "Hey %%name%%, I have'
+                . ' %%count%% apples", abs(12)), array("%%name%%" => %s,'
+                . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
+                $this->getVariableGetter('name'),
+                $this->getVariableGetter('name')
+            ),
+        ];
 
         // with escaper extension set to on
         $body = new Node([
             new TextNode('J\'ai ', 0),
-            new PrintNode(new FilterExpression(new NameExpression('foo', 0), new ConstantExpression('escape', 0), new Node(), 0), 0),
+            new PrintNode(
+                new FilterExpression(new NameExpression('foo', 0), new ConstantExpression('escape', 0), new Node(), 0),
+                0
+            ),
             new TextNode(' pommes', 0),
         ], [], 0);
 
         $node = new TransNode($body, null, null, null, null, null, 0);
-        $tests[] = [$node, sprintf('echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));', $this->getVariableGetter('foo'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                $this->getVariableGetter('foo')
+            ),
+        ];
 
         // with notes
         $body = new ConstantExpression('Hello', 0);
@@ -201,7 +232,11 @@ class TransTest extends NodeTestCase
         ], [], 0);
         $notes = new TextNode('Notes for translators', 0);
         $node = new TransNode($body, $plural, $count, null, $notes, null, 0);
-        $tests[] = [$node, "// notes: Notes for translators\n" . 'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));'];
+        $tests[] = [
+            $node,
+            '// notes: Notes for translators' . "\n" . 'echo strtr(ngettext("There is 1 pending task",'
+            . ' "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));',
+        ];
 
         return $tests;
     }

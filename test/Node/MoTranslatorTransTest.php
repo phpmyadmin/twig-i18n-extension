@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Twig.
  *
@@ -19,6 +21,7 @@ use Twig\Node\Node;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 use Twig\Test\NodeTestCase;
+
 use function sprintf;
 
 class MoTranslatorTransTest extends NodeTestCase
@@ -89,7 +92,10 @@ class MoTranslatorTransTest extends NodeTestCase
             new TextNode('The context', 0),
         ], [], 0);
         $node = new TransNode($body, null, null, $context, null, $domain, 0);
-        $tests[] = [$node, sprintf('echo _dpgettext("coredomain", "The context", %s);', $this->getVariableGetter('foo'))];
+        $tests[] = [
+            $node,
+            sprintf('echo _dpgettext("coredomain", "The context", %s);', $this->getVariableGetter('foo')),
+        ];
 
         $body = new Node([
             new TextNode('J\'ai ', 0),
@@ -97,7 +103,13 @@ class MoTranslatorTransTest extends NodeTestCase
             new TextNode(' pommes', 0),
         ], [], 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
-        $tests[] = [$node, sprintf('echo strtr(_gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));', $this->getVariableGetter('foo'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(_gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                $this->getVariableGetter('foo')
+            ),
+        ];
 
         $count = new ConstantExpression(12, 0);
         $body = new Node([
@@ -113,7 +125,16 @@ class MoTranslatorTransTest extends NodeTestCase
             new TextNode(' apples', 0),
         ], [], 0);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
-        $tests[] = [$node, sprintf('echo strtr(_ngettext("Hey %%name%%, I have one apple", "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s, "%%name%%" => %s, "%%count%%" => abs(12), ));', $this->getVariableGetter('name'), $this->getVariableGetter('name'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(_ngettext("Hey %%name%%, I have one apple", "Hey %%name%%,'
+                . ' I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
+                . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
+                $this->getVariableGetter('name'),
+                $this->getVariableGetter('name')
+            ),
+        ];
 
         $body = new Node([
             new TextNode('J\'ai ', 0),
@@ -124,7 +145,13 @@ class MoTranslatorTransTest extends NodeTestCase
             new TextNode('The context', 0),
         ], [], 0);
         $node = new TransNode($body, null, null, $context, null, null, 0);
-        $tests[] = [$node, sprintf('echo strtr(_pgettext("The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));', $this->getVariableGetter('foo'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(_pgettext("The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                $this->getVariableGetter('foo')
+            ),
+        ];
 
         $count = new ConstantExpression(12, 0);
         $body = new Node([
@@ -143,7 +170,16 @@ class MoTranslatorTransTest extends NodeTestCase
             new TextNode(' apples', 0),
         ], [], 0);
         $node = new TransNode($body, $plural, $count, $context, null, null, 0);
-        $tests[] = [$node, sprintf('echo strtr(_npgettext("The context", "Hey %%name%%, I have one apple", "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s, "%%name%%" => %s, "%%count%%" => abs(12), ));', $this->getVariableGetter('name'), $this->getVariableGetter('name'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(_npgettext("The context", "Hey %%name%%, I have one apple", "Hey %%name%%,'
+                . ' I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
+                . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
+                $this->getVariableGetter('name'),
+                $this->getVariableGetter('name')
+            ),
+        ];
 
         $body = new Node([
             new TextNode('J\'ai ', 0),
@@ -157,7 +193,13 @@ class MoTranslatorTransTest extends NodeTestCase
             new TextNode('mydomain', 0),
         ], [], 0);
         $node = new TransNode($body, null, null, $context, null, $domain, 0);
-        $tests[] = [$node, sprintf('echo strtr(_dpgettext("mydomain", "The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));', $this->getVariableGetter('foo'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(_dpgettext("mydomain", "The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                $this->getVariableGetter('foo')
+            ),
+        ];
 
         $count = new ConstantExpression(12, 0);
         $body = new Node([
@@ -179,7 +221,16 @@ class MoTranslatorTransTest extends NodeTestCase
             new TextNode(' apples', 0),
         ], [], 0);
         $node = new TransNode($body, $plural, $count, $context, null, $domain, 0);
-        $tests[] = [$node, sprintf('echo strtr(_dnpgettext("mydomain", "The context", "Hey %%name%%, I have one apple", "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s, "%%name%%" => %s, "%%count%%" => abs(12), ));', $this->getVariableGetter('name'), $this->getVariableGetter('name'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                'echo strtr(_dnpgettext("mydomain", "The context", "Hey %%name%%, I have one apple",'
+                . ' "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
+                . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
+                $this->getVariableGetter('name'),
+                $this->getVariableGetter('name')
+            ),
+        ];
 
         return $tests;
     }

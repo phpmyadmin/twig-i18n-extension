@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * (c) 2021 phpMyAdmin contributors
  *
@@ -9,10 +11,10 @@
 
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
-use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionMoTranslator;
-use Twig\Test\IntegrationTestCase;
-use Twig\Extension\AbstractExtension;
 use PhpMyAdmin\MoTranslator\Loader;
+use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionMoTranslator;
+use Twig\Extension\AbstractExtension;
+use Twig\Test\IntegrationTestCase;
 
 class I18nExtensionMoTranslatorTest extends IntegrationTestCase
 {
