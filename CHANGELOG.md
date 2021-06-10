@@ -2,6 +2,8 @@
 
 ## [Unreleased] -
 
+* Fix TransNode constructor optional parameters
+
 ## [4.0.0] - 2021-02-25
 
 * Add support for domain translation (#4)

@@ -70,7 +70,7 @@ class TransNode extends Node
         ?Node $plural,
         ?AbstractExpression $count,
         ?Node $context = null,
-        ?Node $notes,
+        ?Node $notes = null,
         ?Node $domain = null,
         int $lineno = 0,
         ?string $tag = null
