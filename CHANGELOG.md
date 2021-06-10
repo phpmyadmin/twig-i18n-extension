@@ -2,6 +2,8 @@
 
 ## [Unreleased] -
 
+## [4.0.1] - 2021-06-10
+
 * Fix TransNode constructor optional parameters
 
 ## [4.0.0] - 2021-02-25
