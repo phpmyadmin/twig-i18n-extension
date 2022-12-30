@@ -2,6 +2,8 @@
 
 ## [Unreleased] -
 
+* Require php >= 7.2
+
 ## [4.0.1] - 2021-06-10
 
 * Fix TransNode constructor optional parameters
