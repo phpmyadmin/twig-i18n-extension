@@ -23,6 +23,7 @@ use Twig\Node\Expression\NameExpression;
 use Twig\Node\Expression\TempNameExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
+use Twig\Node\TextNode;
 
 use function array_merge;
 use function count;
@@ -249,6 +250,7 @@ class TransNode extends Node
                     $msg .= sprintf('%%%s%%', $attributeName);
                     $vars[] = new NameExpression($attributeName, $n->getTemplateLine());
                 } else {
+                    /** @phpstan-var TextNode $node */
                     $msg .= $node->getAttribute('data');
                 }
             }
