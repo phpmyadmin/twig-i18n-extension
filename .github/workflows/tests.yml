@@ -22,7 +22,7 @@ jobs:
                 include:
                     - { php-version: '8.1', composer-options: '--ignore-platform-req=php', experimental: true, os: ubuntu-latest }
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
             - name: Use php ${{ matrix.php-version }}
               uses: shivammathur/setup-php@v2
               with:
@@ -30,7 +30,7 @@ jobs:
                   extensions: mbstring
                   coverage: xdebug
             - name: Cache module
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: ~/.composer/cache/
                   key: composer-cache
@@ -39,7 +39,7 @@ jobs:
             - name: Run php tests
               run: composer run phpunit
             - name: Send coverage
-              uses: codecov/codecov-action@v1
+              uses: codecov/codecov-action@v3
               with:
                 flags: unit-${{ matrix.php-version }}-${{ matrix.os }}
                 name: phpunit-${{ matrix.php-version }}-${{ matrix.os }}
