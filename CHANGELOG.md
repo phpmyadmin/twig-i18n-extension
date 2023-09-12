@@ -1,8 +1,9 @@
 # Change Log
 
-## [Unreleased] -
+## [4.1.0] - 2023-09-12
 
-* Require php >= 7.2
+* Drop support for PHP 7.2
+* Add support for PHP 8.3
 
 ## [4.0.1] - 2021-06-10
 
@@ -30,6 +31,11 @@
 * Setup and apply phpmyadmin/coding-standard
 * Apply changes for php 8.0 compatibility (https://github.com/twigphp/Twig/issues/3327)
 
-## [2.0.0] - 2020-01-14
+## 2.0.0 - 2020-01-14
 
 * First release of this library.
+
+[4.1.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v4.0.1...4.1.0
+[4.0.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v3.0.0...v4.0.0
+[3.0.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v2.0.0...v3.0.0
