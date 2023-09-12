@@ -3,43 +3,42 @@ name: Run tests
 on:
   push:
   pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - master
 
 jobs:
-    test-php:
-        name: Test on php ${{ matrix.php-version }} and ${{ matrix.os }}
-        if: "!contains(github.event.head_commit.message, '[ci skip]')"
-        runs-on: ${{ matrix.os }}
-        continue-on-error: ${{ matrix.experimental }}
-        strategy:
-            matrix:
-                php-version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
-                experimental: [false]
-                composer-options: ['']
-                os: [ubuntu-latest]
-                include:
-                    - { php-version: 'nightly', composer-options: '--ignore-platform-req=php', experimental: true, os: ubuntu-latest }
-        steps:
-            - uses: actions/checkout@v3
-            - name: Use php ${{ matrix.php-version }}
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php-version }}
-                  extensions: mbstring
-                  coverage: xdebug
-            - name: Cache module
-              uses: actions/cache@v3
-              with:
-                  path: ~/.composer/cache/
-                  key: composer-cache
-            - name: Install dependencies
-              run: composer install --no-interaction ${{ matrix.composer-options }}
-            - name: Run php tests
-              run: composer run phpunit
-            - name: Send coverage
-              uses: codecov/codecov-action@v3
-              with:
-                flags: unit-${{ matrix.php-version }}-${{ matrix.os }}
-                name: phpunit-${{ matrix.php-version }}-${{ matrix.os }}
+  test-php:
+    name: Test on PHP ${{ matrix.php-version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      matrix:
+        php-version: ['7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
+        experimental: [false]
+        composer-options: ['']
+        os: [ubuntu-latest]
+        include:
+          - { php-version: '8.4', composer-options: '--ignore-platform-req=php+', experimental: true, os: ubuntu-latest }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: highest
+          composer-options: ${{ matrix.composer-options }}
+
+      - name: Run PHP tests
+        run: composer run phpunit
+
+      - name: Send coverage
+        uses: codecov/codecov-action@v3
+        with:
+          flags: unit-${{ matrix.php-version }}-${{ matrix.os }}
+          name: phpunit-${{ matrix.php-version }}-${{ matrix.os }}
