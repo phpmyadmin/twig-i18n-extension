@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+* Drop support for PHP 7.2, PHP 7.3, PHP 7.4 and PHP 8.0
+
 ## [4.1.0] - 2023-09-12
 
 * Drop support for PHP 7.2
