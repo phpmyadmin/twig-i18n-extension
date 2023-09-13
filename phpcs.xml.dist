@@ -10,10 +10,7 @@
     <file>src</file>
     <file>test</file>
 
-    <rule ref="PhpMyAdmin">
-        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
-    </rule>
+    <rule ref="PhpMyAdmin"/>
 
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition"/>
     <rule ref="SlevomatCodingStandard.Functions.RequireSingleLineCall"/>

@@ -91,7 +91,7 @@ class TransTest extends NodeTestCase
         $this->assertSame(
             '// custom: Notes for translators' . "\n" . 'echo strtr(ngettext("There is 1 pending task",'
             . ' "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
-            $sourceCode
+            $sourceCode,
         );
         $this->assertSame([], $compiler->getDebugInfo());
         TransNode::$enableAddDebugInfo = false;
@@ -119,16 +119,14 @@ class TransTest extends NodeTestCase
         $this->assertSame(
             '// line 80' . "\n" . '// custom: Notes for translators' . "\n" . 'echo strtr(ngettext("There'
             . ' is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
-            $sourceCode
+            $sourceCode,
         );
         $this->assertSame([2 => 80], $compiler->getDebugInfo());
         TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// notes: ';
     }
 
-    /**
-     * @return array[]
-     */
+    /** @return mixed[] */
     public function getTests(): array
     {
         $tests = [];
@@ -164,7 +162,7 @@ class TransTest extends NodeTestCase
             $node,
             sprintf(
                 'echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                $this->getVariableGetter('foo'),
             ),
         ];
 
@@ -189,7 +187,7 @@ class TransTest extends NodeTestCase
                 . ' %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
                 $this->getVariableGetter('name'),
-                $this->getVariableGetter('name')
+                $this->getVariableGetter('name'),
             ),
         ];
 
@@ -198,7 +196,7 @@ class TransTest extends NodeTestCase
             new TextNode('J\'ai ', 0),
             new PrintNode(
                 new FilterExpression(new NameExpression('foo', 0), new ConstantExpression('escape', 0), new Node(), 0),
-                0
+                0,
             ),
             new TextNode(' pommes', 0),
         ], [], 0);
@@ -208,7 +206,7 @@ class TransTest extends NodeTestCase
             $node,
             sprintf(
                 'echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                $this->getVariableGetter('foo'),
             ),
         ];
 

@@ -14,7 +14,7 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionDebug;
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
-use Twig\Extension\AbstractExtension;
+use Twig\Extension\ExtensionInterface;
 use Twig\Test\IntegrationTestCase;
 
 class I18nExtensionMoTranslatorDebugTest extends IntegrationTestCase
@@ -24,20 +24,15 @@ class I18nExtensionMoTranslatorDebugTest extends IntegrationTestCase
         Loader::loadFunctions();
     }
 
-    /**
-     * @return AbstractExtension[]
-     */
-    public function getExtensions()
+    /** @return ExtensionInterface[] */
+    public function getExtensions(): array
     {
         return [
             new I18nExtensionDebug(),
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getFixturesDir()
+    public function getFixturesDir(): string
     {
         return __DIR__ . '/Fixtures/';
     }

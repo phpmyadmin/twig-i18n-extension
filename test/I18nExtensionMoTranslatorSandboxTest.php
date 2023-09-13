@@ -13,7 +13,7 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
-use Twig\Extension\AbstractExtension;
+use Twig\Extension\ExtensionInterface;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicy;
 use Twig\Test\IntegrationTestCase;
@@ -25,10 +25,8 @@ class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
         Loader::loadFunctions();
     }
 
-    /**
-     * @return AbstractExtension[]
-     */
-    public function getExtensions()
+    /** @return ExtensionInterface[] */
+    public function getExtensions(): array
     {
         $tags = ['if', 'set', 'trans'];
         $filters = ['upper', 'escape'];
@@ -43,10 +41,7 @@ class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getFixturesDir()
+    public function getFixturesDir(): string
     {
         return __DIR__ . '/FixturesWithSandbox/';
     }

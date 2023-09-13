@@ -24,7 +24,7 @@
         "twig/twig": "^3.7"
     },
     "require-dev": {
-        "phpmyadmin/coding-standard": "^3.0.0",
+        "phpmyadmin/coding-standard": "^4.0",
         "phpmyadmin/motranslator": "^5.2",
         "phpstan/phpstan": "^1.9.4",
         "phpunit/phpunit": "^9.6"

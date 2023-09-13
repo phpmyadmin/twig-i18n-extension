@@ -40,41 +40,33 @@ class TransNode extends Node
 {
     /**
      * The label for gettext notes to be exported
-     *
-     * @var string
      */
-    public static $notesLabel = '// notes: ';
+    public static string $notesLabel = '// notes: ';
 
     /**
      * Enable MoTranslator functions
-     *
-     * @var bool
      */
-    public static $enableMoTranslator = false;
+    public static bool $enableMoTranslator = false;
 
     /**
      * Enable calls to addDebugInfo
-     *
-     * @var bool
      */
-    public static $enableAddDebugInfo = false;
+    public static bool $enableAddDebugInfo = false;
 
     /**
      * Enables context functions usage
-     *
-     * @var bool
      */
-    public static $hasContextFunctions = false;
+    public static bool $hasContextFunctions = false;
 
     public function __construct(
         Node $body,
-        ?Node $plural,
-        ?AbstractExpression $count,
-        ?Node $context = null,
-        ?Node $notes = null,
-        ?Node $domain = null,
+        Node|null $plural,
+        AbstractExpression|null $count,
+        Node|null $context = null,
+        Node|null $notes = null,
+        Node|null $domain = null,
         int $lineno = 0,
-        ?string $tag = null
+        string|null $tag = null,
     ) {
         $nodes = ['body' => $body];
         if ($count !== null) {
@@ -220,6 +212,8 @@ class TransNode extends Node
 
     /**
      * Keep this method protected instead of private some implementations may use it
+     *
+     * @psalm-return array{Node, list<NameExpression>}
      */
     protected function compileString(Node $body): array
     {

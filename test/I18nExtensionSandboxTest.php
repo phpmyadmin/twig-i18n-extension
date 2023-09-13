@@ -12,17 +12,15 @@ declare(strict_types=1);
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
-use Twig\Extension\AbstractExtension;
+use Twig\Extension\ExtensionInterface;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicy;
 use Twig\Test\IntegrationTestCase;
 
 class I18nExtensionSandboxTest extends IntegrationTestCase
 {
-    /**
-     * @return AbstractExtension[]
-     */
-    public function getExtensions()
+    /** @return ExtensionInterface[] */
+    public function getExtensions(): array
     {
         $tags = ['if', 'set', 'trans'];
         $filters = ['upper', 'escape'];
@@ -37,10 +35,7 @@ class I18nExtensionSandboxTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getFixturesDir()
+    public function getFixturesDir(): string
     {
         return __DIR__ . '/FixturesWithSandbox/';
     }

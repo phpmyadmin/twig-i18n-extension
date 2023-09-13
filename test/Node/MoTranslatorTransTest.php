@@ -70,9 +70,7 @@ class MoTranslatorTransTest extends NodeTestCase
         $this->assertEquals($context, $node->getNode('context'));
     }
 
-    /**
-     * @return array[]
-     */
+    /** @return mixed[] */
     public function getTests(): array
     {
         $tests = [];
@@ -107,7 +105,7 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 'echo strtr(_gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                $this->getVariableGetter('foo'),
             ),
         ];
 
@@ -132,7 +130,7 @@ class MoTranslatorTransTest extends NodeTestCase
                 . ' I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
                 $this->getVariableGetter('name'),
-                $this->getVariableGetter('name')
+                $this->getVariableGetter('name'),
             ),
         ];
 
@@ -149,7 +147,7 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 'echo strtr(_pgettext("The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                $this->getVariableGetter('foo'),
             ),
         ];
 
@@ -177,7 +175,7 @@ class MoTranslatorTransTest extends NodeTestCase
                 . ' I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
                 $this->getVariableGetter('name'),
-                $this->getVariableGetter('name')
+                $this->getVariableGetter('name'),
             ),
         ];
 
@@ -197,7 +195,7 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 'echo strtr(_dpgettext("mydomain", "The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                $this->getVariableGetter('foo'),
             ),
         ];
 
@@ -228,7 +226,7 @@ class MoTranslatorTransTest extends NodeTestCase
                 . ' "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
                 $this->getVariableGetter('name'),
-                $this->getVariableGetter('name')
+                $this->getVariableGetter('name'),
             ),
         ];
 

@@ -16,6 +16,7 @@ namespace PhpMyAdmin\Twig\Extensions\TokenParser;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Error\SyntaxError;
+use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
@@ -44,6 +45,7 @@ class TransTokenParser extends AbstractTokenParser
         return new TransNode($body, $plural, $count, $context, $notes, $domain, $lineno, $tag);
     }
 
+    /** @psalm-return array{Node, Node|null, AbstractExpression|null, Node|null, Node|null, Node|null, int, string} */
     protected function preParse(Token $token): array
     {
         $lineno = $token->getLine();
@@ -95,18 +97,12 @@ class TransTokenParser extends AbstractTokenParser
         return [$body, $plural, $count, $context, $notes, $domain, $lineno, $this->getTag()];
     }
 
-    /**
-     * @return bool
-     */
-    public function decideForFork(Token $token)
+    public function decideForFork(Token $token): bool
     {
         return $token->test(['plural', 'context', 'notes', 'endtrans']);
     }
 
-    /**
-     * @return bool
-     */
-    public function decideForEnd(Token $token)
+    public function decideForEnd(Token $token): bool
     {
         return $token->test('endtrans');
     }
@@ -119,12 +115,8 @@ class TransTokenParser extends AbstractTokenParser
         return 'trans';
     }
 
-    /**
-     * @return void
-     *
-     * @throws SyntaxError
-     */
-    protected function checkTransString(Node $body, int $lineno)
+    /** @throws SyntaxError */
+    protected function checkTransString(Node $body, int $lineno): void
     {
         foreach ($body as $i => $node) {
             if (
@@ -137,7 +129,7 @@ class TransTokenParser extends AbstractTokenParser
 
             throw new SyntaxError(
                 'The text to be translated with "trans" can only contain references to simple variables.',
-                $lineno
+                $lineno,
             );
         }
     }

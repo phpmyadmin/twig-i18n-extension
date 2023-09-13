@@ -12,25 +12,20 @@ declare(strict_types=1);
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
-use Twig\Extension\AbstractExtension;
+use Twig\Extension\ExtensionInterface;
 use Twig\Test\IntegrationTestCase;
 
 class I18nExtensionTest extends IntegrationTestCase
 {
-    /**
-     * @return AbstractExtension[]
-     */
-    public function getExtensions()
+    /** @return ExtensionInterface[] */
+    public function getExtensions(): array
     {
         return [
             new I18nExtension(),
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getFixturesDir()
+    public function getFixturesDir(): string
     {
         return __DIR__ . '/Fixtures/';
     }
