@@ -1,0 +1,111 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Only booleans are allowed in an if condition, array\\<int, Twig\\\\Node\\\\Expression\\\\NameExpression\\> given\\.$#"
+			count: 1
+			path: src/Node/TransNode.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, int\\<0, max\\> given\\.$#"
+			count: 1
+			path: src/Node/TransNode.php
+
+		-
+			message: "#^Parameter \\#1 \\$name of class Twig\\\\Node\\\\Expression\\\\NameExpression constructor expects string, mixed given\\.$#"
+			count: 1
+			path: src/Node/TransNode.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function trim expects string, mixed given\\.$#"
+			count: 2
+			path: src/Node/TransNode.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 1
+			path: src/Node/TransNode.php
+
+		-
+			message: "#^Method PhpMyAdmin\\\\Twig\\\\Extensions\\\\TokenParser\\\\TransTokenParser\\:\\:preParse\\(\\) should return array\\{Twig\\\\Node\\\\Node, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Expression\\\\AbstractExpression\\|null, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, int, string\\} but returns array\\{mixed, Twig\\\\Node\\\\Node\\|null, mixed, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, mixed, int, string\\}\\.$#"
+			count: 1
+			path: src/TokenParser/TransTokenParser.php
+
+		-
+			message: "#^Parameter \\#1 \\$body of method PhpMyAdmin\\\\Twig\\\\Extensions\\\\TokenParser\\\\TransTokenParser\\:\\:checkTransString\\(\\) expects Twig\\\\Node\\\\Node, mixed given\\.$#"
+			count: 1
+			path: src/TokenParser/TransTokenParser.php
+
+		-
+			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNotEmpty\\(\\)\\.$#"
+			count: 1
+			path: test/I18nExtensionMoTranslatorDebugTest.php
+
+		-
+			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNotEmpty\\(\\)\\.$#"
+			count: 1
+			path: test/I18nExtensionMoTranslatorSandboxTest.php
+
+		-
+			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNotEmpty\\(\\)\\.$#"
+			count: 1
+			path: test/I18nExtensionSandboxTest.php
+
+		-
+			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNotEmpty\\(\\)\\.$#"
+			count: 1
+			path: test/I18nExtensionTest.php
+
+		-
+			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEquals\\(\\)\\.$#"
+			count: 6
+			path: test/Node/MoTranslatorTransTest.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 8
+			path: test/Node/MoTranslatorTransTest.php
+
+		-
+			message: "#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 3
+			path: test/Node/MoTranslatorTransTest.php
+
+		-
+			message: "#^Cannot call method compile\\(\\) on mixed\\.$#"
+			count: 2
+			path: test/Node/TransTest.php
+
+		-
+			message: "#^Cannot call method getDebugInfo\\(\\) on mixed\\.$#"
+			count: 4
+			path: test/Node/TransTest.php
+
+		-
+			message: "#^Cannot call method getSource\\(\\) on mixed\\.$#"
+			count: 2
+			path: test/Node/TransTest.php
+
+		-
+			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEmpty\\(\\)\\.$#"
+			count: 2
+			path: test/Node/TransTest.php
+
+		-
+			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEquals\\(\\)\\.$#"
+			count: 7
+			path: test/Node/TransTest.php
+
+		-
+			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\)\\.$#"
+			count: 4
+			path: test/Node/TransTest.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 5
+			path: test/Node/TransTest.php
+
+		-
+			message: "#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 1
+			path: test/Node/TransTest.php
