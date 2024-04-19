@@ -1,6 +1,8 @@
 # Change Log
 
-## [Unreleased]
+## [4.1.1] - 2024-04-19
+
+* Add support for Twig 3.9 (#12)
 
 ## [4.1.0] - 2023-09-12
 
@@ -37,7 +39,7 @@
 
 * First release of this library.
 
-[Unreleased]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.0...HEAD
+[4.1.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.0...4.1.1
 [4.1.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v4.0.1...4.1.0
 [4.0.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v3.0.0...v4.0.0
