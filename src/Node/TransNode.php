@@ -27,7 +27,6 @@ use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 
 use function array_merge;
-use function class_exists;
 use function count;
 use function sprintf;
 use function str_replace;
@@ -122,14 +121,13 @@ class TransNode extends Node
         if ($this->hasNode('notes')) {
             $message = trim($this->getNode('notes')->getAttribute('data'));
 
-            // line breaks are not allowed cause we want a single line comment
+            // line breaks are not allowed because we want a single line comment
             $message = str_replace(["\n", "\r"], ' ', $message);
             $compiler->raw(static::$notesLabel . $message . "\n");
         }
 
         if ($vars) {
-            $compiler
-                ->raw($this->echoOrYield() . ' strtr(' . $function . '(');
+            $compiler->raw('yield strtr(' . $function . '(');
 
             if ($hasDomain) {
                 [$domain] = $this->compileString($this->getNode('domain'));
@@ -178,8 +176,7 @@ class TransNode extends Node
 
             $compiler->raw("));\n");
         } else {
-            $compiler
-                ->raw($this->echoOrYield() . ' ' . $function . '(');
+            $compiler->raw('yield ' . $function . '(');
 
             if ($hasDomain) {
                 [$domain] = $this->compileString($this->getNode('domain'));
@@ -310,10 +307,5 @@ class TransNode extends Node
         // pgettext($msgctxt, $msgid);
         // gettext($msgid);
         return $functionPrefix . ($hasContext ? 'pgettext' : 'gettext');
-    }
-
-    private function echoOrYield(): string
-    {
-        return class_exists(YieldReady::class) ? 'yield' : 'echo';
     }
 }
