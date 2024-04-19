@@ -1,0 +1,10 @@
+--TEST--
+Test assigning to a variable with set
+--TEMPLATE--
+A {% set variable %}{% trans 'text' %}{% endset %} B {{ variable }} C
+--DATA--
+return []
+--CONFIG--
+return []
+--EXPECT--
+A  B text C
