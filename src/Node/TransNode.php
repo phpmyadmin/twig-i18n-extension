@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpMyAdmin\Twig\Extensions\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\AbstractExpression;
@@ -26,6 +27,7 @@ use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 
 use function array_merge;
+use function class_exists;
 use function count;
 use function sprintf;
 use function str_replace;
@@ -36,6 +38,7 @@ use function trim;
  *
  * Author Fabien Potencier <fabien.potencier@symfony-project.com>
  */
+#[YieldReady]
 class TransNode extends Node
 {
     /**
@@ -126,7 +129,7 @@ class TransNode extends Node
 
         if ($vars) {
             $compiler
-                ->raw('echo strtr(' . $function . '(');
+                ->raw($this->echoOrYield() . ' strtr(' . $function . '(');
 
             if ($hasDomain) {
                 [$domain] = $this->compileString($this->getNode('domain'));
@@ -176,7 +179,7 @@ class TransNode extends Node
             $compiler->raw("));\n");
         } else {
             $compiler
-                ->raw('echo ' . $function . '(');
+                ->raw($this->echoOrYield() . ' ' . $function . '(');
 
             if ($hasDomain) {
                 [$domain] = $this->compileString($this->getNode('domain'));
@@ -307,5 +310,10 @@ class TransNode extends Node
         // pgettext($msgctxt, $msgid);
         // gettext($msgid);
         return $functionPrefix . ($hasContext ? 'pgettext' : 'gettext');
+    }
+
+    private function echoOrYield(): string
+    {
+        return class_exists(YieldReady::class) ? 'yield' : 'echo';
     }
 }

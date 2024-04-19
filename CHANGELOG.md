@@ -4,6 +4,10 @@
 
 * Drop support for PHP 7.2, PHP 7.3, PHP 7.4 and PHP 8.0
 
+## [4.1.1] - 2024-04-19
+
+* Add support for Twig 3.9 (#12)
+
 ## [4.1.0] - 2023-09-12
 
 * Drop support for PHP 7.1
@@ -39,7 +43,8 @@
 
 * First release of this library.
 
-[Unreleased]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.0...HEAD
+[Unreleased]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.1...HEAD
+[4.1.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.0...4.1.1
 [4.1.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v4.0.1...4.1.0
 [4.0.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/v3.0.0...v4.0.0
