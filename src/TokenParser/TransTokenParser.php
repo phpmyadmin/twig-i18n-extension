@@ -95,12 +95,12 @@ class TransTokenParser extends AbstractTokenParser
         $this->checkTransString($body, $lineno);
 
         if ($notes instanceof TextNode) {
-            // Don't use TextNode for $notes to avoid it getting merged with $body in Twig >= 3.9.0.
+            // Don't use TextNode for $notes to avoid it getting merged with $body when optimizing.
             $notes = new Node([], ['data' => $notes->getAttribute('data')], $notes->getTemplateLine());
         }
 
         if ($context instanceof TextNode) {
-            // Don't use TextNode for $context to avoid it getting merged with $body in Twig >= 3.9.0.
+            // Don't use TextNode for $context to avoid it getting merged with $body when optimizing.
             $context = new Node([], ['data' => $context->getAttribute('data')], $context->getTemplateLine());
         }
 
