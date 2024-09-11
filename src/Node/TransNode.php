@@ -102,13 +102,12 @@ class TransNode extends Node
         }
 
         /** @phpstan-ignore-next-line */
-        if (Environment::VERSION_ID >= 31300 || Environment::VERSION_ID >= 301200) {
+        if (Environment::MAJOR_VERSION >= 3 && Environment::MINOR_VERSION >= 12) {
             parent::__construct($nodes, [], $lineno);
 
             return;
         }
 
-        /** @phpstan-ignore-next-line */
         parent::__construct($nodes, [], $lineno, $tag);
     }
 
