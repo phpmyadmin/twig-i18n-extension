@@ -29,7 +29,7 @@ use function sprintf;
 
 class TransTest extends NodeTestCase
 {
-    private function echoOrYield(): string
+    private static function echoOrYield(): string
     {
         return class_exists(YieldReady::class) ? 'yield' : 'echo';
     }
@@ -97,7 +97,7 @@ class TransTest extends NodeTestCase
         $sourceCode = $compiler->compile($node)->getSource();
         $this->assertSame(
             '// custom: Notes for translators' . "\n"
-            . $this->echoOrYield() . ' strtr(ngettext("There is 1 pending task",'
+            . self::echoOrYield() . ' strtr(ngettext("There is 1 pending task",'
             . ' "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
             $sourceCode
         );
@@ -126,7 +126,7 @@ class TransTest extends NodeTestCase
         $sourceCode = $compiler->compile($node)->getSource();
         $this->assertSame(
             '// line 80' . "\n" . '// custom: Notes for translators' . "\n"
-            . $this->echoOrYield() . ' strtr(ngettext("There'
+            . self::echoOrYield() . ' strtr(ngettext("There'
             . ' is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
             $sourceCode
         );
@@ -149,22 +149,22 @@ class TransTest extends NodeTestCase
         $node = new TransNode($body, null, null, null, null, $domain, 0);
         $tests[] = [
             $node,
-            sprintf($this->echoOrYield() . ' dgettext("coredomain", %s);', $this->getVariableGetter('foo')),
+            sprintf(self::echoOrYield() . ' dgettext("coredomain", %s);', $this->getVariableGetter('foo')),
         ];
 
         $body = new NameExpression('foo', 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
-        $tests[] = [$node, sprintf($this->echoOrYield() . ' gettext(%s);', $this->getVariableGetter('foo'))];
+        $tests[] = [$node, sprintf(self::echoOrYield() . ' gettext(%s);', $this->getVariableGetter('foo'))];
 
         $body = new ConstantExpression('Hello', 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
-        $tests[] = [$node, $this->echoOrYield() . ' gettext("Hello");'];
+        $tests[] = [$node, self::echoOrYield() . ' gettext("Hello");'];
 
         $body = new Node([
             new TextNode('Hello', 0),
         ], [], 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
-        $tests[] = [$node, $this->echoOrYield() . ' gettext("Hello");'];
+        $tests[] = [$node, self::echoOrYield() . ' gettext("Hello");'];
 
         $body = new Node([
             new TextNode('J\'ai ', 0),
@@ -175,7 +175,7 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                $this->echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];
@@ -197,7 +197,7 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                $this->echoOrYield() . ' strtr(ngettext("Hey %%name%%, I have one apple", "Hey %%name%%, I have'
+                self::echoOrYield() . ' strtr(ngettext("Hey %%name%%, I have one apple", "Hey %%name%%, I have'
                 . ' %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
                 $this->getVariableGetter('name'),
@@ -219,7 +219,7 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                $this->echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];
@@ -228,7 +228,7 @@ class TransTest extends NodeTestCase
         $body = new ConstantExpression('Hello', 0);
         $notes = new TextNode('Notes for translators', 0);
         $node = new TransNode($body, null, null, null, $notes, null, 0);
-        $tests[] = [$node, "// notes: Notes for translators\n" . $this->echoOrYield() . ' gettext("Hello");'];
+        $tests[] = [$node, "// notes: Notes for translators\n" . self::echoOrYield() . ' gettext("Hello");'];
 
         $body = new ConstantExpression('Hello', 0);
         $notes = new TextNode("Notes for translators\nand line breaks", 0);
@@ -236,7 +236,7 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             "// notes: Notes for translators and line breaks\n"
-            . $this->echoOrYield() . ' gettext("Hello");',
+            . self::echoOrYield() . ' gettext("Hello");',
         ];
 
         $count = new ConstantExpression(5, 0);
@@ -251,7 +251,7 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             '// notes: Notes for translators' . "\n"
-            . $this->echoOrYield() . ' strtr(ngettext("There is 1 pending task",'
+            . self::echoOrYield() . ' strtr(ngettext("There is 1 pending task",'
             . ' "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));',
         ];
 

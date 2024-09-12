@@ -145,7 +145,7 @@ class TransNode extends Node
 
         if ($vars) {
             $compiler
-                ->raw($this->echoOrYield() . ' strtr(' . $function . '(');
+                ->raw(self::echoOrYield() . ' strtr(' . $function . '(');
 
             if ($hasDomain) {
                 [$domain] = $this->compileString($this->getNode('domain'));
@@ -195,7 +195,7 @@ class TransNode extends Node
             $compiler->raw("));\n");
         } else {
             $compiler
-                ->raw($this->echoOrYield() . ' ' . $function . '(');
+                ->raw(self::echoOrYield() . ' ' . $function . '(');
 
             if ($hasDomain) {
                 [$domain] = $this->compileString($this->getNode('domain'));
@@ -326,7 +326,7 @@ class TransNode extends Node
         return $functionPrefix . ($hasContext ? 'pgettext' : 'gettext');
     }
 
-    private function echoOrYield(): string
+    private static function echoOrYield(): string
     {
         return class_exists(YieldReady::class) ? 'yield' : 'echo';
     }
