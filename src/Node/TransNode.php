@@ -16,7 +16,6 @@ namespace PhpMyAdmin\Twig\Extensions\Node;
 
 use Twig\Attribute\YieldReady;
 use Twig\Compiler;
-use Twig\Environment;
 use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ConstantExpression;
@@ -61,6 +60,7 @@ class TransNode extends Node
      */
     public static bool $hasContextFunctions = false;
 
+    /** @phpstan-ignore constructor.unusedParameter */
     public function __construct(
         Node $body,
         Node|null $plural,
@@ -92,14 +92,7 @@ class TransNode extends Node
             $nodes['context'] = $context;
         }
 
-        /** @phpstan-ignore-next-line */
-        if (Environment::MAJOR_VERSION >= 3 && Environment::MINOR_VERSION >= 12) {
-            parent::__construct($nodes, [], $lineno);
-
-            return;
-        }
-
-        parent::__construct($nodes, [], $lineno, $tag);
+        parent::__construct($nodes, [], $lineno);
     }
 
     /**
