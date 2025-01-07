@@ -18,7 +18,7 @@ use PhpMyAdmin\Twig\Extensions\Node\I18nNode;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Error\SyntaxError;
 use Twig\Node\Expression\AbstractExpression;
-use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
@@ -133,7 +133,7 @@ class TransTokenParser extends AbstractTokenParser
             if (
                 $node instanceof TextNode
                 ||
-                ($node instanceof PrintNode && $node->getNode('expr') instanceof NameExpression)
+                ($node instanceof PrintNode && $node->getNode('expr') instanceof ContextVariable)
             ) {
                 continue;
             }

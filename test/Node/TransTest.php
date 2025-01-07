@@ -17,7 +17,7 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
-use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\Nodes;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
@@ -35,9 +35,9 @@ class TransTest extends NodeTestCase
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(new ContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(new ContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
@@ -58,9 +58,9 @@ class TransTest extends NodeTestCase
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(new ContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(new ContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, null, null, $domain, 0);
@@ -77,7 +77,7 @@ class TransTest extends NodeTestCase
         $body = new TextNode('There is 1 pending task', 0);
         $plural = new Nodes([
             new TextNode('There are ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(new ContextVariable('count', 0), 0),
             new TextNode(' pending tasks', 0),
         ]);
         $notes = new TextNode('Notes for translators', 0);
@@ -105,7 +105,7 @@ class TransTest extends NodeTestCase
         $body = new TextNode('There is 1 pending task', 0);
         $plural = new Nodes([
             new TextNode('There are ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(new ContextVariable('count', 0), 0),
             new TextNode(' pending tasks', 0),
         ]);
         $notes = new TextNode('Notes for translators', 0);
@@ -133,7 +133,7 @@ class TransTest extends NodeTestCase
     {
         $tests = [];
 
-        $body = new NameExpression('foo', 0);
+        $body = new ContextVariable('foo', 0);
         $domain = new Nodes([
             new TextNode('coredomain', 0),
         ]);
@@ -143,7 +143,7 @@ class TransTest extends NodeTestCase
             sprintf('yield dgettext("coredomain", %s);', $this->getVariableGetter('foo')),
         ];
 
-        $body = new NameExpression('foo', 0);
+        $body = new ContextVariable('foo', 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
         $tests[] = [$node, sprintf('yield gettext(%s);', $this->getVariableGetter('foo'))];
 
@@ -159,7 +159,7 @@ class TransTest extends NodeTestCase
 
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
-            new PrintNode(new NameExpression('foo', 0), 0),
+            new PrintNode(new ContextVariable('foo', 0), 0),
             new TextNode(' pommes', 0),
         ]);
         $node = new TransNode($body, null, null, null, null, null, 0);
@@ -174,14 +174,14 @@ class TransTest extends NodeTestCase
         $count = new ConstantExpression(12, 0);
         $body = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(new ContextVariable('name', 0), 0),
             new TextNode(', I have one apple', 0),
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(new ContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(new ContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
@@ -200,7 +200,7 @@ class TransTest extends NodeTestCase
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(
-                new FilterExpression(new NameExpression('foo', 0), new ConstantExpression('escape', 0), new Nodes(), 0),
+                new FilterExpression(new ContextVariable('foo', 0), new ConstantExpression('escape', 0), new Nodes(), 0),
                 0,
             ),
             new TextNode(' pommes', 0),
@@ -234,7 +234,7 @@ class TransTest extends NodeTestCase
         $body = new TextNode('There is 1 pending task', 0);
         $plural = new Nodes([
             new TextNode('There are ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(new ContextVariable('count', 0), 0),
             new TextNode(' pending tasks', 0),
         ]);
         $notes = new TextNode('Notes for translators', 0);

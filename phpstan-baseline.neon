@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Only booleans are allowed in an if condition, array\\<int, Twig\\\\Node\\\\Expression\\\\NameExpression\\> given\\.$#"
+			message: "#^Only booleans are allowed in an if condition, array\\<int, Twig\\\\Node\\\\Expression\\\\Variable\\\\ContextVariable\\> given\\.$#"
 			count: 1
 			path: src/Node/TransNode.php
 
@@ -11,7 +11,7 @@ parameters:
 			path: src/Node/TransNode.php
 
 		-
-			message: "#^Parameter \\#1 \\$name of class Twig\\\\Node\\\\Expression\\\\NameExpression constructor expects string, mixed given\\.$#"
+			message: "#^Parameter \\#1 \\$name of class Twig\\\\Node\\\\Expression\\\\Variable\\\\ContextVariable constructor expects string, mixed given\\.$#"
 			count: 1
 			path: src/Node/TransNode.php
 
