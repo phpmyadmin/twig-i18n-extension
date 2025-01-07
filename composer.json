@@ -21,7 +21,7 @@
     },
     "require": {
         "php": "^8.1",
-        "twig/twig": "^3.13"
+        "twig/twig": "^3.17"
     },
     "require-dev": {
         "phpmyadmin/coding-standard": "^4.0",
