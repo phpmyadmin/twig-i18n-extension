@@ -17,7 +17,7 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\NameExpression;
-use Twig\Node\Node;
+use Twig\Node\Nodes;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 use Twig\Test\NodeTestCase;
@@ -41,25 +41,25 @@ class MoTranslatorTransTest extends NodeTestCase
     public function testFullConstructor(): void
     {
         $count = new ConstantExpression(12, 0);
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('Hello', 0),
-        ], [], 0);
-        $notes = new Node([
+        ]);
+        $notes = new Nodes([
             new TextNode('notes for translators', 0),
-        ], [], 0);
-        $domain = new Node([
+        ]);
+        $domain = new Nodes([
             new TextNode('mydomain', 0),
-        ], [], 0);
-        $context = new Node([
+        ]);
+        $context = new Nodes([
             new TextNode('mydomain', 0),
-        ], [], 0);
-        $plural = new Node([
+        ]);
+        $plural = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' apples', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, $plural, $count, $context, $notes, $domain, 0);
 
         $this->assertEquals($body, $node->getNode('body'));
@@ -76,9 +76,9 @@ class MoTranslatorTransTest extends NodeTestCase
         $tests = [];
 
         $body = new NameExpression('foo', 0);
-        $domain = new Node([
+        $domain = new Nodes([
             new TextNode('coredomain', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, null, null, null, null, $domain, 0);
         $tests[] = [
             $node,
@@ -86,12 +86,12 @@ class MoTranslatorTransTest extends NodeTestCase
         ];
 
         $body = new NameExpression('foo', 0);
-        $domain = new Node([
+        $domain = new Nodes([
             new TextNode('coredomain', 0),
-        ], [], 0);
-        $context = new Node([
+        ]);
+        $context = new Nodes([
             new TextNode('The context', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, null, null, $context, null, $domain, 0);
         $tests[] = [
             $node,
@@ -101,11 +101,11 @@ class MoTranslatorTransTest extends NodeTestCase
             ),
         ];
 
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(new NameExpression('foo', 0), 0),
             new TextNode(' pommes', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, null, null, null, null, null, 0);
         $tests[] = [
             $node,
@@ -116,18 +116,18 @@ class MoTranslatorTransTest extends NodeTestCase
         ];
 
         $count = new ConstantExpression(12, 0);
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have one apple', 0),
-        ], [], 0);
-        $plural = new Node([
+        ]);
+        $plural = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' apples', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
         $tests[] = [
             $node,
@@ -140,14 +140,14 @@ class MoTranslatorTransTest extends NodeTestCase
             ),
         ];
 
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(new NameExpression('foo', 0), 0),
             new TextNode(' pommes', 0),
-        ], [], 0);
-        $context = new Node([
+        ]);
+        $context = new Nodes([
             new TextNode('The context', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, null, null, $context, null, null, 0);
         $tests[] = [
             $node,
@@ -158,21 +158,21 @@ class MoTranslatorTransTest extends NodeTestCase
         ];
 
         $count = new ConstantExpression(12, 0);
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have one apple', 0),
-        ], [], 0);
-        $context = new Node([
+        ]);
+        $context = new Nodes([
             new TextNode('The context', 0),
-        ], [], 0);
-        $plural = new Node([
+        ]);
+        $plural = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' apples', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, $plural, $count, $context, null, null, 0);
         $tests[] = [
             $node,
@@ -185,17 +185,17 @@ class MoTranslatorTransTest extends NodeTestCase
             ),
         ];
 
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(new NameExpression('foo', 0), 0),
             new TextNode(' pommes', 0),
-        ], [], 0);
-        $context = new Node([
+        ]);
+        $context = new Nodes([
             new TextNode('The context', 0),
-        ], [], 0);
-        $domain = new Node([
+        ]);
+        $domain = new Nodes([
             new TextNode('mydomain', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, null, null, $context, null, $domain, 0);
         $tests[] = [
             $node,
@@ -206,24 +206,24 @@ class MoTranslatorTransTest extends NodeTestCase
         ];
 
         $count = new ConstantExpression(12, 0);
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have one apple', 0),
-        ], [], 0);
-        $context = new Node([
+        ]);
+        $context = new Nodes([
             new TextNode('The context', 0),
-        ], [], 0);
-        $domain = new Node([
+        ]);
+        $domain = new Nodes([
             new TextNode('mydomain', 0),
-        ], [], 0);
-        $plural = new Node([
+        ]);
+        $plural = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' apples', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, $plural, $count, $context, null, $domain, 0);
         $tests[] = [
             $node,

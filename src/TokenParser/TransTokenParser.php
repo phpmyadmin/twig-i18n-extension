@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpMyAdmin\Twig\Extensions\TokenParser;
 
+use PhpMyAdmin\Twig\Extensions\Node\I18nNode;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Error\SyntaxError;
 use Twig\Node\Expression\AbstractExpression;
@@ -96,12 +97,12 @@ class TransTokenParser extends AbstractTokenParser
 
         if ($notes instanceof TextNode) {
             // Don't use TextNode for $notes to avoid it getting merged with $body when optimizing.
-            $notes = new Node([], ['data' => $notes->getAttribute('data')], $notes->getTemplateLine());
+            $notes = new I18nNode(null, ['data' => $notes->getAttribute('data')], $notes->getTemplateLine());
         }
 
         if ($context instanceof TextNode) {
             // Don't use TextNode for $context to avoid it getting merged with $body when optimizing.
-            $context = new Node([], ['data' => $context->getAttribute('data')], $context->getTemplateLine());
+            $context = new I18nNode(null, ['data' => $context->getAttribute('data')], $context->getTemplateLine());
         }
 
         return [$body, $plural, $count, $context, $notes, $domain, $lineno, $this->getTag()];

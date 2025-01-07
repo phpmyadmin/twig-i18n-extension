@@ -253,7 +253,7 @@ class TransNode extends Node
             $msg = $body->getAttribute('data');
         }
 
-        return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
+        return [new I18nNode(new ConstantExpression(trim($msg), $body->getTemplateLine()), [], 0), $vars];
     }
 
     /**
