@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace PhpMyAdmin\Twig\Extensions\TokenParser;
 
+use PhpMyAdmin\Twig\Extensions\Node\I18nNode;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Error\SyntaxError;
 use Twig\Node\Expression\AbstractExpression;
-use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
@@ -96,12 +97,12 @@ class TransTokenParser extends AbstractTokenParser
 
         if ($notes instanceof TextNode) {
             // Don't use TextNode for $notes to avoid it getting merged with $body when optimizing.
-            $notes = new Node([], ['data' => $notes->getAttribute('data')], $notes->getTemplateLine());
+            $notes = new I18nNode(null, ['data' => $notes->getAttribute('data')], $notes->getTemplateLine());
         }
 
         if ($context instanceof TextNode) {
             // Don't use TextNode for $context to avoid it getting merged with $body when optimizing.
-            $context = new Node([], ['data' => $context->getAttribute('data')], $context->getTemplateLine());
+            $context = new I18nNode(null, ['data' => $context->getAttribute('data')], $context->getTemplateLine());
         }
 
         return [$body, $plural, $count, $context, $notes, $domain, $lineno, $this->getTag()];
@@ -132,7 +133,7 @@ class TransTokenParser extends AbstractTokenParser
             if (
                 $node instanceof TextNode
                 ||
-                ($node instanceof PrintNode && $node->getNode('expr') instanceof NameExpression)
+                ($node instanceof PrintNode && $node->getNode('expr') instanceof ContextVariable)
             ) {
                 continue;
             }

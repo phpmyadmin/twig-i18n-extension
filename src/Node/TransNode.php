@@ -20,8 +20,8 @@ use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
-use Twig\Node\Expression\NameExpression;
-use Twig\Node\Expression\TempNameExpression;
+use Twig\Node\Expression\Variable\ContextVariable;
+use Twig\Node\Expression\Variable\LocalVariable;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
@@ -214,15 +214,11 @@ class TransNode extends Node
     /**
      * Keep this method protected instead of private some implementations may use it
      *
-     * @psalm-return array{Node, list<NameExpression>}
+     * @psalm-return array{Node, list<ContextVariable>}
      */
     protected function compileString(Node $body): array
     {
-        if (
-            $body instanceof NameExpression
-            || $body instanceof ConstantExpression
-            || $body instanceof TempNameExpression
-        ) {
+        if ($body instanceof ContextVariable || $body instanceof ConstantExpression || $body instanceof LocalVariable) {
             return [$body, []];
         }
 
@@ -243,7 +239,7 @@ class TransNode extends Node
 
                     $attributeName = $n->getAttribute('name');
                     $msg .= sprintf('%%%s%%', $attributeName);
-                    $vars[] = new NameExpression($attributeName, $n->getTemplateLine());
+                    $vars[] = new ContextVariable($attributeName, $n->getTemplateLine());
                 } else {
                     /** @phpstan-var TextNode $node */
                     $msg .= $node->getAttribute('data');
@@ -253,7 +249,7 @@ class TransNode extends Node
             $msg = $body->getAttribute('data');
         }
 
-        return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
+        return [new I18nNode(new ConstantExpression(trim($msg), $body->getTemplateLine()), [], 0), $vars];
     }
 
     /**
