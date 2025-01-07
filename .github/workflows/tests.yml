@@ -11,12 +11,12 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        php-version: ['8.1', '8.2', '8.3']
+        php-version: ['8.2', '8.3', '8.4']
         experimental: [false]
         composer-options: ['']
         os: [ubuntu-latest]
         include:
-          - { php-version: '8.4', composer-options: '--ignore-platform-req=php+', experimental: true, os: ubuntu-latest }
+          - { php-version: '8.5', composer-options: '--ignore-platform-req=php+', experimental: true, os: ubuntu-latest }
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

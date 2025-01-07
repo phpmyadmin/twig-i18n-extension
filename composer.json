@@ -20,7 +20,7 @@
         "source": "https://github.com/phpmyadmin/twig-i18n-extension"
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "twig/twig": "^3.17"
     },
     "require-dev": {

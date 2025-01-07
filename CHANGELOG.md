@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 * Drop support for Twig < 3.17.0
-* Drop support for PHP 7.2, PHP 7.3, PHP 7.4 and PHP 8.0
+* Drop support for PHP 7.2, PHP 7.3, PHP 7.4, PHP 8.0 and PHP 8.1
 
 ## [4.1.3] - 2024-09-08
 
