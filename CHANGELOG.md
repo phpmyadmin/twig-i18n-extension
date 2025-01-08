@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [5.0.0] - 2025-01-08
 
 * Drop support for Twig < 3.17.0
 * Drop support for PHP 7.2, PHP 7.3, PHP 7.4, PHP 8.0 and PHP 8.1
