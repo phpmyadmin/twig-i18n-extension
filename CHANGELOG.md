@@ -1,5 +1,7 @@
 # Change Log
 
+## [Unreleased]
+
 ## [5.0.0] - 2025-01-08
 
 * Drop support for Twig < 3.17.0
