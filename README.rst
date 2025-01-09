@@ -7,9 +7,9 @@ The ``i18n`` extension adds `gettext`_ support to Twig. It defines one tag,
 Code status
 -----------
 
-.. image:: https://github.com/phpmyadmin/twig-i18n-extension/workflows/Run%20tests/badge.svg?branch=master
+.. image:: https://github.com/phpmyadmin/twig-i18n-extension/actions/workflows/tests.yml/badge.svg?branch=master
     :alt: Tests
-    :target: https://github.com/phpmyadmin/twig-i18n-extension/actions
+    :target: https://github.com/phpmyadmin/twig-i18n-extension/actions/workflows/tests.yml?query=branch%3Amaster
 
 .. image:: https://codecov.io/gh/phpmyadmin/twig-i18n-extension/branch/master/graph/badge.svg
     :alt: Code coverage
