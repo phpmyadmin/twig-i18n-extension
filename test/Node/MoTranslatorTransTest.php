@@ -70,8 +70,8 @@ class MoTranslatorTransTest extends NodeTestCase
         $this->assertEquals($context, $node->getNode('context'));
     }
 
-    /** @return mixed[] */
-    public function getTests(): array
+    /** @return iterable<array{0: \Twig\Node\Node, 1: string, 2?: Environment|null, 3?: bool}> */
+    public static function provideTests(): iterable
     {
         $tests = [];
 
@@ -82,7 +82,7 @@ class MoTranslatorTransTest extends NodeTestCase
         $node = new TransNode($body, null, null, null, null, $domain, 0);
         $tests[] = [
             $node,
-            sprintf('yield _dgettext("coredomain", %s);', $this->getVariableGetter('foo')),
+            sprintf('yield _dgettext("coredomain", %s);', self::createVariableGetter('foo')),
         ];
 
         $body = new ContextVariable('foo', 0);
@@ -97,7 +97,7 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 'yield _dpgettext("coredomain", "The context", %s);',
-                $this->getVariableGetter('foo'),
+                self::createVariableGetter('foo'),
             ),
         ];
 
@@ -111,7 +111,7 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 'yield strtr(_gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo'),
+                self::createVariableGetter('foo'),
             ),
         ];
 
@@ -135,8 +135,8 @@ class MoTranslatorTransTest extends NodeTestCase
                 'yield strtr(_ngettext("Hey %%name%%, I have one apple", "Hey %%name%%,'
                 . ' I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
-                $this->getVariableGetter('name'),
-                $this->getVariableGetter('name'),
+                self::createVariableGetter('name'),
+                self::createVariableGetter('name'),
             ),
         ];
 
@@ -153,7 +153,7 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 'yield strtr(_pgettext("The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo'),
+                self::createVariableGetter('foo'),
             ),
         ];
 
@@ -180,8 +180,8 @@ class MoTranslatorTransTest extends NodeTestCase
                 'yield strtr(_npgettext("The context", "Hey %%name%%, I have one apple", "Hey %%name%%,'
                 . ' I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
-                $this->getVariableGetter('name'),
-                $this->getVariableGetter('name'),
+                self::createVariableGetter('name'),
+                self::createVariableGetter('name'),
             ),
         ];
 
@@ -201,7 +201,7 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 'yield strtr(_dpgettext("mydomain", "The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo'),
+                self::createVariableGetter('foo'),
             ),
         ];
 
@@ -231,8 +231,8 @@ class MoTranslatorTransTest extends NodeTestCase
                 'yield strtr(_dnpgettext("mydomain", "The context", "Hey %%name%%, I have one apple",'
                 . ' "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
-                $this->getVariableGetter('name'),
-                $this->getVariableGetter('name'),
+                self::createVariableGetter('name'),
+                self::createVariableGetter('name'),
             ),
         ];
 

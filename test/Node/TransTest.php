@@ -128,8 +128,8 @@ class TransTest extends NodeTestCase
         TransNode::$notesLabel = '// notes: ';
     }
 
-    /** @return mixed[] */
-    public function getTests(): array
+    /** @return iterable<array{0: \Twig\Node\Node, 1: string, 2?: Environment|null, 3?: bool}> */
+    public static function provideTests(): iterable
     {
         $tests = [];
 
@@ -140,12 +140,12 @@ class TransTest extends NodeTestCase
         $node = new TransNode($body, null, null, null, null, $domain, 0);
         $tests[] = [
             $node,
-            sprintf('yield dgettext("coredomain", %s);', $this->getVariableGetter('foo')),
+            sprintf('yield dgettext("coredomain", %s);', self::createVariableGetter('foo')),
         ];
 
         $body = new ContextVariable('foo', 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
-        $tests[] = [$node, sprintf('yield gettext(%s);', $this->getVariableGetter('foo'))];
+        $tests[] = [$node, sprintf('yield gettext(%s);', self::createVariableGetter('foo'))];
 
         $body = new ConstantExpression('Hello', 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
@@ -167,7 +167,7 @@ class TransTest extends NodeTestCase
             $node,
             sprintf(
                 'yield strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo'),
+                self::createVariableGetter('foo'),
             ),
         ];
 
@@ -191,8 +191,8 @@ class TransTest extends NodeTestCase
                 'yield strtr(ngettext("Hey %%name%%, I have one apple", "Hey %%name%%, I have'
                 . ' %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
-                $this->getVariableGetter('name'),
-                $this->getVariableGetter('name'),
+                self::createVariableGetter('name'),
+                self::createVariableGetter('name'),
             ),
         ];
 
@@ -212,7 +212,7 @@ class TransTest extends NodeTestCase
             $node,
             sprintf(
                 'yield strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo'),
+                self::createVariableGetter('foo'),
             ),
         ];
 
