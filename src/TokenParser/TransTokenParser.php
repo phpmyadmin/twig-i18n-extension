@@ -27,10 +27,7 @@ use Twig\TokenParser\AbstractTokenParser;
 
 class TransTokenParser extends AbstractTokenParser
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function parse(Token $token)
+    public function parse(Token $token): Node
     {
         [
             $body,
@@ -118,10 +115,7 @@ class TransTokenParser extends AbstractTokenParser
         return $token->test('endtrans');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTag()
+    public function getTag(): string
     {
         return 'trans';
     }
