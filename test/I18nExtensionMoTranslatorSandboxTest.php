@@ -41,7 +41,7 @@ class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
         ];
     }
 
-    public function getFixturesDir(): string
+    protected static function getFixturesDirectory(): string
     {
         return __DIR__ . '/FixturesWithSandbox/';
     }
