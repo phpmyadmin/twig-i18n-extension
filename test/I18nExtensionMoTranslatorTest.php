@@ -13,9 +13,11 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionMoTranslator;
+use PHPUnit\Framework\Attributes\Group;
 use Twig\Extension\ExtensionInterface;
 use Twig\Test\IntegrationTestCase;
 
+#[Group('integration')]
 class I18nExtensionMoTranslatorTest extends IntegrationTestCase
 {
     public static function setUpBeforeClass(): void

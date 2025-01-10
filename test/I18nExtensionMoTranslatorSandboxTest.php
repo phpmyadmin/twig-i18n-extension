@@ -13,11 +13,13 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
+use PHPUnit\Framework\Attributes\Group;
 use Twig\Extension\ExtensionInterface;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicy;
 use Twig\Test\IntegrationTestCase;
 
+#[Group('integration')]
 class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
 {
     public static function setUpBeforeClass(): void
