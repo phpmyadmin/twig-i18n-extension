@@ -61,16 +61,6 @@ parameters:
 			path: test/Node/MoTranslatorTransTest.php
 
 		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
-			count: 8
-			path: test/Node/MoTranslatorTransTest.php
-
-		-
-			message: "#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
-			count: 3
-			path: test/Node/MoTranslatorTransTest.php
-
-		-
 			message: "#^Cannot call method compile\\(\\) on mixed\\.$#"
 			count: 2
 			path: test/Node/TransTest.php
@@ -98,14 +88,4 @@ parameters:
 		-
 			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\)\\.$#"
 			count: 4
-			path: test/Node/TransTest.php
-
-		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
-			count: 5
-			path: test/Node/TransTest.php
-
-		-
-			message: "#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
-			count: 1
 			path: test/Node/TransTest.php

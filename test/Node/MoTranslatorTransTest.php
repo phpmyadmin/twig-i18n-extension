@@ -15,8 +15,10 @@ declare(strict_types=1);
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
+use Twig\Environment;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\Variable\ContextVariable;
+use Twig\Node\Node;
 use Twig\Node\Nodes;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
@@ -70,7 +72,7 @@ class MoTranslatorTransTest extends NodeTestCase
         $this->assertEquals($context, $node->getNode('context'));
     }
 
-    /** @return iterable<array{0: \Twig\Node\Node, 1: string, 2?: Environment|null, 3?: bool}> */
+    /** @return iterable<array{0: Node, 1: string, 2?: Environment|null, 3?: bool}> */
     public static function provideTests(): iterable
     {
         $tests = [];
