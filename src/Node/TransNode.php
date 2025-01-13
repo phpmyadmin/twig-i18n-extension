@@ -95,10 +95,7 @@ class TransNode extends Node
         parent::__construct($nodes, [], $lineno);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         if (self::$enableAddDebugInfo) {
             $compiler->addDebugInfo($this);
