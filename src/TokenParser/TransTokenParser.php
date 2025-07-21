@@ -57,18 +57,18 @@ class TransTokenParser extends AbstractTokenParser
         /* If we aren't closing the block, do we have a domain? */
         if ($stream->test(Token::NAME_TYPE)) {
             $stream->expect(Token::NAME_TYPE, 'from');
-            $domain = $this->parser->getExpressionParser()->parseExpression();
+            $domain = $this->parser->parseExpression();
         }
 
         if (! $stream->test(Token::BLOCK_END_TYPE)) {
-            $body = $this->parser->getExpressionParser()->parseExpression();
+            $body = $this->parser->parseExpression();
         } else {
             $stream->expect(Token::BLOCK_END_TYPE);
             $body = $this->parser->subparse([$this, 'decideForFork']);
             $next = $stream->next()->getValue();
 
             if ($next === 'plural') {
-                $count = $this->parser->getExpressionParser()->parseExpression();
+                $count = $this->parser->parseExpression();
                 $stream->expect(Token::BLOCK_END_TYPE);
                 $plural = $this->parser->subparse([$this, 'decideForFork']);
                 $next = $stream->next()->getValue();
