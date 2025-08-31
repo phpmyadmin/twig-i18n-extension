@@ -23,6 +23,8 @@ use Twig\Node\TextNode;
 use Twig\Token;
 use Twig\TokenParser\AbstractTokenParser;
 
+use function method_exists;
+
 class TransTokenParser extends AbstractTokenParser
 {
     /**
@@ -57,18 +59,24 @@ class TransTokenParser extends AbstractTokenParser
         /* If we aren't closing the block, do we have a domain? */
         if ($stream->test(Token::NAME_TYPE)) {
             $stream->expect(Token::NAME_TYPE, 'from');
-            $domain = $this->parser->parseExpression();
+            $domain = method_exists($this->parser, 'parseExpression')
+                ? $this->parser->parseExpression()
+                : $this->parser->getExpressionParser()->parseExpression();
         }
 
         if (! $stream->test(Token::BLOCK_END_TYPE)) {
-            $body = $this->parser->parseExpression();
+            $body = method_exists($this->parser, 'parseExpression')
+                ? $this->parser->parseExpression()
+                : $this->parser->getExpressionParser()->parseExpression();
         } else {
             $stream->expect(Token::BLOCK_END_TYPE);
             $body = $this->parser->subparse([$this, 'decideForFork']);
             $next = $stream->next()->getValue();
 
             if ($next === 'plural') {
-                $count = $this->parser->parseExpression();
+                $count = method_exists($this->parser, 'parseExpression')
+                    ? $this->parser->parseExpression()
+                    : $this->parser->getExpressionParser()->parseExpression();
                 $stream->expect(Token::BLOCK_END_TYPE);
                 $plural = $this->parser->subparse([$this, 'decideForFork']);
                 $next = $stream->next()->getValue();
