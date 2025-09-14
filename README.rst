@@ -202,7 +202,7 @@ templates. Here is a simple example to get you started
     {
         // force compilation
         if ($file->isFile()) {
-            $twig->loadTemplate(str_replace($tplDir . '/', '', $file));
+            $twig->load(str_replace($tplDir . '/', '', $file->getRealPath()));
         }
     }
 
