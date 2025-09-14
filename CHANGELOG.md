@@ -1,5 +1,10 @@
 # Change Log
 
+## [4.1.4] - 2025-09-14
+
+* Fix some Twig deprecations (#23)
+* Improve Twig's environment version check
+
 ## [4.1.3] - 2024-09-08
 
 * Add support for Twig 3.13 (#15)
@@ -47,6 +52,7 @@
 
 * First release of this library.
 
+[4.1.4]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.3...4.1.4
 [4.1.3]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.2...4.1.3
 [4.1.2]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.1...4.1.2
 [4.1.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.0...4.1.1
