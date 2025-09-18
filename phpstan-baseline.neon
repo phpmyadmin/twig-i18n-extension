@@ -26,6 +26,11 @@ parameters:
 			path: src/Node/TransNode.php
 
 		-
+			message: "#^Call to function method_exists\\(\\) with Twig\\\\Parser and 'parseExpression' will always evaluate to true\\.$#"
+			count: 3
+			path: src/TokenParser/TransTokenParser.php
+
+		-
 			message: "#^Method PhpMyAdmin\\\\Twig\\\\Extensions\\\\TokenParser\\\\TransTokenParser\\:\\:preParse\\(\\) should return array\\{Twig\\\\Node\\\\Node, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Expression\\\\AbstractExpression\\|null, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, int, string\\} but returns array\\{mixed, Twig\\\\Node\\\\Node\\|null, mixed, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, mixed, int, string\\}\\.$#"
 			count: 1
 			path: src/TokenParser/TransTokenParser.php
@@ -59,21 +64,6 @@ parameters:
 			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEquals\\(\\)\\.$#"
 			count: 6
 			path: test/Node/MoTranslatorTransTest.php
-
-		-
-			message: "#^Cannot call method compile\\(\\) on mixed\\.$#"
-			count: 2
-			path: test/Node/TransTest.php
-
-		-
-			message: "#^Cannot call method getDebugInfo\\(\\) on mixed\\.$#"
-			count: 4
-			path: test/Node/TransTest.php
-
-		-
-			message: "#^Cannot call method getSource\\(\\) on mixed\\.$#"
-			count: 2
-			path: test/Node/TransTest.php
 
 		-
 			message: "#^Dynamic call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEmpty\\(\\)\\.$#"
