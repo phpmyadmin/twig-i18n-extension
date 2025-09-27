@@ -1,5 +1,9 @@
 # Change Log
 
+## [4.1.5] - 2025-09-27
+
+* Fix some Twig deprecations ([#26](https://github.com/phpmyadmin/twig-i18n-extension/pull/26))
+
 ## [4.1.4] - 2025-09-14
 
 * Fix some Twig deprecations (#23)
@@ -52,6 +56,7 @@
 
 * First release of this library.
 
+[4.1.5]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.4...4.1.5
 [4.1.4]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.3...4.1.4
 [4.1.3]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.2...4.1.3
 [4.1.2]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.1...4.1.2
