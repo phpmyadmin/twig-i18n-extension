@@ -10,6 +10,10 @@
 * Drop support for PHP 7.2, PHP 7.3, PHP 7.4, PHP 8.0 and PHP 8.1
 * Fix Twig deprecations (#16, #17, #18)
 
+## [4.1.5] - 2025-09-27
+
+* Fix some Twig deprecations ([#26](https://github.com/phpmyadmin/twig-i18n-extension/pull/26))
+
 ## [4.1.4] - 2025-09-14
 
 * Fix some Twig deprecations (#23)
@@ -64,6 +68,7 @@
 
 [5.0.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.3...5.0.0
+[4.1.5]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.4...4.1.5
 [4.1.4]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.3...4.1.4
 [4.1.3]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.2...4.1.3
 [4.1.2]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.1...4.1.2

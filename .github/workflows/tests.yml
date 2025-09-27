@@ -6,17 +6,17 @@ on:
 
 jobs:
   test-php:
-    name: Test on PHP ${{ matrix.php-version }} and ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Test on PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        php-version: ['8.2', '8.3', '8.4']
-        experimental: [false]
-        composer-options: ['']
-        os: [ubuntu-latest]
+        php-version: [ '8.2', '8.3', '8.4' ]
+        experimental: [ false ]
         include:
-          - { php-version: '8.5', composer-options: '--ignore-platform-req=php+', experimental: true, os: ubuntu-latest }
+          - php-version: '8.5'
+            experimental: true
+            composer-options: '--ignore-platform-req=php+'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
           coverage: xdebug
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v2
+        uses: ramsey/composer-install@v3
         with:
           dependency-versions: highest
           composer-options: ${{ matrix.composer-options }}
@@ -40,5 +40,5 @@ jobs:
       - name: Send coverage
         uses: codecov/codecov-action@v3
         with:
-          flags: unit-${{ matrix.php-version }}-${{ matrix.os }}
-          name: phpunit-${{ matrix.php-version }}-${{ matrix.os }}
+          flags: unit-${{ matrix.php-version }}
+          name: phpunit-${{ matrix.php-version }}
