@@ -23,6 +23,7 @@ use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Expression\TempNameExpression;
+use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
@@ -259,7 +260,11 @@ class TransNode extends Node
 
                     $attributeName = $n->getAttribute('name');
                     $msg .= sprintf('%%%s%%', $attributeName);
-                    $vars[] = new NameExpression($attributeName, $n->getTemplateLine());
+                    if (class_exists(ContextVariable::class)) {
+                        $vars[] = new ContextVariable($attributeName, $n->getTemplateLine());
+                    } else {
+                        $vars[] = new NameExpression($attributeName, $n->getTemplateLine());
+                    }
                 } else {
                     /** @phpstan-var TextNode $node */
                     $msg .= $node->getAttribute('data');
@@ -269,7 +274,7 @@ class TransNode extends Node
             $msg = $body->getAttribute('data');
         }
 
-        return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
+        return [new I18nNode(new ConstantExpression(trim($msg), $body->getTemplateLine()), [], 0), $vars];
     }
 
     /**

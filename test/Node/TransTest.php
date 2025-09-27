@@ -19,7 +19,6 @@ use Twig\Attribute\YieldReady;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\NameExpression;
-use Twig\Node\Node;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 use Twig\Test\NodeTestCase;
@@ -37,16 +36,16 @@ class TransTest extends NodeTestCase
     public function testConstructor(): void
     {
         $count = new ConstantExpression(12, 0);
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('Hello', 0),
-        ], [], 0);
-        $plural = new Node([
+        ]);
+        $plural = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' apples', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
 
         $this->assertEquals($body, $node->getNode('body'));
@@ -57,19 +56,19 @@ class TransTest extends NodeTestCase
     public function testConstructorWithDomain(): void
     {
         $count = new ConstantExpression(12, 0);
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('Hello', 0),
-        ], [], 0);
-        $domain = new Node([
+        ]);
+        $domain = new Nodes([
             new TextNode('coredomain', 0),
-        ], [], 0);
-        $plural = new Node([
+        ]);
+        $plural = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' apples', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, $plural, $count, null, null, $domain, 0);
 
         $this->assertEquals($body, $node->getNode('body'));
@@ -82,11 +81,11 @@ class TransTest extends NodeTestCase
     {
         $count = new ConstantExpression(5, 0);
         $body = new TextNode('There is 1 pending task', 0);
-        $plural = new Node([
+        $plural = new Nodes([
             new TextNode('There are ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' pending tasks', 0),
-        ], [], 0);
+        ]);
         $notes = new TextNode('Notes for translators', 0);
         TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// custom: ';
@@ -110,11 +109,11 @@ class TransTest extends NodeTestCase
     {
         $count = new ConstantExpression(5, 0);
         $body = new TextNode('There is 1 pending task', 0);
-        $plural = new Node([
+        $plural = new Nodes([
             new TextNode('There are ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' pending tasks', 0),
-        ], [], 0);
+        ]);
         $notes = new TextNode('Notes for translators', 0);
 
         TransNode::$enableAddDebugInfo = true;
@@ -143,9 +142,9 @@ class TransTest extends NodeTestCase
         $tests = [];
 
         $body = new NameExpression('foo', 0);
-        $domain = new Node([
+        $domain = new Nodes([
             new TextNode('coredomain', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, null, null, null, null, $domain, 0);
         $tests[] = [
             $node,
@@ -160,17 +159,17 @@ class TransTest extends NodeTestCase
         $node = new TransNode($body, null, null, null, null, null, 0);
         $tests[] = [$node, self::echoOrYield() . ' gettext("Hello");'];
 
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('Hello', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, null, null, null, null, null, 0);
         $tests[] = [$node, self::echoOrYield() . ' gettext("Hello");'];
 
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(new NameExpression('foo', 0), 0),
             new TextNode(' pommes', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, null, null, null, null, null, 0);
         $tests[] = [
             $node,
@@ -181,18 +180,18 @@ class TransTest extends NodeTestCase
         ];
 
         $count = new ConstantExpression(12, 0);
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have one apple', 0),
-        ], [], 0);
-        $plural = new Node([
+        ]);
+        $plural = new Nodes([
             new TextNode('Hey ', 0),
             new PrintNode(new NameExpression('name', 0), 0),
             new TextNode(', I have ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' apples', 0),
-        ], [], 0);
+        ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
         $tests[] = [
             $node,
@@ -206,14 +205,14 @@ class TransTest extends NodeTestCase
         ];
 
         // with escaper extension set to on
-        $body = new Node([
+        $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(
-                new FilterExpression(new NameExpression('foo', 0), new ConstantExpression('escape', 0), new Node(), 0),
+                new FilterExpression(new NameExpression('foo', 0), new ConstantExpression('escape', 0), new Nodes(), 0),
                 0
             ),
             new TextNode(' pommes', 0),
-        ], [], 0);
+        ]);
 
         $node = new TransNode($body, null, null, null, null, null, 0);
         $tests[] = [
@@ -241,11 +240,11 @@ class TransTest extends NodeTestCase
 
         $count = new ConstantExpression(5, 0);
         $body = new TextNode('There is 1 pending task', 0);
-        $plural = new Node([
+        $plural = new Nodes([
             new TextNode('There are ', 0),
             new PrintNode(new NameExpression('count', 0), 0),
             new TextNode(' pending tasks', 0),
-        ], [], 0);
+        ]);
         $notes = new TextNode('Notes for translators', 0);
         $node = new TransNode($body, $plural, $count, null, $notes, null, 0);
         $tests[] = [
