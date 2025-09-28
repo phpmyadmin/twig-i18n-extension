@@ -17,13 +17,14 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Environment;
 use Twig\Node\Expression\ConstantExpression;
-use Twig\Node\Expression\FilterExpression;
+use Twig\Node\Expression\Filter\RawFilter;
 use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\Node;
 use Twig\Node\Nodes;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 use Twig\Test\NodeTestCase;
+use Twig\TwigFilter;
 
 use function sprintf;
 
@@ -203,7 +204,7 @@ class TransTest extends NodeTestCase
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(
-                new FilterExpression($contextFoo, new ConstantExpression('escape', 0), new Nodes(), 0),
+                new RawFilter($contextFoo, new TwigFilter('escape'), new Nodes(), 0),
                 0,
             ),
             new TextNode(' pommes', 0),
