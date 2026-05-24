@@ -16,6 +16,7 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Attribute\YieldReady;
+use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\NameExpression;
@@ -209,6 +210,65 @@ class TransTest extends NodeTestCase
             new TextNode('J\'ai ', 0),
             new PrintNode(
                 new FilterExpression(new NameExpression('foo', 0), new ConstantExpression('escape', 0), new Nodes(), 0),
+                0
+            ),
+            new TextNode(' pommes', 0),
+        ]);
+
+        $node = new TransNode($body, null, null, null, null, null, 0);
+        $tests[] = [
+            $node,
+            sprintf(
+                self::echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                $this->getVariableGetter('foo')
+            ),
+        ];
+
+        // sandbox + auto-escape (Twig 3.26+): SandboxNodeVisitor wraps the escape FilterExpression
+        // in CheckToStringNode, so the print expr becomes CTS(FE(escape, foo)).
+        $body = new Nodes([
+            new TextNode('J\'ai ', 0),
+            new PrintNode(
+                new CheckToStringNode(
+                    new FilterExpression(
+                        new NameExpression('foo', 0),
+                        new ConstantExpression('escape', 0),
+                        new Nodes(),
+                        0
+                    )
+                ),
+                0
+            ),
+            new TextNode(' pommes', 0),
+        ]);
+
+        $node = new TransNode($body, null, null, null, null, null, 0);
+        $tests[] = [
+            $node,
+            sprintf(
+                self::echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                $this->getVariableGetter('foo')
+            ),
+        ];
+
+        // sandbox + auto-escape on a filtered variable (e.g. {{ foo|upper }}) produces
+        // CTS(FE(escape, FE(upper, foo))) — the unwrap must strip every FE/CTS layer.
+        $body = new Nodes([
+            new TextNode('J\'ai ', 0),
+            new PrintNode(
+                new CheckToStringNode(
+                    new FilterExpression(
+                        new FilterExpression(
+                            new NameExpression('foo', 0),
+                            new ConstantExpression('upper', 0),
+                            new Nodes(),
+                            0
+                        ),
+                        new ConstantExpression('escape', 0),
+                        new Nodes(),
+                        0
+                    )
+                ),
                 0
             ),
             new TextNode(' pommes', 0),
