@@ -19,7 +19,9 @@ jobs:
             composer-options: '--ignore-platform-req=php+'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
@@ -29,9 +31,8 @@ jobs:
           coverage: xdebug
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
-          dependency-versions: highest
           composer-options: ${{ matrix.composer-options }}
 
       - name: Run PHP tests
