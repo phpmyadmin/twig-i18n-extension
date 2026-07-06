@@ -29,7 +29,7 @@ use function method_exists;
 class TransTokenParser extends AbstractTokenParser
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function parse(Token $token)
     {
@@ -131,7 +131,7 @@ class TransTokenParser extends AbstractTokenParser
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getTag()
     {

@@ -24,7 +24,7 @@ use function gettext;
 class I18nExtension extends AbstractExtension
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getTokenParsers()
     {
@@ -32,7 +32,7 @@ class I18nExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getFilters()
     {
@@ -42,7 +42,7 @@ class I18nExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @return string
      */
