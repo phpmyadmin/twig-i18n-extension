@@ -96,7 +96,7 @@ class TransNode extends Node
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function compile(Compiler $compiler)
     {
