@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up PHP 7.2
         uses: shivammathur/setup-php@v2
@@ -21,9 +23,7 @@ jobs:
         run: composer validate --strict
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v2
-        with:
-          dependency-versions: highest
+        uses: ramsey/composer-install@v4
 
       - name: Lint files
         run: composer run phpcs
@@ -32,7 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up PHP 7.2
         uses: shivammathur/setup-php@v2
@@ -41,9 +43,7 @@ jobs:
           tools: composer:v2
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v2
-        with:
-          dependency-versions: highest
+        uses: ramsey/composer-install@v4
 
       - name: Analyse files
         run: composer run phpstan
