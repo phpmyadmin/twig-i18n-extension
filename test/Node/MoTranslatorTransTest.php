@@ -25,9 +25,20 @@ use Twig\Node\TextNode;
 use Twig\Test\NodeTestCase;
 
 use function sprintf;
+use function version_compare;
 
 class MoTranslatorTransTest extends NodeTestCase
 {
+    /**
+     * Twig 3.26 encodes single quotes as \x27 (not ') in compiled string literals
+     * as a defense-in-depth measure, so the expected output differs by Twig version.
+     */
+    private static function apostrophe(): string
+    {
+        /** @phpstan-ignore-next-line */
+        return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
+    }
+
     public static function setUpBeforeClass(): void
     {
         TransNode::$notesLabel = '// l10n: ';
@@ -112,7 +123,7 @@ class MoTranslatorTransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                'yield strtr(_gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                'yield strtr(_gettext("J' . self::apostrophe() . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 self::createVariableGetter('foo'),
             ),
         ];
@@ -154,7 +165,8 @@ class MoTranslatorTransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                'yield strtr(_pgettext("The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                'yield strtr(_pgettext("The context", "J' . self::apostrophe()
+                . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 self::createVariableGetter('foo'),
             ),
         ];
@@ -202,7 +214,8 @@ class MoTranslatorTransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                'yield strtr(_dpgettext("mydomain", "The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                'yield strtr(_dpgettext("mydomain", "The context", "J' . self::apostrophe()
+                . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 self::createVariableGetter('foo'),
             ),
         ];

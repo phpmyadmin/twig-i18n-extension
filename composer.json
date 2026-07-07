@@ -77,8 +77,5 @@
         "branch-alias": {
             "dev-master": "5.0-dev"
         }
-    },
-    "conflict": {
-        "twig/twig": ">=3.26"
     }
 }

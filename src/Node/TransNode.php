@@ -229,12 +229,12 @@ class TransNode extends Node
             foreach ($body as $node) {
                 if ($node instanceof PrintNode) {
                     $n = $node->getNode('expr');
-                    while ($n instanceof FilterExpression) {
-                        $n = $n->getNode('node');
-                    }
-
-                    while ($n instanceof CheckToStringNode) {
-                        $n = $n->getNode('expr');
+                    // Sandbox + auto-escape can wrap the variable in any combination of FilterExpression
+                    // and CheckToStringNode, in either order and at arbitrary depth (e.g. CTS -> FE(escape)
+                    // -> FE(upper) -> Var for `{{ obj|upper }}` under sandbox in Twig 3.26+). Peel both
+                    // wrappers in a single loop so we always reach the underlying variable.
+                    while ($n instanceof FilterExpression || $n instanceof CheckToStringNode) {
+                        $n = $n instanceof FilterExpression ? $n->getNode('node') : $n->getNode('expr');
                     }
 
                     $attributeName = $n->getAttribute('name');

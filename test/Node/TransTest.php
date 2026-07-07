@@ -16,6 +16,7 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Environment;
+use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\Variable\ContextVariable;
@@ -26,9 +27,20 @@ use Twig\Node\TextNode;
 use Twig\Test\NodeTestCase;
 
 use function sprintf;
+use function version_compare;
 
 class TransTest extends NodeTestCase
 {
+    /**
+     * Twig 3.26 encodes single quotes as \x27 (not ') in compiled string literals
+     * as a defense-in-depth measure, so the expected output differs by Twig version.
+     */
+    private static function apostrophe(): string
+    {
+        /** @phpstan-ignore-next-line */
+        return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
+    }
+
     public function testConstructor(): void
     {
         $count = new ConstantExpression(12, 0);
@@ -168,7 +180,7 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                'yield strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                'yield strtr(gettext("J' . self::apostrophe() . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 self::createVariableGetter('foo'),
             ),
         ];
@@ -213,7 +225,66 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                'yield strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                'yield strtr(gettext("J' . self::apostrophe() . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::createVariableGetter('foo'),
+            ),
+        ];
+
+        // sandbox + auto-escape (Twig 3.26+): SandboxNodeVisitor wraps the escape FilterExpression
+        // in CheckToStringNode, so the print expr becomes CTS(FE(escape, foo)).
+        $body = new Nodes([
+            new TextNode('J\'ai ', 0),
+            new PrintNode(
+                new CheckToStringNode(
+                    new FilterExpression(
+                        new ContextVariable('foo', 0),
+                        new ConstantExpression('escape', 0),
+                        new Nodes(),
+                        0,
+                    ),
+                ),
+                0,
+            ),
+            new TextNode(' pommes', 0),
+        ]);
+
+        $node = new TransNode($body, null, null, null, null, null, 0);
+        $tests[] = [
+            $node,
+            sprintf(
+                'yield strtr(gettext("J' . self::apostrophe() . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::createVariableGetter('foo'),
+            ),
+        ];
+
+        // sandbox + auto-escape on a filtered variable (e.g. {{ foo|upper }}) produces
+        // CTS(FE(escape, FE(upper, foo))) — the unwrap must strip every FE/CTS layer.
+        $body = new Nodes([
+            new TextNode('J\'ai ', 0),
+            new PrintNode(
+                new CheckToStringNode(
+                    new FilterExpression(
+                        new FilterExpression(
+                            new ContextVariable('foo', 0),
+                            new ConstantExpression('upper', 0),
+                            new Nodes(),
+                            0,
+                        ),
+                        new ConstantExpression('escape', 0),
+                        new Nodes(),
+                        0,
+                    ),
+                ),
+                0,
+            ),
+            new TextNode(' pommes', 0),
+        ]);
+
+        $node = new TransNode($body, null, null, null, null, null, 0);
+        $tests[] = [
+            $node,
+            sprintf(
+                'yield strtr(gettext("J' . self::apostrophe() . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 self::createVariableGetter('foo'),
             ),
         ];
