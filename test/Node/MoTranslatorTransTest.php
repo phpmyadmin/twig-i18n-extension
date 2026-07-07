@@ -16,6 +16,7 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Attribute\YieldReady;
+use Twig\Environment;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\PrintNode;
@@ -24,12 +25,23 @@ use Twig\Test\NodeTestCase;
 
 use function class_exists;
 use function sprintf;
+use function version_compare;
 
 class MoTranslatorTransTest extends NodeTestCase
 {
     private static function echoOrYield(): string
     {
         return class_exists(YieldReady::class) ? 'yield' : 'echo';
+    }
+
+    /**
+     * Twig 3.26 encodes single quotes as \x27 (not ') in compiled string literals
+     * as a defense-in-depth measure, so the expected output differs by Twig version.
+     */
+    private static function apostrophe(): string
+    {
+        /** @phpstan-ignore-next-line */
+        return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
     }
 
     public static function setUpBeforeClass(): void
@@ -118,7 +130,8 @@ class MoTranslatorTransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                self::echoOrYield() . ' strtr(_gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::echoOrYield() . ' strtr(_gettext("J' . self::apostrophe()
+                    . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];
@@ -161,7 +174,8 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 self::echoOrYield()
-                . ' strtr(_pgettext("The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                . ' strtr(_pgettext("The context", "J' . self::apostrophe()
+                . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];
@@ -211,7 +225,8 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 self::echoOrYield()
-                . ' strtr(_dpgettext("mydomain", "The context", "J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                . ' strtr(_dpgettext("mydomain", "The context", "J' . self::apostrophe()
+                . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];

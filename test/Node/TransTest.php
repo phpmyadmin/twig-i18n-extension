@@ -16,6 +16,7 @@ namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Attribute\YieldReady;
+use Twig\Environment;
 use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
@@ -26,12 +27,23 @@ use Twig\Test\NodeTestCase;
 
 use function class_exists;
 use function sprintf;
+use function version_compare;
 
 class TransTest extends NodeTestCase
 {
     private static function echoOrYield(): string
     {
         return class_exists(YieldReady::class) ? 'yield' : 'echo';
+    }
+
+    /**
+     * Twig 3.26 encodes single quotes as \x27 (not ') in compiled string literals
+     * as a defense-in-depth measure, so the expected output differs by Twig version.
+     */
+    private static function apostrophe(): string
+    {
+        /** @phpstan-ignore-next-line */
+        return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
     }
 
     public function testConstructor(): void
@@ -175,7 +187,8 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                self::echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::echoOrYield() . ' strtr(gettext("J' . self::apostrophe()
+                    . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];
@@ -219,7 +232,8 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                self::echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::echoOrYield() . ' strtr(gettext("J' . self::apostrophe()
+                    . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];
@@ -246,7 +260,8 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                self::echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::echoOrYield() . ' strtr(gettext("J' . self::apostrophe()
+                    . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];
@@ -278,7 +293,8 @@ class TransTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                self::echoOrYield() . ' strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
+                self::echoOrYield() . ' strtr(gettext("J' . self::apostrophe()
+                    . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
                 $this->getVariableGetter('foo')
             ),
         ];
