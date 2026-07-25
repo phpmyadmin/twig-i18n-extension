@@ -1,5 +1,9 @@
 # Change Log
 
+## [5.0.2] - 2026-07-25
+
+* Fix TransNode unwrap for sandbox + auto-escape (Twig 3.26+) ([#27](https://github.com/phpmyadmin/twig-i18n-extension/pull/27))
+
 ## [5.0.1] - 2025-09-26
 
 * Fix some Twig deprecations (#23)
@@ -70,6 +74,7 @@
 
 * First release of this library.
 
+[5.0.2]: https://github.com/phpmyadmin/twig-i18n-extension/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.3...5.0.0
 [4.1.6]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.5...4.1.6
