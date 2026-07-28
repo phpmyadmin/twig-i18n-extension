@@ -15,6 +15,7 @@ use PhpMyAdmin\Twig\Extensions\I18nExtension;
 
 final class I18nExtensionTest extends IntegrationTestCase
 {
+    /** {@inheritDoc} */
     public function getExtensions(): array
     {
         return [

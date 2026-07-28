@@ -113,9 +113,7 @@ class TransNode extends Node
         parent::__construct($nodes, [], $lineno, $tag);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function compile(Compiler $compiler)
     {
         if (self::$enableAddDebugInfo) {

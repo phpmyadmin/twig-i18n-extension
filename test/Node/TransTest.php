@@ -142,6 +142,7 @@ final class TransTest extends NodeTestCase
         TransNode::$notesLabel = '// notes: ';
     }
 
+    /** {@inheritDoc} */
     public static function provideTests(): iterable
     {
         $tests = [];

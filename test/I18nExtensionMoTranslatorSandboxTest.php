@@ -23,6 +23,7 @@ final class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
         Loader::loadFunctions();
     }
 
+    /** {@inheritDoc} */
     public function getExtensions(): array
     {
         $tags = ['if', 'set', 'trans'];

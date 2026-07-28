@@ -14,7 +14,6 @@ namespace PhpMyAdmin\Tests\Twig\Extensions;
 use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionDebug;
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
-use Twig\Extension\AbstractExtension;
 
 final class I18nExtensionMoTranslatorDebugTest extends IntegrationTestCase
 {
@@ -23,9 +22,7 @@ final class I18nExtensionMoTranslatorDebugTest extends IntegrationTestCase
         Loader::loadFunctions();
     }
 
-    /**
-     * @return AbstractExtension[]
-     */
+    /** {@inheritDoc} */
     public function getExtensions(): array
     {
         return [

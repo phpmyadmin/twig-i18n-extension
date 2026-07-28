@@ -17,6 +17,7 @@ use Twig\Sandbox\SecurityPolicy;
 
 final class I18nExtensionSandboxTest extends IntegrationTestCase
 {
+    /** {@inheritDoc} */
     public function getExtensions(): array
     {
         $tags = ['if', 'set', 'trans'];
