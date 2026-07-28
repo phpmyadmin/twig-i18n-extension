@@ -95,9 +95,7 @@ class TransNode extends Node
         parent::__construct($nodes, [], $lineno);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function compile(Compiler $compiler)
     {
         if (self::$enableAddDebugInfo) {
@@ -214,7 +212,7 @@ class TransNode extends Node
     /**
      * Keep this method protected instead of private some implementations may use it
      *
-     * @psalm-return array{Node, list<ContextVariable>}
+     * @return array{Node, list<ContextVariable>}
      */
     protected function compileString(Node $body): array
     {

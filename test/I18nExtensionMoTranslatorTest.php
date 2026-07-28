@@ -9,23 +9,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
+namespace PhpMyAdmin\Tests\Twig\Extensions;
 
 use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionMoTranslator;
 use PHPUnit\Framework\Attributes\Group;
-use Twig\Extension\ExtensionInterface;
-use Twig\Test\IntegrationTestCase;
 
 #[Group('integration')]
-class I18nExtensionMoTranslatorTest extends IntegrationTestCase
+final class I18nExtensionMoTranslatorTest extends IntegrationTestCase
 {
     public static function setUpBeforeClass(): void
     {
         Loader::loadFunctions();
     }
 
-    /** @return ExtensionInterface[] */
+    /** {@inheritDoc} */
     public function getExtensions(): array
     {
         return [

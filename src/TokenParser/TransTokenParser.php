@@ -29,9 +29,7 @@ use function method_exists;
 
 class TransTokenParser extends AbstractTokenParser
 {
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function parse(Token $token)
     {
         [
@@ -48,7 +46,7 @@ class TransTokenParser extends AbstractTokenParser
         return new TransNode($body, $plural, $count, $context, $notes, $domain, $lineno, $tag);
     }
 
-    /** @psalm-return array{Node, Node|null, AbstractExpression|null, Node|null, Node|null, Node|null, int, string} */
+    /** @return array{Node, Node|null, AbstractExpression|null, Node|null, Node|null, Node|null, int, string} */
     protected function preParse(Token $token): array
     {
         $lineno = $token->getLine();
@@ -126,9 +124,7 @@ class TransTokenParser extends AbstractTokenParser
         return $token->test('endtrans');
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function getTag()
     {
         return 'trans';

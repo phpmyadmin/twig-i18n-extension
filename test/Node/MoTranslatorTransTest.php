@@ -14,31 +14,18 @@ declare(strict_types=1);
 
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
+use PhpMyAdmin\Tests\Twig\Extensions\NodeTestCase;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
-use Twig\Environment;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\Variable\ContextVariable;
-use Twig\Node\Node;
 use Twig\Node\Nodes;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
-use Twig\Test\NodeTestCase;
 
 use function sprintf;
-use function version_compare;
 
-class MoTranslatorTransTest extends NodeTestCase
+final class MoTranslatorTransTest extends NodeTestCase
 {
-    /**
-     * Twig 3.26 encodes single quotes as \x27 (not ') in compiled string literals
-     * as a defense-in-depth measure, so the expected output differs by Twig version.
-     */
-    private static function apostrophe(): string
-    {
-        /** @phpstan-ignore-next-line */
-        return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
-    }
-
     public static function setUpBeforeClass(): void
     {
         TransNode::$notesLabel = '// l10n: ';
@@ -75,15 +62,15 @@ class MoTranslatorTransTest extends NodeTestCase
         ]);
         $node = new TransNode($body, $plural, $count, $context, $notes, $domain, 0);
 
-        $this->assertEquals($body, $node->getNode('body'));
-        $this->assertEquals($count, $node->getNode('count'));
-        $this->assertEquals($plural, $node->getNode('plural'));
-        $this->assertEquals($notes, $node->getNode('notes'));
-        $this->assertEquals($domain, $node->getNode('domain'));
-        $this->assertEquals($context, $node->getNode('context'));
+        self::assertEquals($body, $node->getNode('body'));
+        self::assertEquals($count, $node->getNode('count'));
+        self::assertEquals($plural, $node->getNode('plural'));
+        self::assertEquals($notes, $node->getNode('notes'));
+        self::assertEquals($domain, $node->getNode('domain'));
+        self::assertEquals($context, $node->getNode('context'));
     }
 
-    /** @return iterable<array{0: Node, 1: string, 2?: Environment|null, 3?: bool}> */
+    /** {@inheritDoc} */
     public static function provideTests(): iterable
     {
         $tests = [];

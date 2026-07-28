@@ -14,33 +14,21 @@ declare(strict_types=1);
 
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
+use PhpMyAdmin\Tests\Twig\Extensions\NodeTestCase;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
-use Twig\Environment;
 use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\Variable\ContextVariable;
-use Twig\Node\Node;
 use Twig\Node\Nodes;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
-use Twig\Test\NodeTestCase;
+use Twig\TwigFilter;
 
 use function sprintf;
-use function version_compare;
 
-class TransTest extends NodeTestCase
+final class TransTest extends NodeTestCase
 {
-    /**
-     * Twig 3.26 encodes single quotes as \x27 (not ') in compiled string literals
-     * as a defense-in-depth measure, so the expected output differs by Twig version.
-     */
-    private static function apostrophe(): string
-    {
-        /** @phpstan-ignore-next-line */
-        return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
-    }
-
     public function testConstructor(): void
     {
         $count = new ConstantExpression(12, 0);
@@ -56,9 +44,9 @@ class TransTest extends NodeTestCase
         ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
 
-        $this->assertEquals($body, $node->getNode('body'));
-        $this->assertEquals($count, $node->getNode('count'));
-        $this->assertEquals($plural, $node->getNode('plural'));
+        self::assertEquals($body, $node->getNode('body'));
+        self::assertEquals($count, $node->getNode('count'));
+        self::assertEquals($plural, $node->getNode('plural'));
     }
 
     public function testConstructorWithDomain(): void
@@ -79,10 +67,10 @@ class TransTest extends NodeTestCase
         ]);
         $node = new TransNode($body, $plural, $count, null, null, $domain, 0);
 
-        $this->assertEquals($body, $node->getNode('body'));
-        $this->assertEquals($count, $node->getNode('count'));
-        $this->assertEquals($plural, $node->getNode('plural'));
-        $this->assertEquals($domain, $node->getNode('domain'));
+        self::assertEquals($body, $node->getNode('body'));
+        self::assertEquals($count, $node->getNode('count'));
+        self::assertEquals($plural, $node->getNode('plural'));
+        self::assertEquals($domain, $node->getNode('domain'));
     }
 
     public function testEnableDebugNotEnabled(): void
@@ -100,15 +88,15 @@ class TransTest extends NodeTestCase
         $node = new TransNode($body, $plural, $count, null, $notes, null, 80);
 
         $compiler = $this->getCompiler();
-        $this->assertEmpty($compiler->getDebugInfo());
+        self::assertEmpty($compiler->getDebugInfo());
         $sourceCode = $compiler->compile($node)->getSource();
-        $this->assertSame(
+        self::assertSame(
             '// custom: Notes for translators' . "\n"
             . 'yield strtr(ngettext("There is 1 pending task",'
             . ' "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
             $sourceCode,
         );
-        $this->assertSame([], $compiler->getDebugInfo());
+        self::assertSame([], $compiler->getDebugInfo());
         TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// notes: ';
     }
@@ -129,20 +117,20 @@ class TransTest extends NodeTestCase
         $node = new TransNode($body, $plural, $count, null, $notes, null, 80);
 
         $compiler = $this->getCompiler();
-        $this->assertEmpty($compiler->getDebugInfo());
+        self::assertEmpty($compiler->getDebugInfo());
         $sourceCode = $compiler->compile($node)->getSource();
-        $this->assertSame(
+        self::assertSame(
             '// line 80' . "\n" . '// custom: Notes for translators' . "\n"
             . 'yield strtr(ngettext("There'
             . ' is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
             $sourceCode,
         );
-        $this->assertSame([2 => 80], $compiler->getDebugInfo());
+        self::assertSame([2 => 80], $compiler->getDebugInfo());
         TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// notes: ';
     }
 
-    /** @return iterable<array{0: Node, 1: string, 2?: Environment|null, 3?: bool}> */
+    /** {@inheritDoc} */
     public static function provideTests(): iterable
     {
         $tests = [];
@@ -215,7 +203,7 @@ class TransTest extends NodeTestCase
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(
-                new FilterExpression($contextFoo, new ConstantExpression('escape', 0), new Nodes(), 0),
+                new FilterExpression($contextFoo, new TwigFilter('escape'), new Nodes(), 0),
                 0,
             ),
             new TextNode(' pommes', 0),
@@ -238,7 +226,7 @@ class TransTest extends NodeTestCase
                 new CheckToStringNode(
                     new FilterExpression(
                         new ContextVariable('foo', 0),
-                        new ConstantExpression('escape', 0),
+                        new TwigFilter('escape'),
                         new Nodes(),
                         0,
                     ),
@@ -266,11 +254,11 @@ class TransTest extends NodeTestCase
                     new FilterExpression(
                         new FilterExpression(
                             new ContextVariable('foo', 0),
-                            new ConstantExpression('upper', 0),
+                            new TwigFilter('upper'),
                             new Nodes(),
                             0,
                         ),
-                        new ConstantExpression('escape', 0),
+                        new TwigFilter('escape'),
                         new Nodes(),
                         0,
                     ),

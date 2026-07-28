@@ -9,25 +9,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
+namespace PhpMyAdmin\Tests\Twig\Extensions;
 
 use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
 use PHPUnit\Framework\Attributes\Group;
-use Twig\Extension\ExtensionInterface;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicy;
-use Twig\Test\IntegrationTestCase;
 
 #[Group('integration')]
-class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
+final class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
 {
     public static function setUpBeforeClass(): void
     {
         Loader::loadFunctions();
     }
 
-    /** @return ExtensionInterface[] */
+    /** {@inheritDoc} */
     public function getExtensions(): array
     {
         $tags = ['if', 'set', 'trans'];
@@ -50,6 +48,6 @@ class I18nExtensionMoTranslatorSandboxTest extends IntegrationTestCase
 
     public function testGetName(): void
     {
-        $this->assertNotEmpty((new I18nExtension())->getName());
+        self::assertNotEmpty((new I18nExtension())->getName());
     }
 }

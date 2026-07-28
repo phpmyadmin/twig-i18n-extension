@@ -7,16 +7,11 @@
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
 
+    <!-- Make sniff report relative -->
+    <arg name="basepath" value="."/>
+
     <file>src</file>
     <file>test</file>
 
     <rule ref="PhpMyAdmin"/>
-
-    <rule ref="SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition"/>
-    <rule ref="SlevomatCodingStandard.Functions.RequireSingleLineCall"/>
-    <rule ref="SlevomatCodingStandard.Whitespaces.DuplicateSpaces">
-        <properties>
-            <property name="ignoreSpacesInComment" value="true"/>
-        </properties>
-    </rule>
 </ruleset>

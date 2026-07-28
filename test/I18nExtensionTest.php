@@ -9,17 +9,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
+namespace PhpMyAdmin\Tests\Twig\Extensions;
 
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
 use PHPUnit\Framework\Attributes\Group;
-use Twig\Extension\ExtensionInterface;
-use Twig\Test\IntegrationTestCase;
 
 #[Group('integration')]
-class I18nExtensionTest extends IntegrationTestCase
+final class I18nExtensionTest extends IntegrationTestCase
 {
-    /** @return ExtensionInterface[] */
+    /** {@inheritDoc} */
     public function getExtensions(): array
     {
         return [
@@ -34,6 +32,6 @@ class I18nExtensionTest extends IntegrationTestCase
 
     public function testGetName(): void
     {
-        $this->assertNotEmpty((new I18nExtension())->getName());
+        self::assertNotEmpty((new I18nExtension())->getName());
     }
 }
