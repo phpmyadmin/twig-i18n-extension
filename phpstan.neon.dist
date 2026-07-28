@@ -4,4 +4,3 @@ parameters:
         - src
         - test
     reportUnmatchedIgnoredErrors: true
-    checkMissingIterableValueType: false

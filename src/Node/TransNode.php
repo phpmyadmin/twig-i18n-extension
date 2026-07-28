@@ -34,6 +34,7 @@ use function count;
 use function sprintf;
 use function str_replace;
 use function trim;
+use function version_compare;
 
 /**
  * Represents a trans node.
@@ -103,7 +104,7 @@ class TransNode extends Node
         }
 
         /** @phpstan-ignore-next-line */
-        if (Environment::MAJOR_VERSION >= 3 && Environment::MINOR_VERSION >= 12) {
+        if (version_compare(Environment::VERSION, '3.12.0', '>=')) {
             parent::__construct($nodes, [], $lineno);
 
             return;
@@ -232,6 +233,8 @@ class TransNode extends Node
 
     /**
      * Keep this method protected instead of private some implementations may use it
+     *
+     * @return array{Node, list<NameExpression>}
      */
     protected function compileString(Node $body): array
     {
@@ -261,7 +264,9 @@ class TransNode extends Node
                     $attributeName = $n->getAttribute('name');
                     $msg .= sprintf('%%%s%%', $attributeName);
                     if (class_exists(ContextVariable::class)) {
-                        $vars[] = new ContextVariable($attributeName, $n->getTemplateLine());
+                        /** @var NameExpression $contextVariable */
+                        $contextVariable = new ContextVariable($attributeName, $n->getTemplateLine());
+                        $vars[] = $contextVariable;
                     } else {
                         $vars[] = new NameExpression($attributeName, $n->getTemplateLine());
                     }

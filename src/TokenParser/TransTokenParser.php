@@ -17,6 +17,7 @@ namespace PhpMyAdmin\Twig\Extensions\TokenParser;
 use PhpMyAdmin\Twig\Extensions\Node\I18nNode;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
 use Twig\Error\SyntaxError;
+use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
@@ -47,6 +48,18 @@ class TransTokenParser extends AbstractTokenParser
         return new TransNode($body, $plural, $count, $context, $notes, $domain, $lineno, $tag);
     }
 
+    /**
+     * @return array{
+     *     Node,
+     *     Node|null,
+     *     AbstractExpression|null,
+     *     Node|null,
+     *     Node|null,
+     *     Node|null,
+     *     int,
+     *     string|null
+     * }
+     */
     protected function preParse(Token $token): array
     {
         $lineno = $token->getLine();

@@ -14,36 +14,31 @@ declare(strict_types=1);
 
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
+use PhpMyAdmin\Tests\Twig\Extensions\NodeTestCase;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
-use Twig\Attribute\YieldReady;
 use Twig\Environment;
 use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
-use Twig\Node\Expression\NameExpression;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
-use Twig\Test\NodeTestCase;
+use Twig\TwigFilter;
 
-use function class_exists;
 use function sprintf;
 use function version_compare;
 
-class TransTest extends NodeTestCase
+final class TransTest extends NodeTestCase
 {
-    private static function echoOrYield(): string
-    {
-        return class_exists(YieldReady::class) ? 'yield' : 'echo';
-    }
-
-    /**
-     * Twig 3.26 encodes single quotes as \x27 (not ') in compiled string literals
-     * as a defense-in-depth measure, so the expected output differs by Twig version.
-     */
-    private static function apostrophe(): string
+    /** @return ConstantExpression */
+    public static function getFilter(string $filterName, int $lineno)
     {
         /** @phpstan-ignore-next-line */
-        return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
+        if (version_compare(Environment::VERSION, '3.12.0', '>=')) {
+            /** @phpstan-ignore-next-line */
+            return new TwigFilter($filterName);
+        }
+
+        return new ConstantExpression($filterName, $lineno);
     }
 
     public function testConstructor(): void
@@ -54,16 +49,16 @@ class TransTest extends NodeTestCase
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
 
-        $this->assertEquals($body, $node->getNode('body'));
-        $this->assertEquals($count, $node->getNode('count'));
-        $this->assertEquals($plural, $node->getNode('plural'));
+        self::assertEquals($body, $node->getNode('body'));
+        self::assertEquals($count, $node->getNode('count'));
+        self::assertEquals($plural, $node->getNode('plural'));
     }
 
     public function testConstructorWithDomain(): void
@@ -77,17 +72,17 @@ class TransTest extends NodeTestCase
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, null, null, $domain, 0);
 
-        $this->assertEquals($body, $node->getNode('body'));
-        $this->assertEquals($count, $node->getNode('count'));
-        $this->assertEquals($plural, $node->getNode('plural'));
-        $this->assertEquals($domain, $node->getNode('domain'));
+        self::assertEquals($body, $node->getNode('body'));
+        self::assertEquals($count, $node->getNode('count'));
+        self::assertEquals($plural, $node->getNode('plural'));
+        self::assertEquals($domain, $node->getNode('domain'));
     }
 
     public function testEnableDebugNotEnabled(): void
@@ -96,7 +91,7 @@ class TransTest extends NodeTestCase
         $body = new TextNode('There is 1 pending task', 0);
         $plural = new Nodes([
             new TextNode('There are ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' pending tasks', 0),
         ]);
         $notes = new TextNode('Notes for translators', 0);
@@ -105,15 +100,15 @@ class TransTest extends NodeTestCase
         $node = new TransNode($body, $plural, $count, null, $notes, null, 80);
 
         $compiler = $this->getCompiler();
-        $this->assertEmpty($compiler->getDebugInfo());
+        self::assertEmpty($compiler->getDebugInfo());
         $sourceCode = $compiler->compile($node)->getSource();
-        $this->assertSame(
+        self::assertSame(
             '// custom: Notes for translators' . "\n"
             . self::echoOrYield() . ' strtr(ngettext("There is 1 pending task",'
             . ' "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
             $sourceCode
         );
-        $this->assertSame([], $compiler->getDebugInfo());
+        self::assertSame([], $compiler->getDebugInfo());
         TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// notes: ';
     }
@@ -124,7 +119,7 @@ class TransTest extends NodeTestCase
         $body = new TextNode('There is 1 pending task', 0);
         $plural = new Nodes([
             new TextNode('There are ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' pending tasks', 0),
         ]);
         $notes = new TextNode('Notes for translators', 0);
@@ -134,39 +129,36 @@ class TransTest extends NodeTestCase
         $node = new TransNode($body, $plural, $count, null, $notes, null, 80);
 
         $compiler = $this->getCompiler();
-        $this->assertEmpty($compiler->getDebugInfo());
+        self::assertEmpty($compiler->getDebugInfo());
         $sourceCode = $compiler->compile($node)->getSource();
-        $this->assertSame(
+        self::assertSame(
             '// line 80' . "\n" . '// custom: Notes for translators' . "\n"
             . self::echoOrYield() . ' strtr(ngettext("There'
             . ' is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));' . "\n",
             $sourceCode
         );
-        $this->assertSame([2 => 80], $compiler->getDebugInfo());
+        self::assertSame([2 => 80], $compiler->getDebugInfo());
         TransNode::$enableAddDebugInfo = false;
         TransNode::$notesLabel = '// notes: ';
     }
 
-    /**
-     * @return array[]
-     */
-    public function getTests(): array
+    public static function provideTests(): iterable
     {
         $tests = [];
 
-        $body = new NameExpression('foo', 0);
+        $body = self::createContextVariable('foo', 0);
         $domain = new Nodes([
             new TextNode('coredomain', 0),
         ]);
         $node = new TransNode($body, null, null, null, null, $domain, 0);
         $tests[] = [
             $node,
-            sprintf(self::echoOrYield() . ' dgettext("coredomain", %s);', $this->getVariableGetter('foo')),
+            sprintf(self::echoOrYield() . ' dgettext("coredomain", %s);', self::createVariableGetter('foo')),
         ];
 
-        $body = new NameExpression('foo', 0);
+        $body = self::createContextVariable('foo', 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
-        $tests[] = [$node, sprintf(self::echoOrYield() . ' gettext(%s);', $this->getVariableGetter('foo'))];
+        $tests[] = [$node, sprintf(self::echoOrYield() . ' gettext(%s);', self::createVariableGetter('foo'))];
 
         $body = new ConstantExpression('Hello', 0);
         $node = new TransNode($body, null, null, null, null, null, 0);
@@ -180,7 +172,7 @@ class TransTest extends NodeTestCase
 
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
-            new PrintNode(new NameExpression('foo', 0), 0),
+            new PrintNode(self::createContextVariable('foo', 0), 0),
             new TextNode(' pommes', 0),
         ]);
         $node = new TransNode($body, null, null, null, null, null, 0);
@@ -189,21 +181,21 @@ class TransTest extends NodeTestCase
             sprintf(
                 self::echoOrYield() . ' strtr(gettext("J' . self::apostrophe()
                     . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                self::createVariableGetter('foo')
             ),
         ];
 
         $count = new ConstantExpression(12, 0);
         $body = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have one apple', 0),
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
@@ -213,8 +205,8 @@ class TransTest extends NodeTestCase
                 self::echoOrYield() . ' strtr(ngettext("Hey %%name%%, I have one apple", "Hey %%name%%, I have'
                 . ' %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
-                $this->getVariableGetter('name'),
-                $this->getVariableGetter('name')
+                self::createVariableGetter('name'),
+                self::createVariableGetter('name')
             ),
         ];
 
@@ -222,7 +214,12 @@ class TransTest extends NodeTestCase
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
             new PrintNode(
-                new FilterExpression(new NameExpression('foo', 0), new ConstantExpression('escape', 0), new Nodes(), 0),
+                new FilterExpression(
+                    self::createContextVariable('foo', 0),
+                    self::getFilter('escape', 0),
+                    new Nodes(),
+                    0
+                ),
                 0
             ),
             new TextNode(' pommes', 0),
@@ -234,7 +231,7 @@ class TransTest extends NodeTestCase
             sprintf(
                 self::echoOrYield() . ' strtr(gettext("J' . self::apostrophe()
                     . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                self::createVariableGetter('foo')
             ),
         ];
 
@@ -245,8 +242,8 @@ class TransTest extends NodeTestCase
             new PrintNode(
                 new CheckToStringNode(
                     new FilterExpression(
-                        new NameExpression('foo', 0),
-                        new ConstantExpression('escape', 0),
+                        self::createContextVariable('foo', 0),
+                        self::getFilter('escape', 0),
                         new Nodes(),
                         0
                     )
@@ -262,7 +259,7 @@ class TransTest extends NodeTestCase
             sprintf(
                 self::echoOrYield() . ' strtr(gettext("J' . self::apostrophe()
                     . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                self::createVariableGetter('foo')
             ),
         ];
 
@@ -274,12 +271,12 @@ class TransTest extends NodeTestCase
                 new CheckToStringNode(
                     new FilterExpression(
                         new FilterExpression(
-                            new NameExpression('foo', 0),
-                            new ConstantExpression('upper', 0),
+                            self::createContextVariable('foo', 0),
+                            self::getFilter('upper', 0),
                             new Nodes(),
                             0
                         ),
-                        new ConstantExpression('escape', 0),
+                        self::getFilter('escape', 0),
                         new Nodes(),
                         0
                     )
@@ -295,7 +292,7 @@ class TransTest extends NodeTestCase
             sprintf(
                 self::echoOrYield() . ' strtr(gettext("J' . self::apostrophe()
                     . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                self::createVariableGetter('foo')
             ),
         ];
 
@@ -318,7 +315,7 @@ class TransTest extends NodeTestCase
         $body = new TextNode('There is 1 pending task', 0);
         $plural = new Nodes([
             new TextNode('There are ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' pending tasks', 0),
         ]);
         $notes = new TextNode('Notes for translators', 0);
