@@ -60,9 +60,7 @@ abstract class NodeTestCase extends TestCase
         return new NameExpression($name, $lineno);
     }
 
-    /**
-     * @return iterable<array{0: Node, 1: string, 2?: Environment|null, 3?: bool}>
-     */
+    /** @return iterable<array{0: Node, 1: string, 2?: Environment|null, 3?: bool}> */
     abstract public static function provideTests(): iterable;
 
     /** @dataProvider provideTests */

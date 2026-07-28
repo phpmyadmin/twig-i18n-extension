@@ -21,6 +21,7 @@ final class I18nExtensionMoTranslatorTest extends IntegrationTestCase
         Loader::loadFunctions();
     }
 
+    /** {@inheritDoc} */
     public function getExtensions(): array
     {
         return [

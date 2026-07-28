@@ -65,73 +65,55 @@ abstract class IntegrationTestCase extends TestCase
 {
     abstract protected static function getFixturesDirectory(): string;
 
-    /**
-     * @return RuntimeLoaderInterface[]
-     */
+    /** @return RuntimeLoaderInterface[] */
     protected function getRuntimeLoaders(): array
     {
         return [];
     }
 
-    /**
-     * @return ExtensionInterface[]
-     */
+    /** @return ExtensionInterface[] */
     protected function getExtensions(): array
     {
         return [];
     }
 
-    /**
-     * @return TwigFilter[]
-     */
+    /** @return TwigFilter[] */
     protected function getTwigFilters(): array
     {
         return [];
     }
 
-    /**
-     * @return TwigFunction[]
-     */
+    /** @return TwigFunction[] */
     protected function getTwigFunctions(): array
     {
         return [];
     }
 
-    /**
-     * @return TwigTest[]
-     */
+    /** @return TwigTest[] */
     protected function getTwigTests(): array
     {
         return [];
     }
 
-    /**
-     * @return array<callable(string): (TwigFilter|false)>
-     */
+    /** @return array<callable(string): (TwigFilter|false)> */
     protected function getUndefinedFilterCallbacks(): array
     {
         return [];
     }
 
-    /**
-     * @return array<callable(string): (TwigFunction|false)>
-     */
+    /** @return array<callable(string): (TwigFunction|false)> */
     protected function getUndefinedFunctionCallbacks(): array
     {
         return [];
     }
 
-    /**
-     * @return array<callable(string): (TwigTest|false)>
-     */
+    /** @return array<callable(string): (TwigTest|false)> */
     protected function getUndefinedTestCallbacks(): array
     {
         return [];
     }
 
-    /**
-     * @return array<callable(string): (TokenParserInterface|false)>
-     */
+    /** @return array<callable(string): (TokenParserInterface|false)> */
     protected function getUndefinedTokenParserCallbacks(): array
     {
         return [];
@@ -165,7 +147,8 @@ abstract class IntegrationTestCase extends TestCase
      * @dataProvider provideLegacyTests
      * @group legacy
      */
-    #[DataProvider('provideLegacyTests'), Group('legacy')]
+    #[DataProvider('provideLegacyTests')]
+    #[Group('legacy')]
     public function testLegacyIntegration(
         string $file,
         string $message,

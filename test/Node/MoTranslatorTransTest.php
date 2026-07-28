@@ -68,6 +68,7 @@ final class MoTranslatorTransTest extends NodeTestCase
         self::assertEquals($context, $node->getNode('context'));
     }
 
+    /** {@inheritDoc} */
     public static function provideTests(): iterable
     {
         $tests = [];
