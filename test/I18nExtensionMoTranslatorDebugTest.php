@@ -9,15 +9,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
+namespace PhpMyAdmin\Tests\Twig\Extensions;
 
 use PhpMyAdmin\MoTranslator\Loader;
 use PhpMyAdmin\Tests\Twig\Extensions\MoTranslator\I18nExtensionDebug;
 use PhpMyAdmin\Twig\Extensions\I18nExtension;
 use Twig\Extension\AbstractExtension;
-use Twig\Test\IntegrationTestCase;
 
-class I18nExtensionMoTranslatorDebugTest extends IntegrationTestCase
+final class I18nExtensionMoTranslatorDebugTest extends IntegrationTestCase
 {
     public static function setUpBeforeClass(): void
     {
@@ -27,23 +26,20 @@ class I18nExtensionMoTranslatorDebugTest extends IntegrationTestCase
     /**
      * @return AbstractExtension[]
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return [
             new I18nExtensionDebug(),
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getFixturesDir()
+    protected static function getFixturesDirectory(): string
     {
         return __DIR__ . '/Fixtures/';
     }
 
     public function testGetName(): void
     {
-        $this->assertNotEmpty((new I18nExtension())->getName());
+        self::assertNotEmpty((new I18nExtension())->getName());
     }
 }

@@ -24,10 +24,10 @@
         "twig/twig": "^3.11.3"
     },
     "require-dev": {
-        "phpmyadmin/coding-standard": "^3.0.0",
-        "phpmyadmin/motranslator": "^5.2",
-        "phpstan/phpstan": "^1.9.4",
-        "phpunit/phpunit": "^8.5 || ^9.6"
+        "phpmyadmin/coding-standard": "^3.0",
+        "phpmyadmin/motranslator": "^5.4",
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^8.5 || ^9.6 || ^10.5 || ^11.5 || ^12.5 || ^13.2"
     },
     "scripts": {
         "phpstan": "./vendor/bin/phpstan analyse",

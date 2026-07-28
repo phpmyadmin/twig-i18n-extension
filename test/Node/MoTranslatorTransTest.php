@@ -14,36 +14,16 @@ declare(strict_types=1);
 
 namespace PhpMyAdmin\Tests\Twig\Extensions\Node;
 
+use PhpMyAdmin\Tests\Twig\Extensions\NodeTestCase;
 use PhpMyAdmin\Twig\Extensions\Node\TransNode;
-use Twig\Attribute\YieldReady;
-use Twig\Environment;
 use Twig\Node\Expression\ConstantExpression;
-use Twig\Node\Expression\NameExpression;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
-use Twig\Test\NodeTestCase;
 
-use function class_exists;
 use function sprintf;
-use function version_compare;
 
-class MoTranslatorTransTest extends NodeTestCase
+final class MoTranslatorTransTest extends NodeTestCase
 {
-    private static function echoOrYield(): string
-    {
-        return class_exists(YieldReady::class) ? 'yield' : 'echo';
-    }
-
-    /**
-     * Twig 3.26 encodes single quotes as \x27 (not ') in compiled string literals
-     * as a defense-in-depth measure, so the expected output differs by Twig version.
-     */
-    private static function apostrophe(): string
-    {
-        /** @phpstan-ignore-next-line */
-        return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
-    }
-
     public static function setUpBeforeClass(): void
     {
         TransNode::$notesLabel = '// l10n: ';
@@ -73,39 +53,36 @@ class MoTranslatorTransTest extends NodeTestCase
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, $context, $notes, $domain, 0);
 
-        $this->assertEquals($body, $node->getNode('body'));
-        $this->assertEquals($count, $node->getNode('count'));
-        $this->assertEquals($plural, $node->getNode('plural'));
-        $this->assertEquals($notes, $node->getNode('notes'));
-        $this->assertEquals($domain, $node->getNode('domain'));
-        $this->assertEquals($context, $node->getNode('context'));
+        self::assertEquals($body, $node->getNode('body'));
+        self::assertEquals($count, $node->getNode('count'));
+        self::assertEquals($plural, $node->getNode('plural'));
+        self::assertEquals($notes, $node->getNode('notes'));
+        self::assertEquals($domain, $node->getNode('domain'));
+        self::assertEquals($context, $node->getNode('context'));
     }
 
-    /**
-     * @return array[]
-     */
-    public function getTests(): array
+    public static function provideTests(): iterable
     {
         $tests = [];
 
-        $body = new NameExpression('foo', 0);
+        $body = self::createContextVariable('foo', 0);
         $domain = new Nodes([
             new TextNode('coredomain', 0),
         ]);
         $node = new TransNode($body, null, null, null, null, $domain, 0);
         $tests[] = [
             $node,
-            sprintf(self::echoOrYield() . ' _dgettext("coredomain", %s);', $this->getVariableGetter('foo')),
+            sprintf(self::echoOrYield() . ' _dgettext("coredomain", %s);', self::createVariableGetter('foo')),
         ];
 
-        $body = new NameExpression('foo', 0);
+        $body = self::createContextVariable('foo', 0);
         $domain = new Nodes([
             new TextNode('coredomain', 0),
         ]);
@@ -117,13 +94,13 @@ class MoTranslatorTransTest extends NodeTestCase
             $node,
             sprintf(
                 self::echoOrYield() . ' _dpgettext("coredomain", "The context", %s);',
-                $this->getVariableGetter('foo')
+                self::createVariableGetter('foo')
             ),
         ];
 
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
-            new PrintNode(new NameExpression('foo', 0), 0),
+            new PrintNode(self::createContextVariable('foo', 0), 0),
             new TextNode(' pommes', 0),
         ]);
         $node = new TransNode($body, null, null, null, null, null, 0);
@@ -132,21 +109,21 @@ class MoTranslatorTransTest extends NodeTestCase
             sprintf(
                 self::echoOrYield() . ' strtr(_gettext("J' . self::apostrophe()
                     . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                self::createVariableGetter('foo')
             ),
         ];
 
         $count = new ConstantExpression(12, 0);
         $body = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have one apple', 0),
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, null, null, null, 0);
@@ -156,14 +133,14 @@ class MoTranslatorTransTest extends NodeTestCase
                 self::echoOrYield() . ' strtr(_ngettext("Hey %%name%%, I have one apple", "Hey %%name%%,'
                 . ' I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
-                $this->getVariableGetter('name'),
-                $this->getVariableGetter('name')
+                self::createVariableGetter('name'),
+                self::createVariableGetter('name')
             ),
         ];
 
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
-            new PrintNode(new NameExpression('foo', 0), 0),
+            new PrintNode(self::createContextVariable('foo', 0), 0),
             new TextNode(' pommes', 0),
         ]);
         $context = new Nodes([
@@ -176,14 +153,14 @@ class MoTranslatorTransTest extends NodeTestCase
                 self::echoOrYield()
                 . ' strtr(_pgettext("The context", "J' . self::apostrophe()
                 . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                self::createVariableGetter('foo')
             ),
         ];
 
         $count = new ConstantExpression(12, 0);
         $body = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have one apple', 0),
         ]);
         $context = new Nodes([
@@ -191,9 +168,9 @@ class MoTranslatorTransTest extends NodeTestCase
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, $context, null, null, 0);
@@ -204,14 +181,14 @@ class MoTranslatorTransTest extends NodeTestCase
                 . ' strtr(_npgettext("The context", "Hey %%name%%, I have one apple", "Hey %%name%%,'
                 . ' I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
-                $this->getVariableGetter('name'),
-                $this->getVariableGetter('name')
+                self::createVariableGetter('name'),
+                self::createVariableGetter('name')
             ),
         ];
 
         $body = new Nodes([
             new TextNode('J\'ai ', 0),
-            new PrintNode(new NameExpression('foo', 0), 0),
+            new PrintNode(self::createContextVariable('foo', 0), 0),
             new TextNode(' pommes', 0),
         ]);
         $context = new Nodes([
@@ -227,14 +204,14 @@ class MoTranslatorTransTest extends NodeTestCase
                 self::echoOrYield()
                 . ' strtr(_dpgettext("mydomain", "The context", "J' . self::apostrophe()
                 . 'ai %%foo%% pommes"), array("%%foo%%" => %s, ));',
-                $this->getVariableGetter('foo')
+                self::createVariableGetter('foo')
             ),
         ];
 
         $count = new ConstantExpression(12, 0);
         $body = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have one apple', 0),
         ]);
         $context = new Nodes([
@@ -245,9 +222,9 @@ class MoTranslatorTransTest extends NodeTestCase
         ]);
         $plural = new Nodes([
             new TextNode('Hey ', 0),
-            new PrintNode(new NameExpression('name', 0), 0),
+            new PrintNode(self::createContextVariable('name', 0), 0),
             new TextNode(', I have ', 0),
-            new PrintNode(new NameExpression('count', 0), 0),
+            new PrintNode(self::createContextVariable('count', 0), 0),
             new TextNode(' apples', 0),
         ]);
         $node = new TransNode($body, $plural, $count, $context, null, $domain, 0);
@@ -258,8 +235,8 @@ class MoTranslatorTransTest extends NodeTestCase
                 . ' strtr(_dnpgettext("mydomain", "The context", "Hey %%name%%, I have one apple",'
                 . ' "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s,'
                 . ' "%%name%%" => %s, "%%count%%" => abs(12), ));',
-                $this->getVariableGetter('name'),
-                $this->getVariableGetter('name')
+                self::createVariableGetter('name'),
+                self::createVariableGetter('name')
             ),
         ];
 
