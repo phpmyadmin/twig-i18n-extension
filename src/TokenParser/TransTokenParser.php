@@ -60,14 +60,18 @@ class TransTokenParser extends AbstractTokenParser
         /* If we aren't closing the block, do we have a domain? */
         if ($stream->test(Token::NAME_TYPE)) {
             $stream->expect(Token::NAME_TYPE, 'from');
+            /** @phpstan-ignore function.alreadyNarrowedType (Twig 3.21+) */
             $domain = method_exists($this->parser, 'parseExpression')
                 ? $this->parser->parseExpression()
+                /** @phpstan-ignore method.deprecated, method.deprecatedClass (Twig 3.21+) */
                 : $this->parser->getExpressionParser()->parseExpression();
         }
 
         if (! $stream->test(Token::BLOCK_END_TYPE)) {
+            /** @phpstan-ignore function.alreadyNarrowedType (Twig 3.21+) */
             $body = method_exists($this->parser, 'parseExpression')
                 ? $this->parser->parseExpression()
+                /** @phpstan-ignore method.deprecated, method.deprecatedClass (Twig 3.21+) */
                 : $this->parser->getExpressionParser()->parseExpression();
         } else {
             $stream->expect(Token::BLOCK_END_TYPE);
@@ -75,8 +79,10 @@ class TransTokenParser extends AbstractTokenParser
             $next = $stream->next()->getValue();
 
             if ($next === 'plural') {
+                /** @phpstan-ignore function.alreadyNarrowedType (Twig 3.21+) */
                 $count = method_exists($this->parser, 'parseExpression')
                     ? $this->parser->parseExpression()
+                    /** @phpstan-ignore method.deprecated, method.deprecatedClass (Twig 3.21+) */
                     : $this->parser->getExpressionParser()->parseExpression();
                 $stream->expect(Token::BLOCK_END_TYPE);
                 $plural = $this->parser->subparse([$this, 'decideForFork']);

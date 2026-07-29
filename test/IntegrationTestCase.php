@@ -282,7 +282,7 @@ abstract class IntegrationTestCase extends TestCase
             self::assertSame('asdfasdf', $condition);
             $ret = '';
             eval('$ret = ' . $condition . ';');
-            /** @phpstan-ignore-next-line */
+            /** @phpstan-ignore booleanNot.exprNotBoolean, booleanNot.alwaysTrue */
             if (! $ret) {
                 self::markTestSkipped($condition);
             }
@@ -330,6 +330,7 @@ abstract class IntegrationTestCase extends TestCase
                 $twig->registerUndefinedFunctionCallback($callback);
             }
 
+            /** @phpstan-ignore function.alreadyNarrowedType (Twig 3.22+) */
             if (method_exists($twig, 'registerUndefinedTestCallback')) {
                 foreach ($this->getUndefinedTestCallbacks() as $callback) {
                     $twig->registerUndefinedTestCallback($callback);

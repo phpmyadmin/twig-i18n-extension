@@ -26,10 +26,11 @@
     "require-dev": {
         "phpmyadmin/coding-standard": "^4.0",
         "phpmyadmin/motranslator": "^6.0",
-        "phpstan/extension-installer": "^1.3",
-        "phpstan/phpstan": "^1.12",
-        "phpstan/phpstan-phpunit": "^1.3",
-        "phpstan/phpstan-strict-rules": "^1.5",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.2",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^10.5 || ^11.5 || ^12.5 || ^13.2"
     },
     "scripts": {

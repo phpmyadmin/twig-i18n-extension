@@ -1,121 +1,145 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Only booleans are allowed in an if condition, array\\<int, Twig\\\\Node\\\\Expression\\\\Variable\\\\ContextVariable\\> given\\.$#"
+			message: '#^Binary operation "\." between ''%%'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
 			count: 1
 			path: src/Node/TransNode.php
 
 		-
-			message: "#^Only booleans are allowed in an if condition, int\\<0, max\\> given\\.$#"
+			message: '#^Binary operation "\.\=" between string and mixed results in an error\.$#'
+			identifier: assignOp.invalid
 			count: 1
 			path: src/Node/TransNode.php
 
 		-
-			message: "#^Parameter \\#1 \\$name of class Twig\\\\Node\\\\Expression\\\\Variable\\\\ContextVariable constructor expects string, mixed given\\.$#"
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
 			path: src/Node/TransNode.php
 
 		-
-			message: "#^Parameter \\#1 \\$string of function trim expects string, mixed given\\.$#"
+			message: '#^Only booleans are allowed in an if condition, list\<Twig\\Node\\Expression\\Variable\\ContextVariable\> given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/Node/TransNode.php
+
+		-
+			message: '#^Parameter \#1 \$name of class Twig\\Node\\Expression\\Variable\\ContextVariable constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Node/TransNode.php
+
+		-
+			message: '#^Parameter \#1 \$string of function trim expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 2
 			path: src/Node/TransNode.php
 
 		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Node/TransNode.php
 
 		-
-			message: "#^Call to function method_exists\\(\\) with Twig\\\\Parser and 'parseExpression' will always evaluate to true\\.$#"
-			count: 3
-			path: src/TokenParser/TransTokenParser.php
-
-		-
-			message: "#^Method PhpMyAdmin\\\\Twig\\\\Extensions\\\\TokenParser\\\\TransTokenParser\\:\\:preParse\\(\\) should return array\\{Twig\\\\Node\\\\Node, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Expression\\\\AbstractExpression\\|null, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, int, string\\} but returns array\\{mixed, Twig\\\\Node\\\\Node\\|null, mixed, Twig\\\\Node\\\\Node\\|null, Twig\\\\Node\\\\Node\\|null, mixed, int, string\\}\\.$#"
+			message: '#^Method PhpMyAdmin\\Twig\\Extensions\\TokenParser\\TransTokenParser\:\:preParse\(\) should return array\{Twig\\Node\\Node, Twig\\Node\\Node\|null, Twig\\Node\\Expression\\AbstractExpression\|null, Twig\\Node\\Node\|null, Twig\\Node\\Node\|null, Twig\\Node\\Node\|null, int, string\} but returns array\{mixed, Twig\\Node\\Node\|null, mixed, Twig\\Node\\Node\|null, Twig\\Node\\Node\|null, mixed, int, string\}\.$#'
+			identifier: return.type
 			count: 1
 			path: src/TokenParser/TransTokenParser.php
 
 		-
-			message: "#^Parameter \\#1 \\$body of method PhpMyAdmin\\\\Twig\\\\Extensions\\\\TokenParser\\\\TransTokenParser\\:\\:checkTransString\\(\\) expects Twig\\\\Node\\\\Node, mixed given\\.$#"
+			message: '#^Parameter \#1 \$body of method PhpMyAdmin\\Twig\\Extensions\\TokenParser\\TransTokenParser\:\:checkTransString\(\) expects Twig\\Node\\Node, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/TokenParser/TransTokenParser.php
 
 		-
-			message: "#^Call to function method_exists\\(\\) with Twig\\\\Environment and 'registerUndefinedTe…' will always evaluate to true\\.$#"
-			count: 1
-			path: test/IntegrationTestCase.php
-
-		-
-			message: "#^Call to method SplFileInfo\\:\\:getRealPath\\(\\) with incorrect case\\: getRealpath$#"
+			message: '#^Call to method SplFileInfo\:\:getRealPath\(\) with incorrect case\: getRealpath$#'
+			identifier: method.nameCase
 			count: 2
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Only booleans are allowed in a negated boolean, array\\<int, array\\<int, string\\|null\\>\\> given\\.$#"
+			message: '#^Only booleans are allowed in a negated boolean, array\<int, array\<int, string\|null\>\> given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Only booleans are allowed in a negated boolean, array\\<string, array\\<int, array\\<int\\|string, array\\<int, string\\|null\\>\\|string\\>\\|string\\|false\\>\\> given\\.$#"
+			message: '#^Only booleans are allowed in a negated boolean, array\<string, array\<int, array\<int\<0, max\>\|string, list\<string\|null\>\|string\>\|string\|false\>\> given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Only booleans are allowed in a negated boolean, int\\|false given\\.$#"
+			message: '#^Only booleans are allowed in a negated boolean, int\|false given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Only booleans are allowed in a ternary operator condition, \\(callable\\)\\|null given\\.$#"
+			message: '#^Only booleans are allowed in a ternary operator condition, \(callable\)\|null given\.$#'
+			identifier: ternary.condNotBoolean
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Only booleans are allowed in a ternary operator condition, string\\|null given\\.$#"
+			message: '#^Only booleans are allowed in a ternary operator condition, string\|null given\.$#'
+			identifier: ternary.condNotBoolean
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Only booleans are allowed in an elseif condition, int\\|false given\\.$#"
+			message: '#^Only booleans are allowed in an elseif condition, int\|false given\.$#'
+			identifier: elseif.condNotBoolean
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Only booleans are allowed in an if condition, int\\|false given\\.$#"
+			message: '#^Only booleans are allowed in an if condition, int\|false given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Only booleans are allowed in an if condition, string given\\.$#"
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int\\)\\: bool\\)\\|null, Closure\\(mixed, mixed, mixed, mixed, mixed\\=\\)\\: mixed given\\.$#"
+			message: '#^Parameter \#1 \$callback of function set_error_handler expects \(callable\(int, string, string, int\)\: bool\)\|null, Closure\(mixed, mixed, mixed, mixed, mixed\=\)\: mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Parameter \\#1 \\$context of method Twig\\\\TemplateWrapper\\:\\:render\\(\\) expects array, mixed given\\.$#"
+			message: '#^Parameter \#1 \$context of method Twig\\TemplateWrapper\:\:render\(\) expects array, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Parameter \\#1 \\$filename of function file_get_contents expects string, \\(string\\|false\\) given\\.$#"
+			message: '#^Parameter \#1 \$filename of function file_get_contents expects string, \(string\|false\) given\.$#'
+			identifier: argument.type
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Parameter \\#1 \\$haystack of function str_contains expects string, \\(string\\|false\\) given\\.$#"
+			message: '#^Parameter \#1 \$haystack of function str_contains expects string, \(string\|false\) given\.$#'
+			identifier: argument.type
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$arrays of function array_merge expects array, mixed given\\.$#"
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: test/IntegrationTestCase.php
 
 		-
-			message: "#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#"
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
 			count: 1
 			path: test/IntegrationTestCase.php
