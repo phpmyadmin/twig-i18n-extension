@@ -1,5 +1,11 @@
 # Change Log
 
+## [4.2.0] - 2026-07-28
+
+* Update phpmyadmin/coding-standard ([#32](https://github.com/phpmyadmin/twig-i18n-extension/pull/32))
+* Add support for PHPUnit 10, 11, 12 and 13 ([#31](https://github.com/phpmyadmin/twig-i18n-extension/pull/31))
+* Drop support for Twig 1 and Twig 2 ([#30](https://github.com/phpmyadmin/twig-i18n-extension/pull/30))
+
 ## [4.1.6] - 2026-07-25
 
 * Fix TransNode unwrap for sandbox + auto-escape (Twig 3.26+) ([#27](https://github.com/phpmyadmin/twig-i18n-extension/pull/27))
@@ -60,6 +66,7 @@
 
 * First release of this library.
 
+[4.2.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.6...4.2.0
 [4.1.6]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.5...4.1.6
 [4.1.5]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.4...4.1.5
 [4.1.4]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.3...4.1.4
