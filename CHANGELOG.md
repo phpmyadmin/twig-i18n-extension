@@ -14,6 +14,12 @@
 * Drop support for PHP 7.2, PHP 7.3, PHP 7.4, PHP 8.0 and PHP 8.1
 * Fix Twig deprecations (#16, #17, #18)
 
+## [4.2.0] - 2026-07-28
+
+* Update phpmyadmin/coding-standard ([#32](https://github.com/phpmyadmin/twig-i18n-extension/pull/32))
+* Add support for PHPUnit 10, 11, 12 and 13 ([#31](https://github.com/phpmyadmin/twig-i18n-extension/pull/31))
+* Drop support for Twig 1 and Twig 2 ([#30](https://github.com/phpmyadmin/twig-i18n-extension/pull/30))
+
 ## [4.1.6] - 2026-07-25
 
 * Fix TransNode unwrap for sandbox + auto-escape (Twig 3.26+) ([#27](https://github.com/phpmyadmin/twig-i18n-extension/pull/27))
@@ -77,6 +83,7 @@
 [5.0.2]: https://github.com/phpmyadmin/twig-i18n-extension/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/phpmyadmin/twig-i18n-extension/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.3...5.0.0
+[4.2.0]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.6...4.2.0
 [4.1.6]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.5...4.1.6
 [4.1.5]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.4...4.1.5
 [4.1.4]: https://github.com/phpmyadmin/twig-i18n-extension/compare/4.1.3...4.1.4

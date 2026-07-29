@@ -279,7 +279,6 @@ abstract class IntegrationTestCase extends TestCase
         }
 
         if ($condition) {
-            self::assertSame('asdfasdf', $condition);
             $ret = '';
             eval('$ret = ' . $condition . ';');
             /** @phpstan-ignore-next-line */
