@@ -40,7 +40,7 @@ jobs:
         run: composer run phpunit
 
       - name: Send coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v7
         with:
           flags: unit-${{ matrix.php-version }}
           name: phpunit-${{ matrix.php-version }}
