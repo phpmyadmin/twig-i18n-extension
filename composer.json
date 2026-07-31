@@ -31,7 +31,7 @@
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^10.5 || ^11.5 || ^12.5 || ^13.2"
+        "phpunit/phpunit": "^11.5 || ^12.5 || ^13.2"
     },
     "scripts": {
         "phpstan": "./vendor/bin/phpstan analyse",

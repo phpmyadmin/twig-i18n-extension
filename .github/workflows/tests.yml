@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test-php:
     name: Test on PHP ${{ matrix.php-version }}
@@ -37,7 +40,7 @@ jobs:
           composer-options: ${{ matrix.composer-options }}
 
       - name: Run PHP tests
-        run: composer run phpunit
+        run: composer run phpunit -- --display-all-issues
 
       - name: Send coverage
         uses: codecov/codecov-action@v3
