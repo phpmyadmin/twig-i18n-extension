@@ -44,3 +44,4 @@ jobs:
         with:
           flags: unit-${{ matrix.php-version }}
           name: phpunit-${{ matrix.php-version }}
+          token: ${{ secrets.CODECOV_TOKEN }}
