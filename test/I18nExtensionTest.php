@@ -17,9 +17,7 @@ use Twig\Test\IntegrationTestCase;
 
 class I18nExtensionTest extends IntegrationTestCase
 {
-    /**
-     * @return AbstractExtension[]
-     */
+    /** @return AbstractExtension[] */
     public function getExtensions()
     {
         return [
@@ -27,9 +25,7 @@ class I18nExtensionTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     public function getFixturesDir()
     {
         return __DIR__ . '/Fixtures/';

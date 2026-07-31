@@ -88,9 +88,7 @@ class MoTranslatorTransTest extends NodeTestCase
         $this->assertEquals($context, $node->getNode('context'));
     }
 
-    /**
-     * @return array[]
-     */
+    /** @return array[] */
     public function getTests(): array
     {
         $tests = [];

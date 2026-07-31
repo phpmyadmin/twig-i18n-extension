@@ -114,17 +114,13 @@ class TransTokenParser extends AbstractTokenParser
         return [$body, $plural, $count, $context, $notes, $domain, $lineno, $this->getTag()];
     }
 
-    /**
-     * @return bool
-     */
+    /** @return bool */
     public function decideForFork(Token $token)
     {
         return $token->test(['plural', 'context', 'notes', 'endtrans']);
     }
 
-    /**
-     * @return bool
-     */
+    /** @return bool */
     public function decideForEnd(Token $token)
     {
         return $token->test('endtrans');

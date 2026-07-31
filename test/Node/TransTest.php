@@ -147,9 +147,7 @@ class TransTest extends NodeTestCase
         TransNode::$notesLabel = '// notes: ';
     }
 
-    /**
-     * @return array[]
-     */
+    /** @return array[] */
     public function getTests(): array
     {
         $tests = [];

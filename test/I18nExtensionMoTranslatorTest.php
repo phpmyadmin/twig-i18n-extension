@@ -23,9 +23,7 @@ class I18nExtensionMoTranslatorTest extends IntegrationTestCase
         Loader::loadFunctions();
     }
 
-    /**
-     * @return AbstractExtension[]
-     */
+    /** @return AbstractExtension[] */
     public function getExtensions()
     {
         return [
@@ -33,9 +31,7 @@ class I18nExtensionMoTranslatorTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     public function getFixturesDir()
     {
         return __DIR__ . '/Fixtures/';
