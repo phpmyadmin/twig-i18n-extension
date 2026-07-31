@@ -34,7 +34,7 @@ abstract class NodeTestCase extends TestCase
      */
     protected static function apostrophe(): string
     {
-        /** @phpstan-ignore-next-line */
+        /** @phpstan-ignore ternary.alwaysTrue */
         return version_compare(Environment::VERSION, '3.26.0', '>=') ? '\\x27' : '\'';
     }
 
